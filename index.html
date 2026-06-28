@@ -1,0 +1,2249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Veritas Ancestry - Premium Genealogy DNA Testing & Family History Service. Discover your ethnic origins, trace maternal & paternal lineages, and build your interactive family tree.">
+  <title>Veritas Ancestry | Premium DNA Testing & Family History Service</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/common.css">
+
+  <!-- Custom Public Website Styles -->
+  <style>
+    /* Public-specific layouts */
+    .hero-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding-top: 120px;
+      padding-bottom: 80px;
+      background: radial-gradient(circle at 70% 30%, rgba(14, 165, 233, 0.08), transparent 50%),
+        radial-gradient(circle at 10% 80%, rgba(197, 160, 89, 0.05), transparent 40%),
+        var(--bg-darkest);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image: var(--hero-bg, url('assets/dna_hero_bg.png'));
+      background-size: cover;
+      background-position: center;
+      opacity: 0.15;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .hero-content {
+      max-width: 650px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 10;
+    }
+
+    .hero-title {
+      font-size: clamp(2.8rem, 6vw, 4.5rem);
+      line-height: 1.1;
+      background: linear-gradient(135deg, var(--text-primary) 50%, var(--accent-gold-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    @media (max-width: 576px) {
+      .hero-buttons {
+        flex-direction: column;
+      }
+    }
+
+    /* Section Headers */
+    .section-header {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 60px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .section-title {
+      background: linear-gradient(135deg, var(--text-primary), var(--accent-gold));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+    }
+
+    /* DNA Journey timeline */
+    .journey-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+      position: relative;
+    }
+
+    .journey-step {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .journey-num {
+      width: 54px;
+      height: 54px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-glass);
+      color: var(--accent-gold);
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition-smooth);
+    }
+
+    .journey-step:hover .journey-num {
+      background: var(--accent-gold);
+      color: var(--bg-darkest);
+      box-shadow: var(--shadow-glow-gold);
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 1024px) {
+      .journey-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .journey-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Interactive Ethnicity Chart Preview */
+    .report-preview-container {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .ethnicity-chart-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .chart-donut {
+      width: 100%;
+      height: auto;
+      transform: rotate(-90deg);
+    }
+
+    .chart-segment {
+      fill: none;
+      stroke-width: 24;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .chart-segment:hover {
+      stroke-width: 28;
+      filter: drop-shadow(0 0 8px currentColor);
+    }
+
+    .ethnicity-legend {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .legend-item:hover,
+    .legend-item.active {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-teal);
+    }
+
+    .legend-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .legend-color {
+      width: 14px;
+      height: 14px;
+      border-radius: var(--radius-sm);
+    }
+
+    .legend-pct {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    @media (max-width: 900px) {
+      .report-preview-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+    }
+
+    /* Testimonials Carousel */
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .testimonial-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .testimonial-user {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .testimonial-avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+      border: 1px solid var(--border-glass-hover);
+    }
+
+    .testimonial-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-h4-h6);
+      font-size: 1rem;
+    }
+
+    .testimonial-meta {
+      font-size: 0.8rem;
+      color: var(--accent-gold);
+    }
+
+    @media (max-width: 900px) {
+      .testimonials-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Pricing kit cards and comparison tables */
+    .kit-comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 40px;
+      font-size: 0.95rem;
+    }
+
+    .kit-comparison-table th,
+    .kit-comparison-table td {
+      padding: 16px 24px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    .kit-comparison-table th {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-lead);
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .kit-comparison-table tr:hover td {
+      background: rgba(255, 255, 255, 0.01);
+    }
+
+    /* SVG Map styling */
+    .svg-map {
+      width: 100%;
+      height: auto;
+      max-height: 400px;
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      background: var(--bg-card);
+      padding: 24px;
+    }
+
+    .map-pin {
+      fill: var(--accent-gold);
+      stroke: var(--bg-darkest);
+      stroke-width: 2;
+      cursor: pointer;
+      transition: var(--transition-fast);
+    }
+
+    .map-pin:hover {
+      fill: var(--accent-teal);
+      filter: drop-shadow(0 0 6px var(--accent-teal));
+    }
+
+    .map-connection {
+      stroke: var(--accent-teal);
+      stroke-width: 1.5;
+      stroke-dasharray: 6 4;
+      opacity: 0.4;
+    }
+
+    /* Resources filter buttons */
+    .filter-bar {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border-glass);
+      padding: 8px 20px;
+      border-radius: var(--radius-full);
+      color: var(--text-secondary);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition-fast);
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--bg-card-hover);
+      border-color: var(--accent-teal);
+      color: var(--text-primary);
+    }
+
+    /* FAQ accordion styling */
+    .faq-accordion {
+      max-width: 800px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      transition: var(--transition-fast);
+    }
+
+    .faq-question {
+      padding: 20px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-lead);
+      color: var(--text-primary);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      padding: 0 28px;
+      color: var(--text-secondary);
+      transition: max-height 0.3s cubic-bezier(0, 1, 0, 1), padding 0.3s ease;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 1000px;
+      padding-bottom: 24px;
+      transition: max-height 0.5s ease-in, padding 0.3s ease;
+    }
+
+    .faq-icon {
+      transition: var(--transition-fast);
+    }
+
+    .faq-item.active .faq-icon {
+      transform: rotate(180deg);
+      color: var(--accent-gold);
+    }
+
+    /* Auth pages specific styling */
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 120px 24px 80px;
+      position: relative;
+    }
+
+    .auth-card {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .auth-social {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--text-muted);
+      margin: 24px 0;
+      font-size: 0.85rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    .divider:not(:empty)::before {
+      margin-right: .5em;
+    }
+
+    .divider:not(:empty)::after {
+      margin-left: .5em;
+    }
+
+    /* Interactive Lineage Tree Demo */
+    .interactive-tree-demo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-glass);
+      min-height: 320px;
+      position: relative;
+    }
+
+    .tree-node-demo {
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass-hover);
+      border-radius: var(--radius-sm);
+      padding: 10px 16px;
+      text-align: center;
+      width: 140px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition-fast);
+      position: relative;
+      z-index: 10;
+    }
+
+    .interactive-tree-demo:hover .tree-connector-vertical,
+    .interactive-tree-demo:hover .tree-connector-horizontal,
+    .interactive-tree-demo:hover .tree-connector-branch {
+      background: var(--accent-gold) !important;
+    }
+
+    .tree-node-demo:hover {
+      border-color: var(--accent-gold);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-glow-gold);
+    }
+
+    .tree-line-svg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .tree-line-path {
+      stroke: var(--border-glass-hover);
+      stroke-width: 1.5;
+      fill: none;
+      transition: var(--transition-fast);
+    }
+
+    .tree-node-demo:hover+.tree-line-svg .tree-line-path {
+      stroke: var(--accent-gold);
+    }
+
+    /* Cards header images */
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: 20px;
+      border: 1px solid var(--border-glass);
+      transition: var(--transition-smooth);
+    }
+
+    .card:hover .card-img {
+      border-color: var(--border-glass-hover);
+      transform: scale(1.02);
+    }
+
+    .journey-img {
+      width: 100%;
+      height: 130px;
+      object-fit: cover;
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      border: 1px solid var(--border-glass);
+      transition: var(--transition-smooth);
+    }
+
+    .journey-step:hover .journey-img {
+      border-color: var(--border-glass-hover);
+      transform: scale(1.02);
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Floating Header -->
+  <header class="header" id="main-header">
+    <div class="container nav-container">
+      <!-- Logo -->
+      <a href="#/" class="logo">
+        <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path
+            d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
+          <path
+            d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+          <path d="M10 16V22" stroke-linecap="round" />
+          <path d="M7 22H13" stroke-linecap="round" />
+        </svg>
+        <span>Veritas<span class="logo-text-accent">Ancestry</span></span>
+      </a>
+
+      <!-- Desktop Menu -->
+      <nav>
+        <ul class="nav-menu">
+          <li><a href="#/" class="nav-link active" data-route="/">Home </a></li>
+          <li><a href="#/home2" class="nav-link" data-route="/home2">Home2</a></li>
+          <li><a href="#/about" class="nav-link" data-route="/about">About </a></li>
+          <li><a href="#/dna-testing" class="nav-link" data-route="/dna-testing">DNA</a></li>
+          <li><a href="#/family-reports" class="nav-link" data-route="/family-reports">Reports</a></li>
+          <li><a href="#/pricing" class="nav-link" data-route="/pricing">Pricing</a></li>
+          <li><a href="#/resources" class="nav-link" data-route="/resources">Resources</a></li>
+          <li><a href="#/contact" class="nav-link" data-route="/contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <!-- Desktop CTA & Toggles -->
+      <div class="nav-actions">
+        <!-- Theme Toggle -->
+        <button class="btn btn-outline btn-icon" id="theme-toggle-btn" aria-label="Toggle Theme Mode"
+          style="border-radius: var(--radius-full); width: 40px; height: 40px;">
+          <svg class="icon-theme" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z" />
+          </svg>
+        </button>
+        <!-- RTL Toggle -->
+        <button class="btn btn-outline btn-icon" id="rtl-toggle-btn" aria-label="Toggle RTL Mode"
+          style="border-radius: var(--radius-full); width: 40px; height: 40px;">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </button>
+        <!-- Dashboard Shortcut -->
+        <a href="dashboard.html#/overview" class="btn btn-outline btn-icon" aria-label="Open Dashboard"
+          style="border-radius: var(--radius-full); width: 40px; height: 40px;" title="Customer Dashboard">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="3" y="3" width="7" height="9" rx="1" />
+            <rect x="14" y="3" width="7" height="5" rx="1" />
+            <rect x="14" y="12" width="7" height="9" rx="1" />
+            <rect x="3" y="16" width="7" height="5" rx="1" />
+          </svg>
+        </a>
+        <a href="#/login" class="btn btn-outline">Sign In</a>
+
+        <!-- Hamburger Button -->
+        <button class="hamburger" id="menu-toggle" aria-label="Toggle navigation menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-drawer" id="mobile-menu">
+    <ul class="mobile-nav-list">
+      <li><a href="#/" class="mobile-nav-link active" data-route="/">Home </a></li>
+      <li><a href="#/home2" class="mobile-nav-link" data-route="/home2">Home2</a></li>
+      <li><a href="#/about" class="mobile-nav-link" data-route="/about">About</a></li>
+      <li><a href="#/dna-testing" class="mobile-nav-link" data-route="/dna-testing">DNA</a></li>
+      <li><a href="#/family-reports" class="mobile-nav-link" data-route="/family-reports">Reports</a></li>
+      <li><a href="#/pricing" class="mobile-nav-link" data-route="/pricing">Pricing</a></li>
+      <li><a href="#/resources" class="mobile-nav-link" data-route="/resources">Resources</a></li>
+      <li><a href="#/contact" class="mobile-nav-link" data-route="/contact">Contact</a></li>
+    </ul>
+    <div class="mobile-actions">
+      <div style="display:flex; gap:12px; margin-bottom:16px;">
+        <button class="btn btn-outline btn-icon" id="theme-toggle-btn-mobile"
+          style="flex:1; height:44px; border-radius:var(--radius-md);" aria-label="Theme Toggle">
+          Theme Switch
+        </button>
+        <button class="btn btn-outline btn-icon" id="rtl-toggle-btn-mobile"
+          style="flex:1; height:44px; border-radius:var(--radius-md);" aria-label="RTL Toggle">
+          RTL Switch
+        </button>
+      </div>
+      <a href="dashboard.html#/overview" class="btn btn-gold"
+        style="width: 100%; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <rect x="3" y="3" width="7" height="9" rx="1" />
+          <rect x="14" y="3" width="7" height="5" rx="1" />
+          <rect x="14" y="12" width="7" height="9" rx="1" />
+          <rect x="3" y="16" width="7" height="5" rx="1" />
+        </svg>
+        Customer Dashboard
+      </a>
+      <a href="#/login" class="btn btn-outline" style="width: 100%;">Sign In</a>
+
+    </div>
+  </div>
+
+  <!-- Dynamic Content Area -->
+  <main id="app-view" class="view-transition"></main>
+
+  <!-- Global Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="#/" class="logo">
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path
+                d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
+              <path
+                d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+              <path d="M10 16V22" stroke-linecap="round" />
+              <path d="M7 22H13" stroke-linecap="round" />
+            </svg>
+            <span>Veritas<span class="logo-text-accent">Ancestry</span></span>
+          </a>
+          <p class="footer-description">Bridging advanced genetics and historical archives to illuminate your unique
+            ancestral story with integrity and privacy.</p>
+          <div class="footer-socials">
+            <a href="#" class="social-icon" aria-label="Facebook">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M22 12c0-5.52-4.48-10-10-10S2 6.48 2 12c0 4.84 3.44 8.87 8 9.8V15H8v-3h2V9.5C10 7.57 11.57 6 13.5 6H16v3h-2c-.55 0-1 .45-1 1v2h3v3h-3v6.95c4.56-.93 8-4.96 8-9.75z" />
+              </svg>
+            </a>
+            <a href="#" class="social-icon" aria-label="Twitter">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z" />
+              </svg>
+            </a>
+            <a href="#" class="social-icon" aria-label="LinkedIn">
+              <svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24">
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.779-1.75-1.75s.784-1.75 1.75-1.75 1.75.779 1.75 1.75-.784 1.75-1.75 1.75zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-heading">Services</h4>
+          <ul class="footer-links">
+            <li><a href="#/dna-testing" class="footer-link">DNA Ancestry Kit</a></li>
+            <li><a href="#/dna-testing" class="footer-link">Haplogroup Testing</a></li>
+            <li><a href="#/dna-testing" class="footer-link">Traits Analysis</a></li>
+            <li><a href="#/family-reports" class="footer-link">Family Tree Builder</a></li>
+            <li><a href="#/pricing" class="footer-link">Corporate Bundles</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-links-col">
+          <h4 class="footer-heading">Support</h4>
+          <ul class="footer-links">
+            <li><a href="#/contact" class="footer-link">Contact Support</a></li>
+            <li><a href="#/resources" class="footer-link">Learning Center</a></li>
+            <li><a href="#/about" class="footer-link">FAQ Guide</a></li>
+            <li><a href="#/about" class="footer-link">Privacy Safeguards</a></li>
+            <li><a href="admin.html" class="footer-link">Admin Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-newsletter">
+          <h4 class="footer-heading">Keep Exploring</h4>
+          <p class="footer-description" style="font-size: 0.85rem;">Subscribe for research updates, historical record
+            releases, and genetic guides.</p>
+          <form class="newsletter-form" id="newsletter-form"
+            onsubmit="event.preventDefault(); alert('Thank you for subscribing!'); this.reset();">
+            <input type="email" class="form-control" placeholder="Your email address" required
+              aria-label="Email Address">
+            <button type="submit" class="btn btn-primary btn-icon" aria-label="Subscribe">
+              <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <div class="flex-between footer-bottom">
+        <span>&copy; 2026 Veritas Ancestry Inc. All rights reserved.</span>
+        <div style="display:flex; gap:20px;">
+          <a href="#" style="color:var(--text-muted);">Privacy Policy</a>
+          <a href="#" style="color:var(--text-muted);">Terms of Service</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==============================================
+       PAGE TEMPLATES (SPA ROUTING)
+       ============================================== -->
+
+  <!-- 1. HOME VIEW -->
+  <template id="page-home">
+    <div class="view-container">
+      <!-- Premium Hero Section -->
+      <section class="hero-section" style="--hero-bg: url('assets/dna_hero_bg.png'); display:flex; align-items:center; justify-content:center;">
+        <div class="container" style="display:flex; justify-content:center; text-align:center;">
+          <div class="hero-content animate-slide-up" style="margin: 0 auto; text-align: center; align-items: center; justify-content: center;">
+            <div class="badge badge-gold">The Science of Heritage</div>
+            <h1 class="hero-title" style="text-align:center;">Decode Your History. Map Your Legacy.</h1>
+            <p class="lead" style="text-align:center; margin: 0 auto;">Unlock the code that connects you to your ancestors. Build a beautiful, rich family history and explore precise geographic ethnicity profiles with the industry's most advanced DNA sequencing.</p>
+            <div class="hero-buttons" style="justify-content: center; width: 100%;">
+              <a href="#/pricing" class="btn btn-gold">Order Testing Kit</a>
+              <a href="#/family-reports" class="btn btn-outline">Explore Reports</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DNA Journey Overview -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Our Methodology</div>
+            <h2>Your Journey to Discovery</h2>
+            <p class="section-subtitle">How Veritas Ancestry bridges biotechnology and history to reveal your past.</p>
+          </div>
+
+          <div class="journey-grid">
+            <div class="journey-step card card-teal">
+              <img src="assets/journey_order.png" class="journey-img" alt="Order DNA Kit Online">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>Online</h3>
+                <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">01</div>
+              </div>
+              <p>Select your kit. We ship a premium, touchless saliva collection kit straight to your doorstep.</p>
+            </div>
+            <div class="journey-step card card-teal">
+              <img src="assets/journey_return.png" class="journey-img" alt="Return Saliva Sample">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>Return</h3>
+                <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">02</div>
+              </div>
+              <p>Register your kit online for full security, mail your sample using pre-paid express shipping.</p>
+            </div>
+            <div class="journey-step card card-teal">
+              <img src="assets/journey_lab.png" class="journey-img" alt="DNA Lab Microarray Analysis">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>Lab Analysis</h3>
+                <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">03</div>
+              </div>
+              <p>Our CLIA-certified labs extract DNA, reading 700,000+ genetic markers using modern microarrays.</p>
+            </div>
+            <div class="journey-step card card-teal">
+              <img src="assets/journey_insights.png" class="journey-img" alt="Get Genetic Insights & Ancestry Reports">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h3>Get Insights</h3>
+                <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">04</div>
+              </div>
+              <p>Access your interactive dashboards, ancestry maps, relative matches, and download detailed reports.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Why Choose Us -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-gold">Veritas Advantage</div>
+            <h2>Pioneering Standards in Genealogy</h2>
+            <p class="section-subtitle">Why historians and genetics researchers trust Veritas Ancestry above all.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-gold">
+              <img src="assets/why_privacy.png" class="card-img" alt="Bank-Grade Privacy Security Shield">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3>Bank-Grade Privacy</h3>
+                <span style="color:var(--accent-gold);">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path
+                      d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.33 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+              <p>Your genetic sequence is encrypted and stored anonymously. We never rent, share, or sell your DNA data
+                without your active consent.</p>
+            </div>
+            <div class="card card-gold">
+              <img src="assets/why_regions.png" class="card-img" alt="Deep Sub-Regional Details Map">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3>Deep Sub-Regions</h3>
+                <span style="color:var(--accent-gold);">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path
+                      d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-.778.099-1.533.284-2.253"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+              <p>Go beyond country boundaries. Explore your roots down to precise communities and historical
+                micro-regions across 2,400 global locations.</p>
+            </div>
+            <div class="card card-gold">
+              <img src="assets/why_network.png" class="card-img" alt="Vast Relative Match Network">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3>Relative Network</h3>
+                <span style="color:var(--accent-gold);">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path
+                      d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+                      stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+              <p>Instantly match with distant cousins and ancestors roots down to precise in our secure registry
+                containing over 4.5 million
+                active DNA profiles.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sample Ethnicity Report Preview -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Interactive Preview</div>
+            <h2>Ethnicity Map & Breakdown</h2>
+            <p class="section-subtitle">Hover over segments to see what genetic ethnicity report details look like.</p>
+          </div>
+
+          <div class="report-preview-container">
+            <!-- Dynamic SVG Donut Chart -->
+            <div class="ethnicity-chart-wrap">
+              <svg viewBox="0 0 100 100" class="chart-donut" id="preview-donut-chart">
+                <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="24" />
+
+                <!-- Northwestern European (42%): Circumference = 2 * PI * r = 238.76. Stroke-dasharray = 100.28, 238.76 -->
+                <circle class="chart-segment" cx="50" cy="50" r="38" stroke="var(--accent-gold)"
+                  stroke-dasharray="100.28 238.76" stroke-dashoffset="0" data-region="nwe"
+                  style="color: var(--accent-gold);" />
+
+                <!-- East Asian & Native American (28%): Stroke-dasharray = 66.85, 238.76. Offset = -100.28 -->
+                <circle class="chart-segment" cx="50" cy="50" r="38" stroke="var(--accent-teal)"
+                  stroke-dasharray="66.85 238.76" stroke-dashoffset="-100.28" data-region="eana"
+                  style="color: var(--accent-teal);" />
+
+                <!-- Scandinavian (18%): Stroke-dasharray = 42.98, 238.76. Offset = -167.13 -->
+                <circle class="chart-segment" cx="50" cy="50" r="38" stroke="var(--accent-cyan)"
+                  stroke-dasharray="42.98 238.76" stroke-dashoffset="-167.13" data-region="scand"
+                  style="color: var(--accent-cyan);" />
+
+                <!-- Baltic & Eastern European (12%): Stroke-dasharray = 28.65, 238.76. Offset = -210.11 -->
+                <circle class="chart-segment" cx="50" cy="50" r="38" stroke="#a855f7" stroke-dasharray="28.65 238.76"
+                  stroke-dashoffset="-210.11" data-region="baltic" style="color: #a855f7;" />
+              </svg>
+              <div style="position: absolute; top:50%; left:50%; transform:translate(-50%, -50%); text-align:center;">
+                <span id="donut-pct"
+                  style="font-size: 2.2rem; font-family:var(--font-heading); font-weight:700;">42%</span><br>
+                <span id="donut-lbl"
+                  style="font-size: 0.8rem; color:var(--text-muted); text-transform: uppercase;">Northwest
+                  European</span>
+              </div>
+            </div>
+
+            <!-- Legends -->
+            <div class="ethnicity-legend">
+              <div class="legend-item active" data-region="nwe">
+                <div class="legend-left">
+                  <div class="legend-color" style="background: var(--accent-gold);"></div>
+                  <div>
+                    <h4 style="font-size: 0.95rem;">Northwestern European</h4>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Mainly British Isles, France,
+                      Germany</span>
+                  </div>
+                </div>
+                <div class="legend-pct">42%</div>
+              </div>
+              <div class="legend-item" data-region="eana">
+                <div class="legend-left">
+                  <div class="legend-color" style="background: var(--accent-teal);"></div>
+                  <div>
+                    <h4 style="font-size: 0.95rem;">East Asian & Indigenous</h4>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Mainly Mongolia, Han Chinese,
+                      Siberia</span>
+                  </div>
+                </div>
+                <div class="legend-pct">28%</div>
+              </div>
+              <div class="legend-item" data-region="scand">
+                <div class="legend-left">
+                  <div class="legend-color" style="background: var(--accent-cyan);"></div>
+                  <div>
+                    <h4 style="font-size: 0.95rem;">Scandinavian</h4>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Norway, Sweden, Denmark</span>
+                  </div>
+                </div>
+                <div class="legend-pct">18%</div>
+              </div>
+              <div class="legend-item" data-region="baltic">
+                <div class="legend-left">
+                  <div class="legend-color" style="background: #a855f7;"></div>
+                  <div>
+                    <h4 style="font-size: 0.95rem;">Baltic & Eastern European</h4>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Poland, Lithuania, Latvia</span>
+                  </div>
+                </div>
+                <div class="legend-pct">12%</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Family Tree Preview -->
+      <section class="section">
+        <div class="container flex-between" style="flex-wrap: wrap; gap: 40px;">
+          <div style="flex: 1 1 500px; display:flex; flex-direction:column; gap:24px;">
+            <div class="badge badge-gold">Interactive Tooling</div>
+            <h2>Build an Infinite Family Tree</h2>
+            <p>Connect with your ancestors in a living map. Import record matches, invite cousins to contribute, upload
+              photos, and watch your lineage populate automatically. Seamlessly link to DNA tests to identify verified
+              genetic branches.</p>
+            <a href="#/family-reports" class="btn btn-outline" style="width: max-content;">Preview Tree Builder</a>
+          </div>
+
+          <div style="flex: 1 1 450px;">
+            <div class="interactive-tree-demo">
+              <!-- Render Node Connections with CSS flex lines -->
+              <div style="display:flex; flex-direction:column; align-items:center; width:100%;">
+
+                <!-- Parent Node -->
+                <div class="tree-node-demo" id="node-parent" data-name="Arthur Pendelton"
+                  data-info="Great Grandfather | 1892 - 1968" style="z-index: 10;">Arthur Pendelton</div>
+
+                <!-- Vertical connector from parent -->
+                <div class="tree-connector-vertical"
+                  style="width: 1.5px; height: 28px; background: var(--border-glass-hover); transition: var(--transition-fast);">
+                </div>
+
+                <!-- Horizontal connector with vertical drop ends -->
+                <div class="tree-connector-horizontal"
+                  style="width: 204px; height: 1.5px; background: var(--border-glass-hover); display: flex; justify-content: space-between; transition: var(--transition-fast);">
+                  <div class="tree-connector-branch"
+                    style="width: 1.5px; height: 28px; background: var(--border-glass-hover); transition: var(--transition-fast);">
+                  </div>
+                  <div class="tree-connector-branch"
+                    style="width: 1.5px; height: 28px; background: var(--border-glass-hover); transition: var(--transition-fast);">
+                  </div>
+                </div>
+
+                <!-- Children Row -->
+                <div style="display:flex; gap:64px; justify-content:center; width:100%; z-index: 10;">
+                  <div class="tree-node-demo" id="node-child1" data-name="Elizabeth Pendelton"
+                    data-info="Grandmother | 1923 - 2004">Elizabeth</div>
+                  <div class="tree-node-demo" id="node-child2" data-name="John Pendelton"
+                    data-info="Granduncle | 1926 - 1989">John</div>
+                </div>
+
+              </div>
+
+              <div id="tree-node-tooltip"
+                style="position:absolute; bottom:20px; text-align:center; font-size:0.8rem; background:rgba(0,0,0,0.8); padding:8px 16px; border-radius:4px; border:1px solid var(--border-glass); opacity:0; transition:var(--transition-fast); pointer-events:none; z-index: 20;">
+                Hover over a node to read historical logs.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Our Community</div>
+            <h2>Real Stories of Discovery</h2>
+            <p class="section-subtitle">How testing with Veritas Ancestry unlocked family legacies worldwide.</p>
+          </div>
+
+          <div class="testimonials-grid">
+            <div class="testimonial-card">
+              <p>"Uncovering my Scandinavian lineage resolved generations of stories in my family tree. Finding relative
+                matches in Gothenburg completed my search."</p>
+              <div class="testimonial-user">
+                <img
+                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=120&h=120"
+                  class="testimonial-avatar" alt="Sarah Miller">
+                <div>
+                  <h4 class="testimonial-name">Sarah Miller</h4>
+                  <span class="testimonial-meta">Boston, MA — 18% Scandinavian</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <p>"The security protocols gave me full peace of mind. The interactive ethnicity breakdown goes so much
+                deeper than other services. Fully recommended!"</p>
+              <div class="testimonial-user">
+                <img
+                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=120&h=120"
+                  class="testimonial-avatar" alt="Dr. Julian Reed">
+                <div>
+                  <h4 class="testimonial-name">Dr. Julian Reed</h4>
+                  <span class="testimonial-meta">London, UK — 42% Northwest European</span>
+                </div>
+              </div>
+            </div>
+            <div class="testimonial-card">
+              <p>"Building my family tree and linking it to the migration timeline map brought history to life. My
+                grandchildren are amazed by our map timeline."</p>
+              <div class="testimonial-user">
+                <img
+                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=120&h=120"
+                  class="testimonial-avatar" alt="Elena Rostova">
+                <div>
+                  <h4 class="testimonial-name">Elena Rostova</h4>
+                  <span class="testimonial-meta">Munich, DE — 12% Baltic & Eastern</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="section">
+        <div class="container" style="text-align: center;">
+          <div class="card card-gold"
+            style="padding: 60px 40px; align-items: center; justify-content: center; gap: 24px; background: linear-gradient(135deg, rgba(197, 160, 89, 0.1), rgba(11, 17, 38, 0.95));">
+            <div class="badge badge-gold">Begin Today</div>
+            <h2 style="max-width: 600px;">Ready to Uncover Your Unique Genetic Heritage?</h2>
+            <p class="lead" style="max-width: 600px; margin: 0 auto;">Select from our premium DNA testing kits today and
+              unlock your personalized dashboards within weeks.</p>
+            <a href="#/pricing" class="btn btn-gold">Order Your Kit Now</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- 2. ABOUT US VIEW -->
+  <template id="page-about">
+    <div class="view-container">
+      <section class="hero-section"
+        style="--hero-bg: url('assets/why_privacy.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <div class="badge badge-gold">About Veritas</div>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Science-Backed Heritage Mapping</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Bridging advanced molecular genetics, secure cloud databases, and centuries of historical records to connect you with your past.</p>
+        </div>
+      </section>
+
+      <!-- Company Story -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container grid grid-2" style="align-items:center;">
+          <div>
+            <h2 style="margin-bottom: 24px;">Our Mission & Vision</h2>
+            <p style="margin-bottom: 16px;">Founded in 2020 by geneticists, historians, and cybersecurity experts,
+              Veritas Ancestry was born out of a desire to create a privacy-first genealogy platform.</p>
+            <p>Our commitment is simple: to make deep-history genetic tracing secure, interactive, and comprehensive. By
+              using the latest Next-Gen Sequencing techniques, we reconstruct ancient migration pathways down to
+              micro-regions with extreme accuracy.</p>
+          </div>
+          <div>
+            <img src="assets/family_history.png"
+              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
+              alt="Lineage and Archives Collage">
+          </div>
+        </div>
+      </section>
+
+      <!-- Science Process -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Research Integrity</div>
+            <h2>The Science Behind the Test</h2>
+            <p class="section-subtitle">How we transform a saliva sample into a rich tapestry of ancestors.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-teal">
+              <span class="badge badge-teal" style="margin-bottom:20px;">Step 1: Extraction</span>
+              <h3>Genomic Isolation</h3>
+              <p>Saliva samples are processed in CLIA-certified and CAP-accredited laboratories. We isolate your DNA and
+                run it against modern arrays reading 700,000+ single nucleotide polymorphisms (SNPs).</p>
+            </div>
+            <div class="card card-teal">
+              <span class="badge badge-teal" style="margin-bottom:20px;">Step 2: Analysis</span>
+              <h3>Biostatistical Modeling</h3>
+              <p>Our genetic algorithms cross-reference your sequencing file against reference populations globally,
+                analyzing ancestral alleles and resolving overlapping ethnic markers.</p>
+            </div>
+            <div class="card card-teal">
+              <span class="badge badge-teal" style="margin-bottom:20px;">Step 3: Verification</span>
+              <h3>Archival Triangulation</h3>
+              <p>We link verified genetic matches with historical archives, automatically identifying ancestors by
+                cross-referencing census reports, military archives, and emigration logs.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Privacy commitment -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container flex-between" style="flex-wrap: wrap; gap: 40px;">
+          <div style="flex: 1 1 500px; display:flex; flex-direction:column; gap:24px;">
+            <div class="badge badge-gold">Privacy Pledge</div>
+            <h2>Your DNA is Yours Alone</h2>
+            <p>At Veritas Ancestry, your privacy is our core promise. We implement HIPAA-aligned security protocols, and
+              enforce multi-factor decryption keys on all data files. We never sell, rent, or distribute genetic data to
+              third parties, and you can request the permanent destruction of your physical sample and digital files at
+              any time.</p>
+            <ul style="list-style:none; display:flex; flex-direction:column; gap:12px; color:var(--text-secondary);">
+              <li style="display:flex; align-items:center; gap:8px;">
+                <svg width="18" height="18" fill="none" stroke="var(--accent-gold)" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Bank-grade encryption protocols
+              </li>
+              <li style="display:flex; align-items:center; gap:8px;">
+                <svg width="18" height="18" fill="none" stroke="var(--accent-gold)" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Active consent frameworks
+              </li>
+              <li style="display:flex; align-items:center; gap:8px;">
+                <svg width="18" height="18" fill="none" stroke="var(--accent-gold)" stroke-width="2"
+                  viewBox="0 0 24 24">
+                  <path d="M5 13l4 4L19 7" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Right to complete digital destruction
+              </li>
+            </ul>
+          </div>
+          <div style="flex: 1 1 400px; display:flex; justify-content:center;">
+            <div class="card card-gold" style="max-width: 380px; border-color: rgba(197, 160, 89, 0.3);">
+              <img src="assets/why_sovereignty.png" class="card-img" alt="Data Sovereignty Security Shield">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3>Data Sovereignty</h3>
+                <span style="color:var(--accent-gold);">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </span>
+              </div>
+              <p>All genetic profiles are stripped of identifiers before laboratory parsing, ensuring your personal details and DNA are never stored in the same database.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Team -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Our Team</div>
+            <h2>Scientific & Historical Experts</h2>
+            <p class="section-subtitle">Meet the team dedicated to decoding human histories.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-teal" style="padding:24px;">
+              <img
+                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200&h=200"
+                style="width:100%; height:200px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
+                alt="Dr. Aris Vance">
+              <h3>Dr. Aris Vance</h3>
+              <span class="badge badge-teal" style="margin-bottom:12px;">Chief Geneticist</span>
+              <p>Former research scientist at Stanford, specialized in haplotype reconstructions and ancient genome
+                modeling.</p>
+            </div>
+            <div class="card card-teal" style="padding:24px;">
+              <img
+                src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200&h=200"
+                style="width:100%; height:200px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
+                alt="Marcus Sterling">
+              <h3>Marcus Sterling</h3>
+              <span class="badge badge-teal" style="margin-bottom:12px;">Lead Archivist</span>
+              <p>Eminent historian and author of 'Migration Channels of the Atlantic'. Expert in pre-industrial
+                migration routes.</p>
+            </div>
+            <div class="card card-teal" style="padding:24px;">
+              <img
+                src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200&h=200"
+                style="width:100%; height:200px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
+                alt="Chloe Zhao">
+              <h3>Chloe Zhao</h3>
+              <span class="badge badge-teal" style="margin-bottom:12px;">Security Director</span>
+              <p>Expert in cryptographic infrastructure, ensuring our user datasets remain completely secure and
+                anonymous.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQs -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-gold">FAQ</div>
+            <h2>Frequently Asked Questions</h2>
+            <p class="section-subtitle">Answers to common queries about science, logistics, and data policies.</p>
+          </div>
+
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>How accurate is the ethnicity report?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>Veritas Ancestry ethnicity reports are calculated based on a reference database containing over
+                  25,000 reference samples representing distinct indigenous lineages globally. Our models calculate
+                  regional percentages using 99% confidence intervals, providing one of the highest accurate
+                  sub-regional Breakdowns in the genetic genealogy market.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>What are Haplogroups (Lineage testing)?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>Haplogroups are large branches on the human evolutionary tree, sharing a common ancestor. Maternal
+                  Haplogroup testing traces mitochondrial DNA (mtDNA) passed down from mother to child. Paternal
+                  Haplogroup testing traces Y-chromosome DNA (Y-DNA) passed down from father to son. This allows you to
+                  follow deep migration timelines spanning tens of thousands of years.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>Can I delete my genetic data after the test?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>Yes. You maintain total ownership of your genetic data. At any time via your customer dashboard, you
+                  can request to delete your account, purge your genotyping file, and instruct our labs to physically
+                  incinerate your original saliva vial. This process is irreversible and complies fully with data
+                  protection standards.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- 3. DNA TESTING VIEW -->
+  <template id="page-dna-testing">
+    <div class="view-container">
+      <section class="hero-section"
+        style="--hero-bg: url('assets/why_regions.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <div class="badge badge-teal">The Testing Suite</div>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Explore the Code That Defines You</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Unlock detailed regional lineages, maternal and paternal migration steps, and optional wellness indicators using next-gen microarrays.</p>
+        </div>
+      </section>
+
+      <!-- DNA Test Kits Cards -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-gold">Product Kits</div>
+            <h2>Premium DNA Test Kits</h2>
+            <p class="section-subtitle">Choose the level of discovery that fits your curiosity.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-gold">
+              <span class="badge badge-gold" style="margin-bottom:20px;">Most Popular</span>
+              <h3>Ancestry Essentials</h3>
+              <p
+                style="font-size: 1.8rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin: 12px 0;">
+                $99</p>
+              <ul
+                style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:30px; font-size:0.9rem; flex-grow:1;">
+                <li>✓ 2,400+ Geographic Regions</li>
+                <li>✓ Autosomal DNA Matching</li>
+                <li>✓ Historical Migration Timelines</li>
+                <li>✓ Access to Relative Registry</li>
+              </ul>
+              <a href="#/pricing" class="btn btn-gold">Order Essentials Kit</a>
+            </div>
+            <div class="card card-gold">
+              <span class="badge badge-gold" style="margin-bottom:20px;">Complete Roots</span>
+              <h3>Ancestry + Lineage</h3>
+              <p
+                style="font-size: 1.8rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin: 12px 0;">
+                $149</p>
+              <ul
+                style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:30px; font-size:0.9rem; flex-grow:1;">
+                <li>✓ Everything in Essentials</li>
+                <li>✓ Maternal Lineage (mtDNA)</li>
+                <li>✓ Paternal Lineage (Y-DNA)</li>
+                <li>✓ Ancestral Haplotype Mapping</li>
+              </ul>
+              <a href="#/pricing" class="btn btn-gold">Order Lineage Kit</a>
+            </div>
+            <div class="card card-gold">
+              <span class="badge badge-gold" style="margin-bottom:20px;">Complete Profile</span>
+              <h3>Ancestry + Traits</h3>
+              <p
+                style="font-size: 1.8rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin: 12px 0;">
+                $199</p>
+              <ul
+                style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:30px; font-size:0.9rem; flex-grow:1;">
+                <li>✓ Everything in Lineage</li>
+                <li>✓ 35+ Genetic Traits Report</li>
+                <li>✓ Metabolic & Nutrient Insights</li>
+                <li>✓ Sleep & Fitness DNA Indicators</li>
+              </ul>
+              <a href="#/pricing" class="btn btn-gold">Order Complete Kit</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testing Science Explanations -->
+      <section class="section">
+        <div class="container grid grid-2" style="align-items:center; gap:60px;">
+          <div>
+            <div class="badge badge-teal">Lineage Mapping</div>
+            <h2 style="margin-top:16px; margin-bottom:24px;">Tracing Your Deep Lineage</h2>
+            <p style="margin-bottom:16px;">Autosomal DNA reveals recent ancestry spanning the last 5-8 generations. To
+              unlock deep history, we analyze your sex-linked DNA.</p>
+            <p style="margin-bottom:16px;"><strong>Maternal Lineage (mtDNA):</strong> Traces mitochondrial DNA, passed
+              down unchanged from mother to child. Unlocks the ancient migration paths of your maternal ancestors dating
+              back over 100,000 years.</p>
+            <p><strong>Paternal Lineage (Y-DNA):</strong> For male participants, Y-chromosome sequencing traces your
+              direct paternal line, mapping the path of your ancestors and discovering your specific paternal
+              Haplogroup.</p>
+          </div>
+          <div>
+            <img src="assets/science_research.png"
+              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
+              alt="Scientists in high-tech laboratory processing DNA sequences">
+          </div>
+        </div>
+      </section>
+
+      <!-- Interactive Test Comparison Table -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Kit Comparison</div>
+            <h2>Find Your Perfect Test</h2>
+            <p class="section-subtitle">A detailed breakdown of reports and data access for each kit.</p>
+          </div>
+
+          <div style="overflow-x: auto;">
+            <table class="kit-comparison-table">
+              <thead>
+                <tr>
+                  <th>Feature</th>
+                  <th>Essentials ($99)</th>
+                  <th>Lineage ($149)</th>
+                  <th>Complete ($199)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Ethnicity Percentage</td>
+                  <td>✓ Included</td>
+                  <td>✓ Included</td>
+                  <td>✓ Included</td>
+                </tr>
+                <tr>
+                  <td>Ancestry Communities</td>
+                  <td>✓ Detailed</td>
+                  <td>✓ Detailed</td>
+                  <td>✓ Detailed</td>
+                </tr>
+                <tr>
+                  <td>DNA Relative Finder</td>
+                  <td>✓ Opt-in</td>
+                  <td>✓ Opt-in</td>
+                  <td>✓ Opt-in</td>
+                </tr>
+                <tr>
+                  <td>Maternal Haplogroup</td>
+                  <td>-</td>
+                  <td>✓ Included</td>
+                  <td>✓ Included</td>
+                </tr>
+                <tr>
+                  <td>Paternal Haplogroup</td>
+                  <td>-</td>
+                  <td>✓ Included (Males only)</td>
+                  <td>✓ Included (Males only)</td>
+                </tr>
+                <tr>
+                  <td>Genetic Traits (35+)</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>✓ Included</td>
+                </tr>
+                <tr>
+                  <td>Raw DNA Download</td>
+                  <td>✓ Included</td>
+                  <td>✓ Included</td>
+                  <td>✓ Included</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- 4. FAMILY TREE & REPORTS VIEW -->
+  <template id="page-family-reports">
+    <div class="view-container">
+      <section class="hero-section"
+        style="--hero-bg: url('assets/ethnicity_map.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <div class="badge badge-gold">Interactive Reports</div>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Map Your Lineage Through Time</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Explore beautiful, high-fidelity interactive maps, migration timelines, and historical archives linked with your DNA.</p>
+        </div>
+      </section>
+
+      <!-- Migration Map Preview -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container grid grid-2" style="align-items:center; gap:60px;">
+          <div>
+            <div class="badge badge-gold">Interactive Mapping</div>
+            <h2 style="margin-top:16px; margin-bottom:24px;">Holographic Migration Mapping</h2>
+            <p style="margin-bottom:16px;">Watch your ancestors' journeys animate across the map. Our timeline mapping
+              tracks where your haplogroup settled over thousands of years, tracing the migration out of East Africa to
+              the Americas and Asia.</p>
+            <p>Our dashboard integrates census records, mapping original addresses and tracking migrations within the
+              last 150 years as well.</p>
+          </div>
+          <div>
+            <img src="assets/ethnicity_map.png"
+              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
+              alt="Holographic Migration World Map Screen Mockup">
+          </div>
+        </div>
+      </section>
+
+      <!-- Timeline & Historical Records -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Historical Context</div>
+            <h2>Archival Databases & Timelines</h2>
+            <p class="section-subtitle">Search, link, and document your lineage with historical accuracy.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-teal">
+              <img src="assets/report_census.png" class="card-img" alt="Census Collections Archives">
+              <h3>Census Collections</h3>
+              <p>Explore full national census archives from 1850 to 1950. Confirm occupations, household sizes, and exact property locations of ancestors.</p>
+            </div>
+            <div class="card card-teal">
+              <img src="assets/report_ship.png" class="card-img" alt="Passenger Manifests Sailing Ship">
+              <h3>Passenger Manifests</h3>
+              <p>Locate ship records, arrival dates, and travel conditions of relatives who migrated through historic ports of entry.</p>
+            </div>
+            <div class="card card-teal">
+              <img src="assets/report_military.png" class="card-img" alt="Military Registries Badges">
+              <h3>Military Registries</h3>
+              <p>Access recruitment slips, medal logs, and division histories from World War I, World War II, and historical campaigns.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Autosomal Matching Preview -->
+      <section class="section" style="background: var(--bg-darker); border-top: 1px solid var(--border-glass);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-gold">Relative Finder</div>
+            <h2>DNA Circles & Connections</h2>
+            <p class="section-subtitle">Discover genetic cousins in our secure worldwide registry of 4.5M+ active users.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-gold">
+              <span class="badge badge-gold" style="margin-bottom:12px; max-width: max-content;">2nd Cousin Match</span>
+              <h3>Marcus Vance</h3>
+              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 2.1% DNA (156 cM across 9 segments). Common ancestors traced: Vance/Pendelton line in Scotland.</p>
+              <a href="#/login" class="btn btn-outline" style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
+            </div>
+            <div class="card card-gold">
+              <span class="badge badge-gold" style="margin-bottom:12px; max-width: max-content;">3rd Cousin Match</span>
+              <h3>Sophia Lin</h3>
+              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 0.95% DNA (71 cM across 4 segments). Common ancestors traced: Chen/Lin line in Zhejiang.</p>
+              <a href="#/login" class="btn btn-outline" style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
+            </div>
+            <div class="card card-gold">
+              <span class="badge badge-gold" style="margin-bottom:12px; max-width: max-content;">3rd Cousin Match</span>
+              <h3>Elena Rostova</h3>
+              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 0.88% DNA (65 cM across 3 segments). Common ancestors traced: Rostov/Petrov line in St. Petersburg.</p>
+              <a href="#/login" class="btn btn-outline" style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- 5. PRICING VIEW -->
+  <template id="page-pricing">
+    <div class="view-container">
+      <section class="hero-section"
+        style="--hero-bg: url('assets/price_essentials.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <div class="badge badge-gold">Pricing</div>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Start Your Journey of Discovery</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Simple, transparent pricing. Buy a test kit or subscribe to unlock
+            millions of historical records.</p>
+        </div>
+      </section>
+
+      <!-- Plans Grid -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="grid grid-3">
+            <div class="card card-gold">
+              <img src="assets/price_essentials.png" class="card-img" alt="Individual Essentials DNA Kit Box">
+              <h3>Individual Essentials</h3>
+              <p
+                style="font-size:2.2rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin:16px 0;">
+                $99</p>
+              <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:24px;">One-time kit charge. Unlimited
+                dashboard access.</p>
+              <ul
+                style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:30px; font-size:0.9rem; flex-grow:1;">
+                <li>✓ Full DNA test kit</li>
+                <li>✓ 2,400+ geographic regions</li>
+                <li>✓ Autosomal relative matching</li>
+                <li>✓ Free shipping both ways</li>
+              </ul>
+              <a href="#/login?action=purchase&plan=essentials" class="btn btn-gold">Order Essentials Kit</a>
+            </div>
+            <div class="card card-gold" style="border-color: var(--accent-gold);">
+              <div class="badge badge-gold" style="position:absolute; top:20px; right:20px; z-index:20;">Best Value</div>
+              <img src="assets/price_family.png" class="card-img" alt="Family Bundle DNA Test Kits Set">
+              <h3>Family Bundle</h3>
+              <p
+                style="font-size:2.2rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin:16px 0;">
+                $299</p>
+              <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:24px;">One-time charge. Four test
+                kits in one box.</p>
+              <ul
+                style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:30px; font-size:0.9rem; flex-grow:1;">
+                <li>✓ 4x DNA test kits</li>
+                <li>✓ Separate private dashboards</li>
+                <li>✓ Automated family mapping link</li>
+                <li>✓ Save $100 over individual kits</li>
+              </ul>
+              <a href="#/login?action=purchase&plan=family" class="btn btn-gold">Order Family Bundle</a>
+            </div>
+            <div class="card card-gold">
+              <img src="assets/price_heritage.png" class="card-img" alt="Heritage Pro Membership Digital Portal">
+              <h3>Heritage Pro Membership</h3>
+              <p
+                style="font-size:2.2rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin:16px 0;">
+                $149 <span style="font-size: 1rem; color:var(--text-muted);">/ year</span></p>
+              <p style="font-size:0.875rem; color:var(--text-muted); margin-bottom:24px;">Subscription to premium
+                archives and tree tools.</p>
+              <ul
+                style="list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:30px; font-size:0.9rem; flex-grow:1;">
+                <li>✓ Everything in Individual Essentials</li>
+                <li>✓ Complete historical record databases</li>
+                <li>✓ Interactive tree matching alerts</li>
+                <li>✓ Priority processing at laboratories</li>
+              </ul>
+              <a href="#/login?action=purchase&plan=membership" class="btn btn-gold">Subscribe to Membership</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Laboratory Standards -->
+      <section class="section" style="border-top: 1px solid var(--border-glass);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Science & Accreditations</div>
+            <h2>Our Gold Standard Processing</h2>
+            <p class="section-subtitle">How our CLIA-certified and CAP-accredited facilities sequence raw saliva samples.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-teal">
+              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">01 / Security</span>
+              <h3>Sample Hashing</h3>
+              <p style="font-size:0.9rem; color:var(--text-secondary);">Upon arrival at our lab, your collection tube is immediately scanned and assigned a cryptographically random digital hash, stripping all personal details.</p>
+            </div>
+            <div class="card card-teal">
+              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">02 / Extraction</span>
+              <h3>Microarray Assays</h3>
+              <p style="font-size:0.9rem; color:var(--text-secondary);">Using high-throughput Illumina sequencing arrays, our geneticists scan 700,000+ distinct single nucleotide polymorphisms (SNPs) from your isolated DNA.</p>
+            </div>
+            <div class="card card-teal">
+              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">03 / Verification</span>
+              <h3>Dual-Pass Call Rate</h3>
+              <p style="font-size:0.9rem; color:var(--text-secondary);">Every sequenced dataset passes two independent quality checks. We enforce a strict call rate minimum of 99.9% to ensure maximum scientific reliability.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- FAQ Section -->
+      <section class="section">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Support</div>
+            <h2>Pricing FAQs</h2>
+            <p class="section-subtitle">Answers to questions about billing, subscriptions, and shipment.</p>
+          </div>
+
+          <div class="faq-accordion">
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>Are there monthly subscription fees?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>No. Standard DNA kits come with lifetime access to your ethnicity reports, relative matches, and
+                  download files, with absolutely no subscription required. Premium Membership is entirely optional and
+                  is only required to unlock historical record indices and automated tree integrations.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>How long does shipping take?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>Standard shipping takes 3-5 business days. Once we ship your sample kit, you will receive tracking
+                  numbers by email. Returning the sample utilizes our pre-paid express envelope, taking 2-3 business
+                  days to reach our laboratory facilities.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- 6. CONTACT VIEW -->
+  <template id="page-contact">
+    <div class="view-container">
+      <section class="hero-section"
+        style="--hero-bg: url('assets/why_network.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <div class="badge badge-teal">Contact Us</div>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">We're Here to Help You Discover</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Reach out to our customer service desk, scientific labs, or request
+            press/academic access.</p>
+        </div>
+      </section>
+
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container grid grid-2">
+          <!-- Form -->
+          <div class="card card-teal">
+            <h3>Send Us a Message</h3>
+            <p style="margin-bottom: 24px;">Our genetic counselors and genealogists reply within 24 hours.</p>
+
+            <form id="contact-form"
+              onsubmit="event.preventDefault(); alert('Message successfully sent! We will contact you soon.'); this.reset();">
+              <div class="form-group">
+                <label class="form-label" for="contact-name">Full Name</label>
+                <input type="text" class="form-control" id="contact-name" required placeholder="John Doe">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contact-email">Email Address</label>
+                <input type="email" class="form-control" id="contact-email" required placeholder="john@example.com">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contact-subject">Subject</label>
+                <input type="text" class="form-control" id="contact-subject" required placeholder="DNA kit question">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="contact-msg">Message</label>
+                <textarea class="form-control" id="contact-msg" rows="5" required
+                  placeholder="Enter message text..."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top: 10px;">Send Message</button>
+            </form>
+          </div>
+
+          <!-- Support detail & Map -->
+          <div style="display:flex; flex-direction:column; gap:32px;">
+            <div class="card card-gold">
+              <h3>Support Options</h3>
+              <p style="margin-bottom: 16px;"><strong>Phone Line:</strong> +1 (800) 555-DNA-ROOT (9:00 AM - 5:00 PM EST)
+              </p>
+              <p style="margin-bottom: 16px;"><strong>Global Labs:</strong> Genomics Hub, Boston Innovation District</p>
+              <button class="btn btn-gold"
+                onclick="alert('Starting live chat simulator... Hello! A representative will be with you shortly.');">Launch
+                Live Chat</button>
+            </div>
+
+            <!-- Custom SVG Map of Office locations -->
+            <div>
+              <h4 style="margin-bottom: 16px; font-family:var(--font-heading);">Office Locations</h4>
+              <svg class="svg-map" viewBox="0 0 400 200">
+                <!-- Simple world outline shapes -->
+                <rect x="0" y="0" width="400" height="200" fill="rgba(0,0,0,0.15)" rx="10" />
+
+                <!-- Map pins with connections -->
+                <path class="map-connection" d="M 80 70 Q 180 30 200 60" />
+                <path class="map-connection" d="M 200 60 Q 280 50 300 80" />
+
+                <!-- Pins -->
+                <circle class="map-pin" cx="80" cy="70" r="6" data-city="Boston, USA" />
+                <circle class="map-pin" cx="200" cy="60" r="6" data-city="Geneva, Switzerland" />
+                <circle class="map-pin" cx="300" cy="80" r="6" data-city="Singapore" />
+
+                <text x="80" y="90" fill="var(--text-secondary)" font-size="8" text-anchor="middle">Boston</text>
+                <text x="200" y="45" fill="var(--text-secondary)" font-size="8" text-anchor="middle">Geneva</text>
+                <text x="300" y="99" fill="var(--text-secondary)" font-size="8" text-anchor="middle">Singapore</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- 7. RESOURCES VIEW -->
+  <template id="page-resources">
+    <div class="view-container">
+      <section class="hero-section"
+        style="--hero-bg: url('assets/family_history.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <div class="badge badge-gold">Resources</div>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Veritas Learning Center</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Browse DNA guides, genetic science definitions, historical research
+            articles, and advice on locating records.</p>
+        </div>
+      </section>
+
+      <!-- Learning Center articles -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <!-- Filters -->
+          <div class="filter-bar">
+            <button class="filter-btn active" data-category="all">All Articles</button>
+            <button class="filter-btn" data-category="guides">DNA Guides</button>
+            <button class="filter-btn" data-category="history">Family History</button>
+            <button class="filter-btn" data-category="tips">Research Tips</button>
+          </div>
+
+          <div class="grid grid-3" id="articles-grid">
+            <div class="card card-teal" data-cat="guides">
+              <img src="assets/science_research.png" class="card-img" alt="DNA Sequencing Research">
+              <span class="badge badge-teal" style="margin-bottom:12px;">DNA Guides</span>
+              <h3>Understanding SNP Sequencing</h3>
+              <p style="margin-bottom: 24px; font-size:0.9rem;">What is a Single Nucleotide Polymorphism and how does it determine ancestry percentages? Learn the molecular biology behind genetic genealogy.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Reading article: Understanding SNP Sequencing...');"
+                style="margin-top:auto; font-weight:var(--weight-bold); font-size:0.875rem;">Read Guide &rarr;</a>
+            </div>
+            <div class="card card-teal" data-cat="history">
+              <img src="assets/family_history.png" class="card-img" alt="Archival Family Records">
+              <span class="badge badge-teal" style="margin-bottom:12px;">Family History</span>
+              <h3>Traces in the Archives</h3>
+              <p style="margin-bottom: 24px; font-size:0.9rem;">How to locate missing branches of your tree in early immigrant passenger lists, maritime logs, and industrial census books.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Reading article: Traces in the Archives...');"
+                style="margin-top:auto; font-weight:var(--weight-bold); font-size:0.875rem;">Read Guide &rarr;</a>
+            </div>
+            <div class="card card-teal" data-cat="tips">
+              <img src="assets/dna_hero_bg.png" class="card-img" alt="Relative Connections Network">
+              <span class="badge badge-teal" style="margin-bottom:12px;">Research Tips</span>
+              <h3>Finding Direct Cousins</h3>
+              <p style="margin-bottom: 24px; font-size:0.9rem;">Tips for initiating contact with close DNA matches in a helpful, respectful, and safe manner. Best templates and questions.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Reading article: Finding Direct Cousins...');"
+                style="margin-top:auto; font-weight:var(--weight-bold); font-size:0.875rem;">Read Guide &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Glossary of Terms -->
+      <section class="section" style="border-top: 1px solid var(--border-glass);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-teal">Quick Terminology</div>
+            <h2>Glossary of Genomic Terms</h2>
+            <p class="section-subtitle">Understand the fundamental concepts of genetic genealogy and molecular heritage.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-teal">
+              <span class="badge badge-teal" style="margin-bottom:12px; max-width: max-content;">Autosomal DNA</span>
+              <h3>Chromosomes 1-22</h3>
+              <p style="font-size:0.875rem; color:var(--text-secondary);">Chromosomes inherited from both parents. Autosomal sequencing provides the basis for ethnicity percentages and recent cousin matching (within 5-6 generations).</p>
+            </div>
+            <div class="card card-teal">
+              <span class="badge badge-teal" style="margin-bottom:12px; max-width: max-content;">Haplogroups</span>
+              <h3>Deep Ancestral Branches</h3>
+              <p style="font-size:0.875rem; color:var(--text-secondary);">Genetic markers on the Y-chromosome (paternal lineage) or mitochondrial DNA (maternal lineage) tracking ancestral migrations over tens of thousands of years.</p>
+            </div>
+            <div class="card card-teal">
+              <span class="badge badge-teal" style="margin-bottom:12px; max-width: max-content;">SNP Markers</span>
+              <h3>Single Nucleotide Polymorphisms</h3>
+              <p style="font-size:0.875rem; color:var(--text-secondary);">Individual variations in a single DNA base letter. Comparing these points of variation across profiles identifies shared ethnicity blocks and matches.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Video Tutorials -->
+      <section class="section" style="background: var(--bg-darker); border-top: 1px solid var(--border-glass);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-gold">Video Tutorials</div>
+            <h2>Master Your History</h2>
+            <p class="section-subtitle">Short video guides demonstrating how to analyze reports and parse Raw DNA files.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card card-gold">
+              <div style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
+                <div style="width:100%; height:120px; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center;">
+                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+              <span style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">5 Minute Guide</span>
+              <h3 style="margin-top:8px;">Importing Raw DNA files</h3>
+              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">Step-by-step instructions on transferring genomic files from other providers to your Veritas portal.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Playing video: Importing Raw DNA...');" style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
+            </div>
+            <div class="card card-gold">
+              <div style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
+                <div style="width:100%; height:120px; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center;">
+                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+              <span style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">8 Minute Guide</span>
+              <h3 style="margin-top:8px;">Reading Chromosome Painters</h3>
+              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">How to interpret visual representations of individual alleles and localize ethnic markers.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Playing video: Reading Chromosome Painters...');" style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
+            </div>
+            <div class="card card-gold">
+              <div style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
+                <div style="width:100%; height:120px; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center;">
+                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+              <span style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">12 Minute Guide</span>
+              <h3 style="margin-top:8px;">Resolving Tree Brick Walls</h3>
+              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">Advanced genealogical strategies for overcoming missing lineages and matching distant cousins.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Playing video: Resolving Tree Brick Walls...');" style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- 8. LOGIN VIEW -->
+  <template id="page-login">
+    <div class="auth-container">
+      <div class="card card-gold auth-card">
+        <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <!-- Clickable Logo Inside Card -->
+          <a href="index.html#/" class="logo" style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;">
+              <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
+              <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+              <path d="M10 16V22" stroke-linecap="round" />
+              <path d="M7 22H13" stroke-linecap="round" />
+            </svg>
+            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span class="logo-text-accent">Ancestry</span></span>
+          </a>
+          <h2>Welcome Back</h2>
+          <p style="font-size:0.9rem; color:var(--text-muted);">Sign in to access your DNA profiles and family tree.</p>
+        </div>
+
+        <form id="login-form">
+          <div class="form-group">
+            <label class="form-label" for="login-email">Email Address</label>
+            <input type="email" class="form-control" id="login-email" required placeholder="john@example.com">
+          </div>
+          <div class="form-group">
+            <div class="flex-between">
+              <label class="form-label" for="login-password">Password</label>
+              <a href="#/forgot-password" style="font-size: 0.8rem; color: var(--accent-gold);">Forgot password?</a>
+            </div>
+            <input type="password" class="form-control" id="login-password" required placeholder="••••••••">
+          </div>
+          <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 16px;">Sign In</button>
+        </form>
+
+        <div class="divider">or continue with</div>
+
+        <div class="auth-social">
+          <button class="btn btn-outline" onclick="alert('Google Auth Mock');">Google</button>
+          <button class="btn btn-outline" onclick="alert('Apple Auth Mock');">Apple</button>
+        </div>
+
+        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">Don't have an
+          account? <a href="#/signup" style="color: var(--accent-gold);">Sign up now</a></p>
+      </div>
+    </div>
+  </template>
+
+  <!-- 9. SIGN UP VIEW -->
+  <template id="page-signup">
+    <div class="auth-container">
+      <div class="card card-gold auth-card">
+        <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <!-- Clickable Logo Inside Card -->
+          <a href="index.html#/" class="logo" style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;">
+              <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
+              <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+              <path d="M10 16V22" stroke-linecap="round" />
+              <path d="M7 22H13" stroke-linecap="round" />
+            </svg>
+            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span class="logo-text-accent">Ancestry</span></span>
+          </a>
+          <h2>Begin Your Legacy</h2>
+          <p style="font-size:0.9rem; color:var(--text-muted);">Register your profile to activate your testing kits.</p>
+        </div>
+
+        <form id="signup-form">
+          <div class="form-group">
+            <label class="form-label" for="signup-name">Full Name</label>
+            <input type="text" class="form-control" id="signup-name" required placeholder="Jane Doe">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-email">Email Address</label>
+            <input type="email" class="form-control" id="signup-email" required placeholder="jane@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-password">Password</label>
+            <input type="password" class="form-control" id="signup-password" required placeholder="Min. 8 characters">
+          </div>
+          <div style="display:flex; gap:10px; align-items:flex-start; margin: 16px 0;">
+            <input type="checkbox" id="terms" required style="margin-top: 4px; accent-color: var(--accent-gold);">
+            <label for="terms" style="font-size:0.8rem; color:var(--text-secondary); line-height:1.3;">I agree to the
+              Veritas Ancestry <a href="#" style="color: var(--accent-gold);">Terms of Service</a> and consent to
+              dynamic genetic matching.</label>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 8px;">Create Account</button>
+        </form>
+
+        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">Already have an
+          account? <a href="#/login" style="color: var(--accent-gold);">Sign in here</a></p>
+      </div>
+    </div>
+  </template>
+
+  <!-- 10. FORGOT PASSWORD VIEW -->
+  <template id="page-forgot">
+    <div class="auth-container">
+      <div class="card card-gold auth-card">
+        <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
+          <!-- Clickable Logo Inside Card -->
+          <a href="index.html#/" class="logo" style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;">
+              <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
+              <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+              <path d="M10 16V22" stroke-linecap="round" />
+              <path d="M7 22H13" stroke-linecap="round" />
+            </svg>
+            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span class="logo-text-accent">Ancestry</span></span>
+          </a>
+          <h2>Reset Your Password</h2>
+          <p style="font-size:0.9rem; color:var(--text-muted);">Enter your email address and we'll send a password recovery link.</p>
+        </div>
+
+        <form id="forgot-form"
+          onsubmit="event.preventDefault(); alert('A reset link has been dispatched to your email address.'); location.hash = '#/login';">
+          <div class="form-group">
+            <label class="form-label" for="forgot-email">Email Address</label>
+            <input type="email" class="form-control" id="forgot-email" required placeholder="john@example.com">
+          </div>
+          <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 16px;">Send Reset Link</button>
+        </form>
+
+        <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">Return to <a
+            href="#/login" style="color: var(--accent-gold);">Sign In</a></p>
+      </div>
+    </div>
+  </template>
+
+  <!-- 11. HOME 2 VIEW -->
+  <template id="page-home2">
+    <div class="view-container">
+      <!-- Science Split Hero Section -->
+      <section class="hero-section"
+        style="--hero-bg: url('assets/science_research.png'); background: radial-gradient(circle at 10% 20%, rgba(6,182,212,0.06), transparent 45%), var(--bg-darkest); display:flex; align-items:center; justify-content:center;">
+        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:40px;">
+          <div class="hero-content animate-slide-up" style="margin: 0 auto; text-align: center; align-items: center; justify-content: center; max-width: 750px;">
+            <div class="badge badge-teal">Forensic Genetics</div>
+            <h1 class="hero-title" style="text-align:center;">The Science of You, Fully Unlocked.</h1>
+            <p class="lead" style="text-align:center; margin: 0 auto;">Dive deeper than geographical boundaries. Uncover prehistoric haplogroup settlements,
+              calculate ancient Neanderthal percentages, and explore 40+ personalized metabolic, sensory, and physical
+              traits.</p>
+            <div class="hero-buttons" style="justify-content: center; width: 100%;">
+              <a href="#/pricing" class="btn btn-primary">Get Traits + DNA Kit</a>
+              <a href="#/dna-testing" class="btn btn-outline">Explore Traits Catalog</a>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:center; width:100%;">
+            <div class="card card-teal"
+              style="width: 100%; max-width:420px; text-align: left; border-color: rgba(6,182,212,0.3); background: linear-gradient(135deg, rgba(11,17,38,0.85), rgba(5,8,20,0.95));">
+              <div class="badge badge-teal" style="margin-bottom:16px;">Neanderthal Report</div>
+              <h3
+                style="font-size:1.8rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary);">
+                2.4% Neanderthal</h3>
+              <p style="font-size:0.9rem; color:var(--text-secondary); margin-bottom:20px;">Your genome contains more
+                Neanderthal DNA than 74% of the global reference population. We isolated specific variants on chromosome
+                4 and 12 linked to muscle density and metabolic triggers.</p>
+              <div
+                style="display:flex; justify-content:space-between; font-size:0.8rem; border-top:1px solid var(--border-glass); padding-top:12px;">
+                <span>Variants Detected: <strong>142</strong></span>
+                <span style="color:var(--accent-teal);">High Density Variant</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Biotech Traits Explorer -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container">
+          <div class="section-header">
+            <div class="badge badge-gold">Interactive Explorer</div>
+            <h2>Biotech Genetic Traits</h2>
+            <p class="section-subtitle">Click on a trait category to preview genetic indicators generated from raw SNP
+              sequencing files.</p>
+          </div>
+
+          <div class="grid grid-3" id="home2-traits-grid">
+            <div class="card card-gold trait-card" data-trait="caffeine" style="cursor:pointer;">
+              <img src="assets/trait_caffeine.png" class="card-img" alt="Caffeine Metabolism Biotech Card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3>Caffeine Metabolism</h3>
+                <span style="color:var(--accent-gold);">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </span>
+              </div>
+              <p style="font-size:0.875rem;">Fast Metabolist. CYP1A2 gene genotype suggests caffeine is processed rapidly, minimizing sleep disturbances.</p>
+            </div>
+            <div class="card card-gold trait-card" data-trait="muscle" style="cursor:pointer;">
+              <img src="assets/trait_muscle.png" class="card-img" alt="Muscle Composition Biotech Card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3>Muscle Composition</h3>
+                <span style="color:var(--accent-gold);">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                  </svg>
+                </span>
+              </div>
+              <p style="font-size:0.875rem;">Sprint Profile. ACTN3 variant isolated: your genomic sequence favors explosive muscle performance.</p>
+            </div>
+            <div class="card card-gold trait-card" data-trait="sleep" style="cursor:pointer;">
+              <img src="assets/trait_sleep.png" class="card-img" alt="Sleep Latency Biotech Card">
+              <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+                <h3>Sleep Latency</h3>
+                <span style="color:var(--accent-gold);">
+                  <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                  </svg>
+                </span>
+              </div>
+              <p style="font-size:0.875rem;">Average Latency. Specific genetic markers predict standard sleep architectures and typical REM transition periods.</p>
+            </div>
+          </div>
+
+          <!-- Trait details preview drawer/box -->
+          <div class="card card-teal" id="trait-detail-box"
+            style="margin-top:32px; display:none; border-color: rgba(6,182,212,0.3); animation: fadeIn 0.4s ease-out;">
+            <h3 id="trait-detail-title">Caffeine Metabolism</h3>
+            <p id="trait-detail-desc" style="margin: 12px 0 20px;">Detailed analysis goes here...</p>
+            <div style="display:flex; gap:16px;">
+              <div
+                style="flex:1; background:rgba(255,255,255,0.02); padding:16px; border-radius:8px; border:1px solid var(--border-glass);">
+                <span style="font-size:0.75rem; color:var(--text-muted);">Isolated Genotype</span>
+                <h4 id="trait-detail-genotype"
+                  style="font-size:1.25rem; font-family:var(--font-heading); margin-top:4px;">A/A (Fast)</h4>
+              </div>
+              <div
+                style="flex:1; background:rgba(255,255,255,0.02); padding:16px; border-radius:8px; border:1px solid var(--border-glass);">
+                <span style="font-size:0.75rem; color:var(--text-muted);">Global Frequency</span>
+                <h4 id="trait-detail-freq" style="font-size:1.25rem; font-family:var(--font-heading); margin-top:4px;">
+                  42% of population</h4>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Prehistoric Migration Map Globe -->
+      <section class="section">
+        <div class="container grid grid-2" style="align-items: center; gap: 60px;">
+          <div>
+            <div class="badge badge-teal">Prehistoric Lineages</div>
+            <h2 style="margin-top:16px; margin-bottom:24px;">Deep Ancestor Migration Globe</h2>
+            <p style="margin-bottom:16px;">Follow your haplotype haplogroup routes back 50,000 years. Observe how
+              genetic markers migrated from the Cradle of Humanity, branching across the Asian steppes and European
+              forests during glacial periods.</p>
+            <p>Our interactive 3D globe charts migration paths using archaeogenetic datasets from ancient excavation
+              burials, aligning historical fossil genomes with your modern DNA sequence.</p>
+          </div>
+          <div>
+            <div style="position:relative; width:100%; max-width:400px; margin:0 auto;">
+              <!-- Beautiful custom SVG globe -->
+              <svg viewBox="0 0 200 200" style="width:100%; height:auto;" id="prehistoric-globe">
+                <circle cx="100" cy="100" r="90" fill="none" stroke="var(--border-glass)" stroke-width="1" />
+                <circle cx="100" cy="100" r="90" fill="rgba(6, 182, 212, 0.02)" />
+                <!-- Grids -->
+                <path d="M 10 100 Q 100 50 190 100" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+                <path d="M 10 100 Q 100 150 190 100" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+                <path d="M 100 10 Q 50 100 100 190" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+                <path d="M 100 10 Q 150 100 100 190" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+
+                <!-- Migration paths -->
+                <path class="map-connection" d="M 40 140 Q 80 110 100 100"
+                  style="stroke: var(--accent-gold); opacity: 0.8; stroke-dasharray:none;" />
+                <path class="map-connection" d="M 100 100 Q 120 70 160 50"
+                  style="stroke: var(--accent-teal); opacity: 0.8; stroke-dasharray:none;" />
+                <path class="map-connection" d="M 100 100 Q 90 60 70 40"
+                  style="stroke: var(--accent-cyan); opacity: 0.8; stroke-dasharray:none;" />
+
+                <!-- Glow nodes -->
+                <circle cx="40" cy="140" r="4" fill="var(--accent-gold)" />
+                <circle cx="100" cy="100" r="4" fill="var(--accent-teal)" />
+                <circle cx="160" cy="50" r="4" fill="var(--accent-teal)" />
+                <circle cx="70" cy="40" r="4" fill="var(--accent-cyan)" />
+
+                <text x="40" y="155" fill="var(--text-muted)" font-size="6" text-anchor="middle">East Africa (50k
+                  y/o)</text>
+                <text x="110" y="112" fill="var(--text-muted)" font-size="6" text-anchor="middle">Middle East</text>
+                <text x="160" y="38" fill="var(--text-muted)" font-size="6" text-anchor="middle">East Asia</text>
+                <text x="70" y="28" fill="var(--text-muted)" font-size="6" text-anchor="middle">Europe</text>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Advanced Forensics & Matching -->
+      <section class="section" style="background: var(--bg-darker);">
+        <div class="container grid grid-2" style="align-items: center; gap: 48px;">
+          <div>
+            <img src="assets/family_history.png"
+              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
+              alt="Archival analysis documents and historical magnifying glass">
+          </div>
+          <div>
+            <div class="badge badge-gold">Tree Matching</div>
+            <h2>Forensic Database Triangulation</h2>
+            <p style="margin-bottom:16px;">Resolve missing lines using our historical census lookup. Veritas Ancestry
+              automatically queries over 80 million indexing lines (emigration records, military manifests, and civic
+              registries) to construct complete tree lineages.</p>
+            <p>Our algorithms scan genetic markers, identify common parent links, and automatically prompt you with
+              validated document matching files to solidify your tree.</p>
+          </div>
+        </div>
+      </section>
+    </div>
+  </template>
+
+  <!-- Router Script -->
+  <script src="js/public.js"></script>
+</body>
+
+</html>

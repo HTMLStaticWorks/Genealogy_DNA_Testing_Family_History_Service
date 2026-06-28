@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Dashboard | Veritas Ancestry</title>
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/common.css">
+
+  <!-- Dashboard Specific Styles -->
+  <style>
+    body {
+      background-color: var(--bg-darkest);
+    }
+
+    /* Dashboard Layout */
+    .dashboard-layout {
+      display: flex;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Sidebar Navigation */
+    .sidebar {
+      width: 280px;
+      background: var(--bg-darker);
+      border-right: 1px solid var(--border-glass);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 32px 24px;
+      transition: var(--transition-smooth);
+      flex-shrink: 0;
+      z-index: 100;
+    }
+
+    .sidebar-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 40px;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex-grow: 1;
+    }
+
+    .sidebar-link {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 20px;
+      border-radius: var(--radius-md);
+      color: var(--text-secondary);
+      font-family: var(--font-heading);
+      font-weight: var(--weight-lead);
+      transition: var(--transition-fast);
+      cursor: pointer;
+    }
+
+    .sidebar-link svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+
+    .sidebar-link:hover, .sidebar-link.active {
+      color: var(--text-primary);
+      background: rgba(255,255,255,0.03);
+      box-shadow: var(--shadow-inner-glass);
+    }
+
+    .sidebar-link.active {
+      border-left: 3px solid var(--accent-gold);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      background: linear-gradient(90deg, rgba(197, 160, 89, 0.08), transparent);
+    }
+
+    /* User Profile Card in Sidebar */
+    .user-profile-card {
+      background: rgba(255,255,255,0.01);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: var(--radius-sm);
+      object-fit: cover;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .user-name {
+      font-family: var(--font-heading);
+      font-weight: var(--weight-lead);
+      font-size: 0.9rem;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .user-role {
+      font-size: 0.75rem;
+      color: var(--accent-gold);
+    }
+
+    /* Main Content Container */
+    .dashboard-main {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      height: 100vh;
+      position: relative;
+    }
+
+    /* Top Bar */
+    .topbar {
+      height: 80px;
+      border-bottom: 1px solid var(--border-glass);
+      padding: 0 40px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      backdrop-filter: var(--glass-backdrop);
+      background: rgba(5,8,20,0.3);
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .topbar-title {
+      font-family: var(--font-heading);
+      font-size: 1.5rem;
+      font-weight: var(--weight-h3);
+    }
+
+    .topbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    /* Notifications Panel */
+    .notif-btn {
+      position: relative;
+      background: transparent;
+      border: none;
+      color: var(--text-secondary);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-glass);
+    }
+
+    .notif-btn:hover {
+      background: rgba(255,255,255,0.02);
+      color: var(--text-primary);
+    }
+
+    .notif-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      width: 8px;
+      height: 8px;
+      background: var(--accent-gold);
+      border-radius: 50%;
+      box-shadow: var(--shadow-glow-gold);
+    }
+
+    .dashboard-container {
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      flex-grow: 1;
+    }
+
+    /* DNA Progress Bar (Tracker) */
+    .dna-tracker {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      position: relative;
+    }
+
+    .dna-tracker::before {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 10%;
+      width: 80%;
+      height: 2px;
+      background: var(--border-glass);
+      z-index: 1;
+    }
+
+    .dna-tracker-fill {
+      content: '';
+      position: absolute;
+      top: 28px;
+      left: 10%;
+      width: 53.33%; /* 2/3 complete */
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-gold), var(--accent-teal));
+      z-index: 1;
+      transition: var(--transition-slow);
+    }
+
+    .tracker-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      text-align: center;
+    }
+
+    .tracker-dot {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-dark);
+      border: 1px solid var(--border-glass);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      transition: var(--transition-smooth);
+    }
+
+    .tracker-node.active .tracker-dot {
+      border-color: var(--accent-teal);
+      background: rgba(14, 165, 233, 0.1);
+      color: var(--accent-teal);
+      box-shadow: var(--shadow-glow-teal);
+    }
+
+    .tracker-node.completed .tracker-dot {
+      border-color: var(--accent-gold);
+      background: var(--accent-gold);
+      color: var(--bg-darkest);
+      box-shadow: var(--shadow-glow-gold);
+    }
+
+    .tracker-label {
+      font-size: 0.8rem;
+      font-weight: var(--weight-lead);
+      color: var(--text-secondary);
+    }
+
+    .tracker-node.active .tracker-label {
+      color: var(--text-primary);
+    }
+
+    /* Drag & Drop Upload Zone */
+    .upload-zone {
+      border: 2px dashed var(--border-glass);
+      border-radius: var(--radius-lg);
+      padding: 48px;
+      text-align: center;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      background: rgba(255,255,255,0.01);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .upload-zone:hover, .upload-zone.dragover {
+      border-color: var(--accent-teal);
+      background: rgba(14, 165, 233, 0.03);
+    }
+
+    .upload-icon {
+      width: 60px;
+      height: 60px;
+      border-radius: var(--radius-md);
+      background: rgba(255,255,255,0.02);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-muted);
+      transition: var(--transition-fast);
+    }
+
+    .upload-zone:hover .upload-icon {
+      color: var(--accent-teal);
+      background: rgba(14, 165, 233, 0.1);
+      transform: translateY(-2px);
+    }
+
+    /* Interactive Family Tree Canvas */
+    .tree-editor-container {
+      background: var(--bg-darker);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-lg);
+      height: 500px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .tree-workspace {
+      flex-grow: 1;
+      height: 100%;
+      position: relative;
+      background-image: radial-gradient(var(--border-glass) 1px, transparent 1px);
+      background-size: 24px 24px;
+      cursor: grab;
+      overflow: auto;
+    }
+
+    .tree-nodes-layer {
+      position: relative;
+      width: 1000px;
+      height: 1000px;
+      transform-origin: top left;
+      transition: transform 0.2s ease-out;
+    }
+
+    .tree-node-card {
+      position: absolute;
+      width: 150px;
+      background: var(--bg-card);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-sm);
+      padding: 12px;
+      text-align: center;
+      cursor: pointer;
+      z-index: 10;
+      transition: var(--transition-fast);
+    }
+
+    .tree-node-card:hover {
+      border-color: var(--accent-gold);
+      box-shadow: var(--shadow-glow-gold);
+      transform: translateY(-2px);
+    }
+
+    .tree-node-card.selected {
+      border-color: var(--accent-teal);
+      box-shadow: var(--shadow-glow-teal);
+    }
+
+    .tree-node-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 8px;
+    }
+
+    .tree-node-name {
+      font-size: 0.85rem;
+      font-family: var(--font-heading);
+      font-weight: var(--weight-lead);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .tree-node-dates {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+    }
+
+    .tree-sidebar-details {
+      width: 320px;
+      border-left: 1px solid var(--border-glass);
+      background: var(--bg-dark);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      overflow-y: auto;
+    }
+
+    .tree-connector-lines {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1000px;
+      height: 1000px;
+      pointer-events: none;
+      z-index: 5;
+    }
+
+    .tree-connector-lines path {
+      stroke: var(--border-glass-hover);
+      stroke-width: 1.5;
+      fill: none;
+    }
+
+    .zoom-controls {
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      display: flex;
+      gap: 8px;
+      z-index: 20;
+    }
+
+    /* List group lists */
+    .matches-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .match-item {
+      background: rgba(255,255,255,0.01);
+      border: 1px solid var(--border-glass);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: var(--transition-fast);
+    }
+
+    .match-item:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glass-hover);
+    }
+
+    /* Table styles */
+    .dash-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.9rem;
+    }
+
+    .dash-table th, .dash-table td {
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 1px solid var(--border-glass);
+    }
+
+    .dash-table th {
+      color: var(--text-secondary);
+      font-weight: var(--weight-lead);
+      background: rgba(255,255,255,0.01);
+    }
+
+    .dash-table td {
+      color: var(--text-primary);
+    }
+
+    /* Responsive & Mobile Drawer */
+    .hamburger-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text-primary);
+      cursor: pointer;
+      width: 40px;
+      height: 40px;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-glass);
+      margin-right: 16px;
+      transition: var(--transition-fast);
+    }
+
+    .hamburger-btn:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    @media (max-width: 1024px) {
+      .hamburger-btn {
+        display: flex;
+      }
+
+      .sidebar {
+        position: fixed !important;
+        top: 0 !important;
+        left: -280px !important;
+        width: 280px !important;
+        height: 100vh !important;
+        background: var(--bg-darker) !important;
+        z-index: 1000 !important;
+        transition: transform 0.3s ease !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: space-between !important;
+        border-right: 1px solid var(--border-glass) !important;
+        border-bottom: none !important;
+        padding: 32px 24px !important;
+      }
+
+      .sidebar.show {
+        transform: translateX(280px) !important;
+      }
+
+      .sidebar-brand span, .sidebar-link span, .user-profile-card .user-info {
+        display: inline !important;
+      }
+
+      .sidebar-brand {
+        display: flex !important;
+        margin-bottom: 40px !important;
+      }
+
+      .sidebar-menu {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+      }
+
+      .user-profile-card {
+        display: flex !important;
+        padding: 16px !important;
+      }
+
+      .topbar {
+        padding: 0 24px !important;
+      }
+
+      .dashboard-container {
+        padding: 24px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sidebar Backdrop overlay for mobile -->
+  <div id="sidebar-backdrop" style="position:fixed; top:0; left:0; width:100vw; height:100vh; background:rgba(0,0,0,0.5); z-index:999; display:none; backdrop-filter:blur(4px);"></div>
+
+  <div class="dashboard-layout">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div style="display:flex; flex-direction:column; gap:40px; width:100%;">
+        <a href="index.html#/" class="sidebar-brand" style="text-decoration:none; color:inherit;">
+          <svg class="logo-symbol" style="width:28px; height:28px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
+            <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+          </svg>
+          <span style="font-family:var(--font-heading); font-weight:700; font-size:1.15rem;">Veritas<span class="logo-text-accent">Ancestry</span></span>
+        </a>
+        
+        <ul class="sidebar-menu">
+          <li>
+            <a href="#/overview" class="sidebar-link active" data-dash="overview">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="7" height="9" rx="1"/>
+                <rect x="14" y="3" width="7" height="5" rx="1"/>
+                <rect x="14" y="12" width="7" height="9" rx="1"/>
+                <rect x="3" y="16" width="7" height="5" rx="1"/>
+              </svg>
+              <span>Overview</span>
+            </a>
+          </li>
+          <li>
+            <a href="#/dna-family" class="sidebar-link" data-dash="dna-family">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zm-13.5 0a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" />
+              </svg>
+              <span>DNA & Family</span>
+            </a>
+          </li>
+          <li>
+            <a href="admin.html" class="sidebar-link" style="color:var(--accent-gold); border-color: rgba(197, 160, 89, 0.15);">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              <span>Admin Portal</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div style="display:flex; flex-direction:column; gap:16px;">
+        <div class="user-profile-card">
+          <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100&h=100" class="user-avatar" alt="Alex Mercer">
+          <div class="user-info">
+            <span class="user-name">Alex Mercer</span>
+            <span class="user-role">Premium Member</span>
+          </div>
+        </div>
+        
+        <a href="index.html" class="sidebar-link" style="color:var(--danger); border:none;" onclick="alert('Logging out...');">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          <span>Log Out</span>
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="dashboard-main">
+      
+      <!-- Topbar -->
+      <div class="topbar">
+        <div style="display:flex; align-items:center;">
+          <button class="hamburger-btn" id="hamburger-toggle" aria-label="Open Navigation">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+          <h2 class="topbar-title" id="dash-page-title">Dashboard Overview</h2>
+        </div>
+        <div class="topbar-actions">
+          <!-- Theme Toggle -->
+          <button class="notif-btn" id="theme-toggle-btn" aria-label="Toggle Theme Mode">
+            <svg class="icon-theme" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+              <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z"/>
+            </svg>
+          </button>
+          <!-- RTL Toggle -->
+          <button class="notif-btn" id="rtl-toggle-btn" aria-label="Toggle RTL Mode">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+          </button>
+          <button class="notif-btn" id="notif-bell-btn" onclick="alert('Notification Center: \n1. Your DNA sample processing state has transitioned to sequencing!\n2. You have 3 new distant relative match connections.');">
+            <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+            </svg>
+            <div class="notif-badge"></div>
+          </button>
+          <a href="#/overview" class="btn btn-outline" style="padding: 8px 16px;">Quick Actions</a>
+        </div>
+      </div>
+
+      <!-- Mount View -->
+      <div id="dash-view" class="view-transition"></div>
+
+    </main>
+
+  </div>
+
+  <!-- ==============================================
+       DASHBOARD VIEW TEMPLATES
+       ============================================== -->
+
+  <!-- 1. OVERVIEW VIEW -->
+  <template id="dash-overview">
+    <div class="dashboard-container">
+      
+      <!-- Welcome Message & Tracker -->
+      <div class="css-grid grid-2" style="grid-template-columns: 1.5fr 1fr; align-items: stretch;">
+        <div class="card card-teal">
+          <div class="badge badge-teal" style="margin-bottom:12px;">Active Status</div>
+          <h3>Welcome Back, Alex!</h3>
+          <p style="margin-bottom:24px;">Your genetic testing progress is on schedule. Review stages below or add additional kits to your account profile.</p>
+          
+          <!-- Test Tracker -->
+          <div class="dna-tracker">
+            <div class="dna-tracker-fill"></div>
+            <div class="tracker-node completed">
+              <div class="tracker-dot">✓</div>
+              <span class="tracker-label">Kit Shipped</span>
+            </div>
+            <div class="tracker-node completed">
+              <div class="tracker-dot">✓</div>
+              <span class="tracker-label">Received</span>
+            </div>
+            <div class="tracker-node active">
+              <div class="tracker-dot">3</div>
+              <span class="tracker-label">Sequencing</span>
+            </div>
+            <div class="tracker-node">
+              <div class="tracker-dot">4</div>
+              <span class="tracker-label">Report Ready</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Profile Progress circular progress card -->
+        <div class="card card-gold flex-center" style="flex-direction:column; gap:16px; text-align:center;">
+          <h3 style="font-size:1.15rem;">Profile Completion</h3>
+          <div style="position:relative; width:90px; height:90px; display:flex; align-items:center; justify-content:center;">
+            <svg viewBox="0 0 36 36" style="width:100%; height:100%; transform:rotate(-90deg);">
+              <circle cx="18" cy="18" r="16" fill="none" stroke="rgba(255,255,255,0.02)" stroke-width="2.5"/>
+              <circle cx="18" cy="18" r="16" fill="none" stroke="var(--accent-gold)" stroke-width="2.5" stroke-dasharray="75, 100"/>
+            </svg>
+            <span style="position:absolute; font-family:var(--font-heading); font-weight:700; font-size:1.1rem;">75%</span>
+          </div>
+          <p style="font-size:0.8rem; max-width:200px;">Fill out ancestral locations to help matching algorithms.</p>
+          <button class="btn btn-outline" style="padding: 6px 14px; font-size:0.8rem;" onclick="alert('Open Profile Config Form...');">Complete Profile &rarr;</button>
+        </div>
+      </div>
+
+      <!-- Quick Actions Grid -->
+      <div class="grid grid-3">
+        <!-- Kit Activation -->
+        <div class="card card-gold">
+          <h3>Activate Test Kit</h3>
+          <p style="font-size:0.85rem; margin-bottom: 20px;">Received a physical test kit? Input the unique barcode sequence to link it immediately.</p>
+          
+          <form onsubmit="event.preventDefault(); alert('DNA Kit successfully registered and connected to account!'); this.reset();" style="display:flex; flex-direction:column; gap:12px;">
+            <input type="text" class="form-control" placeholder="Barcode (e.g. VR-742918)" required style="padding: 10px 14px; font-size: 0.85rem;">
+            <button type="submit" class="btn btn-gold" style="padding: 10px 20px; font-size: 0.85rem;">Activate Kit</button>
+          </form>
+        </div>
+
+        <!-- Latest Results Preview -->
+        <div class="card card-teal">
+          <h3>Ethnicity Summary</h3>
+          <p style="font-size:0.85rem; margin-bottom:12px;">Genomic sequences show strong European and East Asian roots.</p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; justify-content:between; font-size:0.8rem;">
+              <span>Northwest European</span>
+              <span style="font-weight:700; color:var(--accent-gold);">42.3%</span>
+            </div>
+            <div style="display:flex; justify-content:between; font-size:0.8rem;">
+              <span>East Asian & Native</span>
+              <span style="font-weight:700; color:var(--accent-teal);">28.1%</span>
+            </div>
+          </div>
+          <a href="#/dna-family" class="btn btn-outline" style="margin-top:auto; padding:8px 16px; font-size:0.85rem;">View Full Details</a>
+        </div>
+
+        <!-- DNA Relative Summary -->
+        <div class="card card-teal">
+          <h3>Relatives Match</h3>
+          <p style="font-size:0.85rem; margin-bottom:12px;">We have located 3 close genetic matches inside your registry zone.</p>
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <div style="display:flex; gap:10px; align-items:center; font-size:0.8rem;">
+              <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=40&h=40" style="width:30px; height:30px; border-radius:50%;" alt="Sarah Miller">
+              <span>Sarah Miller (1st Cousin)</span>
+            </div>
+            <div style="display:flex; gap:10px; align-items:center; font-size:0.8rem;">
+              <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=40&h=40" style="width:30px; height:30px; border-radius:50%;" alt="Dr. Julian Reed">
+              <span>Julian Reed (2nd Cousin)</span>
+            </div>
+          </div>
+          <a href="#/dna-family" class="btn btn-outline" style="margin-top:auto; padding:8px 16px; font-size:0.85rem;">Connect Matches</a>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- 2. DNA & FAMILY VIEW -->
+  <template id="dash-dna-family">
+    <div class="dashboard-container">
+      
+      <!-- Upload Raw DNA data dropzone -->
+      <div class="css-grid grid-2" style="grid-template-columns: 1.5fr 1fr;">
+        <div class="card card-teal">
+          <div class="badge badge-teal" style="margin-bottom:12px;">Raw Data Portal</div>
+          <h3>Upload Raw DNA Sequence File</h3>
+          <p style="margin-bottom:20px;">Upload raw genotyping profiles from services (e.g. 23andMe, AncestryDNA) in `.txt` or `.zip` format. We will parse and map your sub-regions instantly.</p>
+          
+          <div class="upload-zone" id="dna-upload-zone">
+            <div class="upload-icon">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+              </svg>
+            </div>
+            <p style="font-size:0.9rem;" id="upload-status-text">Drag and drop file here, or click to choose from system files</p>
+            <input type="file" id="file-input" style="display:none;" accept=".txt,.zip">
+            <div id="upload-progress-container" style="display:none; width:100%; max-width:300px; background:rgba(255,255,255,0.05); height:6px; border-radius:3px; overflow:hidden;">
+              <div id="upload-progress-bar" style="background:var(--accent-teal); height:100%; width:0%; transition:width 0.1s;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Privacy Controls card -->
+        <div class="card card-gold">
+          <h3>Privacy & DNA Settings</h3>
+          <p style="font-size:0.8rem; color:var(--text-secondary); margin-bottom: 20px;">Control how your genetic profile interacts with others.</p>
+          
+          <div style="display:flex; flex-direction:column; gap:16px;">
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h4 style="font-size:0.85rem;">Relative Match Registry</h4>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Allow cousins to match your DNA</span>
+              </div>
+              <input type="checkbox" checked style="accent-color:var(--accent-gold);">
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h4 style="font-size:0.85rem;">Scientific Research</h4>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Participate in anonymized genome audits</span>
+              </div>
+              <input type="checkbox" style="accent-color:var(--accent-gold);">
+            </div>
+            <div style="display:flex; justify-content:space-between; align-items:center;">
+              <div>
+                <h4 style="font-size:0.85rem;">Public Tree View</h4>
+                <span style="font-size:0.75rem; color:var(--text-muted);">Let matches view your ancestral tree nodes</span>
+              </div>
+              <input type="checkbox" checked style="accent-color:var(--accent-gold);">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upload History Table -->
+      <div class="card card-teal">
+        <h3>Upload History</h3>
+        <p style="font-size:0.85rem; margin-bottom:20px;">Raw DNA sequences uploaded and registered to this account.</p>
+        <div style="overflow-x:auto;">
+          <table class="dash-table">
+            <thead>
+              <tr>
+                <th>File Name</th>
+                <th>Source Service</th>
+                <th>Upload Date</th>
+                <th>Status</th>
+                <th>Reports</th>
+              </tr>
+            </thead>
+            <tbody id="upload-history-body">
+              <tr>
+                <td>veritas_dna_seq_raw.txt</td>
+                <td>Veritas Kit Activation</td>
+                <td>May 20, 2026</td>
+                <td><span class="badge badge-gold">Processing</span></td>
+                <td><span style="color:var(--text-muted); font-size:0.85rem;">Pending Analysis</span></td>
+              </tr>
+              <tr>
+                <td>23andme_profile_export.zip</td>
+                <td>Third-party Upload</td>
+                <td>March 02, 2026</td>
+                <td><span class="badge badge-teal" style="background:rgba(16,185,129,0.1); color:var(--success); border-color:rgba(16,185,129,0.2);">Completed</span></td>
+                <td><button class="btn btn-outline" style="padding: 4px 10px; font-size: 0.75rem;" onclick="alert('Downloading PDF Ancestry Report...');">Download PDF</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Interactive Family Tree Builder -->
+      <div class="card card-gold">
+        <div class="flex-between" style="margin-bottom:16px;">
+          <div>
+            <h3>Interactive Family Tree Builder</h3>
+            <p style="font-size:0.85rem;">Click on parents or children nodes to edit their credentials. Drag tree, add new relationships, or zoom in.</p>
+          </div>
+          <div class="zoom-controls">
+            <button class="btn btn-outline" id="tree-zoom-in" style="padding:6px 12px; font-size:0.8rem;">+</button>
+            <button class="btn btn-outline" id="tree-zoom-out" style="padding:6px 12px; font-size:0.8rem;">-</button>
+          </div>
+        </div>
+
+        <div class="tree-editor-container">
+          <!-- Tree Canvas workspace -->
+          <div class="tree-workspace" id="tree-workspace">
+            <div class="tree-nodes-layer" id="tree-nodes-layer">
+              <!-- Connector Lines rendered by SVG -->
+              <svg class="tree-connector-lines" id="tree-svg-lines"></svg>
+              
+              <!-- Cards populated programmatically -->
+            </div>
+          </div>
+
+          <!-- Nodes editing panels sidebar -->
+          <div class="tree-sidebar-details">
+            <h4 id="tree-side-title">Select a Node</h4>
+            <p style="font-size:0.8rem; color:var(--text-secondary);" id="tree-side-subtitle">Select any parent or self card to adjust detailed parameters, records, and dates.</p>
+            
+            <div id="tree-edit-form-wrap" style="display:none; flex-direction:column; gap:16px;">
+              <div class="form-group">
+                <label class="form-label" for="node-edit-name">Name</label>
+                <input type="text" class="form-control" id="node-edit-name" style="padding:8px 12px;">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="node-edit-birth">Birth Date & Location</label>
+                <input type="text" class="form-control" id="node-edit-birth" style="padding:8px 12px;">
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="node-edit-death">Death Date & Location</label>
+                <input type="text" class="form-control" id="node-edit-death" style="padding:8px 12px;">
+              </div>
+
+              <!-- Relationship addition triggers -->
+              <div style="display:flex; flex-direction:column; gap:10px; border-top:1px solid var(--border-glass); padding-top:16px;">
+                <span style="font-size:0.75rem; color:var(--text-muted); font-weight:700;">Add Relation</span>
+                <div class="grid grid-2" style="gap:10px;">
+                  <button class="btn btn-outline" style="padding:6px; font-size:0.75rem;" id="btn-add-father">Father</button>
+                  <button class="btn btn-outline" style="padding:6px; font-size:0.75rem;" id="btn-add-mother">Mother</button>
+                  <button class="btn btn-outline" style="padding:6px; font-size:0.75rem;" id="btn-add-spouse">Spouse</button>
+                  <button class="btn btn-outline" style="padding:6px; font-size:0.75rem;" id="btn-add-child">Child</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <!-- Router Script -->
+  <script src="js/dashboard.js"></script>
+  
+  <!-- Hamburger Menu Toggle Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const hamburgerBtn = document.getElementById('hamburger-toggle');
+      const sidebar = document.querySelector('.sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+
+      if (hamburgerBtn && sidebar) {
+        hamburgerBtn.addEventListener('click', () => {
+          sidebar.classList.toggle('show');
+          if (backdrop) {
+            backdrop.style.display = sidebar.classList.contains('show') ? 'block' : 'none';
+          }
+        });
+      }
+
+      if (backdrop) {
+        backdrop.addEventListener('click', () => {
+          sidebar.classList.remove('show');
+          backdrop.style.display = 'none';
+        });
+      }
+
+      // Close menu when links are clicked in mobile view
+      document.querySelectorAll('.sidebar-link').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth <= 1024) {
+            sidebar.classList.remove('show');
+            if (backdrop) backdrop.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

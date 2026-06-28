@@ -1,0 +1,97 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  /* Font Families */
+  --font-heading: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Strict Font Weights */
+  --weight-h1: 580;
+  --weight-h2: 560;
+  --weight-h3: 540;
+  --weight-h4-h6: 500;
+  --weight-paragraph: 420;
+  --weight-lead: 480;
+  --weight-button: 520;
+  --weight-nav: 480;
+  --weight-bold: 550;
+
+  /* Color Palette - Premium Dark Theme first with frosted glass components */
+  --bg-darkest: #050814;
+  --bg-darker: #0b1126;
+  --bg-dark: #0f1833;
+  
+  --bg-card: rgba(11, 17, 38, 0.65);
+  --bg-card-hover: rgba(16, 26, 56, 0.85);
+  --bg-card-light: rgba(255, 255, 255, 0.03);
+
+  --border-glass: rgba(255, 255, 255, 0.06);
+  --border-glass-hover: rgba(255, 255, 255, 0.12);
+  --border-glow-teal: rgba(14, 165, 233, 0.25);
+  --border-glow-gold: rgba(212, 175, 55, 0.25);
+
+  --accent-teal: #0ea5e9;
+  --accent-cyan: #06b6d4;
+  --accent-teal-dark: #0369a1;
+  --accent-gold: #c5a059;
+  --accent-gold-light: #e5c483;
+  --accent-gold-dark: #8e6d2b;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --text-muted: #64748b;
+  
+  --success: #10b981;
+  --warning: #f59e0b;
+  --danger: #ef4444;
+
+  /* Glassmorphism and Shadows */
+  --glass-backdrop: blur(16px);
+  --shadow-premium: 0 20px 40px -15px rgba(0, 0, 0, 0.7);
+  --shadow-glow-teal: 0 0 25px rgba(14, 165, 233, 0.15);
+  --shadow-glow-gold: 0 0 25px rgba(212, 175, 55, 0.15);
+  --shadow-inner-glass: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+
+  /* Transitions */
+  --transition-fast: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-smooth: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-slow: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* Border Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+}
+
+body.light-theme {
+  --bg-darkest: #f8fafc;
+  --bg-darker: #f1f5f9;
+  --bg-dark: #e2e8f0;
+  
+  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --bg-card-light: rgba(15, 23, 42, 0.05);
+
+  --border-glass: rgba(15, 23, 42, 0.08);
+  --border-glass-hover: rgba(15, 23, 42, 0.15);
+  --border-glow-teal: rgba(14, 165, 233, 0.15);
+  --border-glow-gold: rgba(212, 175, 55, 0.15);
+
+  --accent-teal: #0284c7;
+  --accent-cyan: #0891b2;
+  --accent-teal-dark: #075985;
+  --accent-gold: #b45309;
+  --accent-gold-light: #d97706;
+  --accent-gold-dark: #78350f;
+  
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  
+  --glass-backdrop: blur(18px);
+  --shadow-premium: 0 10px 30px rgba(15, 23, 42, 0.06);
+  --shadow-glow-teal: 0 0 20px rgba(14, 165, 233, 0.1);
+  --shadow-glow-gold: 0 0 20px rgba(212, 175, 55, 0.1);
+  --shadow-inner-glass: inset 0 1px 0 0 rgba(255, 255, 255, 0.6);
+}
