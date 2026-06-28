@@ -336,7 +336,7 @@ a:hover {
   left: 0;
   width: 100%;
   z-index: 1000;
-  background: rgba(5, 8, 20, 0.65);
+  background: var(--bg-header);
   backdrop-filter: var(--glass-backdrop);
   -webkit-backdrop-filter: var(--glass-backdrop);
   border-bottom: 1px solid var(--border-glass);
@@ -344,7 +344,7 @@ a:hover {
 }
 
 .header-scrolled {
-  background: rgba(5, 8, 20, 0.85);
+  background: var(--bg-header-scrolled);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 }
 
