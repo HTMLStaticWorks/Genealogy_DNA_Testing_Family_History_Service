@@ -130,6 +130,7 @@
       display: flex;
       flex-direction: column;
       overflow-y: auto;
+      overflow-x: hidden;
       height: 100vh;
       position: relative;
       min-width: 0;
@@ -563,6 +564,22 @@
         padding: 24px !important;
       }
     }
+
+    @media (max-width: 768px) {
+      .tree-editor-container {
+        flex-direction: column;
+        height: auto;
+      }
+      .tree-workspace {
+        height: 350px;
+        border-bottom: 1px solid var(--border-glass);
+      }
+      .tree-sidebar-details {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid var(--border-glass);
+      }
+    }
   </style>
 </head>
 <body>
@@ -875,10 +892,6 @@
             <h3>Interactive Family Tree Builder</h3>
             <p style="font-size:0.85rem;">Click on parents or children nodes to edit their credentials. Drag tree, add new relationships, or zoom in.</p>
           </div>
-          <div class="zoom-controls">
-            <button class="btn btn-outline" id="tree-zoom-in" style="padding:6px 12px; font-size:0.8rem;">+</button>
-            <button class="btn btn-outline" id="tree-zoom-out" style="padding:6px 12px; font-size:0.8rem;">-</button>
-          </div>
         </div>
 
         <div class="tree-editor-container">
@@ -889,6 +902,11 @@
               <svg class="tree-connector-lines" id="tree-svg-lines"></svg>
               
               <!-- Cards populated programmatically -->
+            </div>
+
+            <div class="zoom-controls">
+              <button class="btn btn-outline" id="tree-zoom-in" style="padding:6px 12px; font-size:0.8rem;">+</button>
+              <button class="btn btn-outline" id="tree-zoom-out" style="padding:6px 12px; font-size:0.8rem;">-</button>
             </div>
           </div>
 

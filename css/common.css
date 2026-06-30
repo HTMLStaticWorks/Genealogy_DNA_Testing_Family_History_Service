@@ -226,8 +226,12 @@ a:hover {
 
 .btn-outline {
   background: transparent;
-  border-color: var(--border-glass);
+  border-color: rgba(255, 255, 255, 0.3);
   color: var(--text-primary);
+}
+
+body.light-theme .btn-outline {
+  border-color: rgba(15, 23, 42, 0.3);
 }
 
 .btn-outline:hover {
@@ -263,7 +267,6 @@ a:hover {
 }
 
 .card p {
-  flex-grow: 1;
   margin-bottom: 20px;
 }
 
