@@ -132,6 +132,7 @@
       overflow-y: auto;
       height: 100vh;
       position: relative;
+      min-width: 0;
     }
 
     /* Top Bar */
@@ -199,6 +200,7 @@
       flex-direction: column;
       gap: 32px;
       flex-grow: 1;
+      min-width: 0;
     }
 
     /* DNA Progress Bar (Tracker) */
@@ -459,6 +461,7 @@
       width: 100%;
       border-collapse: collapse;
       font-size: 0.9rem;
+      min-width: 650px;
     }
 
     .dash-table th, .dash-table td {
@@ -545,7 +548,15 @@
       }
 
       .topbar {
-        padding: 0 24px !important;
+        padding: 0 12px !important;
+      }
+
+      .topbar-quick-actions {
+        display: none !important;
+      }
+
+      .topbar-title {
+        font-size: 1.2rem !important;
       }
 
       .dashboard-container {
@@ -653,7 +664,7 @@
             </svg>
             <div class="notif-badge"></div>
           </button>
-          <a href="#/overview" class="btn btn-outline" style="padding: 8px 16px;">Quick Actions</a>
+          <a href="#/overview" class="btn btn-outline topbar-quick-actions" style="padding: 8px 16px;">Quick Actions</a>
         </div>
       </div>
 
@@ -733,7 +744,7 @@
         <div class="card card-teal">
           <h3>Ethnicity Summary</h3>
           <p style="font-size:0.85rem; margin-bottom:12px;">Genomic sequences show strong European and East Asian roots.</p>
-          <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
             <div style="display:flex; justify-content:between; font-size:0.8rem;">
               <span>Northwest European</span>
               <span style="font-weight:700; color:var(--accent-gold);">42.3%</span>
@@ -750,7 +761,7 @@
         <div class="card card-teal">
           <h3>Relatives Match</h3>
           <p style="font-size:0.85rem; margin-bottom:12px;">We have located 3 close genetic matches inside your registry zone.</p>
-          <div style="display:flex; flex-direction:column; gap:10px;">
+          <div style="display:flex; flex-direction:column; gap:10px; margin-bottom:16px;">
             <div style="display:flex; gap:10px; align-items:center; font-size:0.8rem;">
               <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=40&h=40" style="width:30px; height:30px; border-radius:50%;" alt="Sarah Miller">
               <span>Sarah Miller (1st Cousin)</span>
@@ -954,5 +965,12 @@
       });
     });
   </script>
+  <!-- Scroll to Top Button -->
+  <button id="scroll-top-btn" class="btn btn-outline btn-icon" aria-label="Scroll to top"
+    style="position: fixed; bottom: 30px; right: 30px; z-index: 99; border-radius: var(--radius-full); width: 44px; height: 44px; display: none; align-items: center; justify-content: center; background: var(--bg-card); backdrop-filter: var(--glass-backdrop); box-shadow: var(--shadow-premium);">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+  </button>
 </body>
 </html>

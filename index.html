@@ -81,6 +81,7 @@
       margin: 0 auto 60px;
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 16px;
     }
 
@@ -138,11 +139,27 @@
       .journey-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+      .hero-section {
+        min-height: auto;
+        padding-top: 100px;
+        padding-bottom: 60px;
+      }
     }
 
     @media (max-width: 576px) {
       .journey-grid {
         grid-template-columns: 1fr;
+      }
+      .tree-node-demo {
+        width: 100px !important;
+        font-size: 0.75rem !important;
+        padding: 8px 4px !important;
+      }
+      .tree-connector-horizontal {
+        width: 130px !important;
+      }
+      #node-child-row {
+        gap: 30px !important;
       }
     }
 
@@ -430,6 +447,17 @@
       max-width: 480px;
     }
 
+    .auth-link {
+      color: var(--accent-gold) !important;
+      transition: var(--transition-fast) !important;
+      font-weight: var(--weight-bold) !important;
+    }
+
+    .auth-link:hover {
+      color: var(--accent-gold-light) !important;
+      text-decoration: underline !important;
+    }
+
     .auth-header {
       text-align: center;
       margin-bottom: 32px;
@@ -529,7 +557,8 @@
     /* Cards header images */
     .card-img {
       width: 100%;
-      height: 180px;
+      aspect-ratio: 16 / 9;
+      height: auto;
       object-fit: cover;
       border-radius: var(--radius-md);
       margin-bottom: 20px;
@@ -544,7 +573,8 @@
 
     .journey-img {
       width: 100%;
-      height: 130px;
+      aspect-ratio: 16 / 9;
+      height: auto;
       object-fit: cover;
       border-radius: var(--radius-md);
       margin-bottom: 16px;
@@ -555,6 +585,28 @@
     .journey-step:hover .journey-img {
       border-color: var(--border-glass-hover);
       transform: scale(1.02);
+    }
+
+    /* Home2 split hero styles */
+    .hero-container-split {
+      text-align: left;
+    }
+    .hero-container-split .hero-buttons {
+      justify-content: flex-start;
+    }
+    @media (max-width: 991px) {
+      .hero-container-split {
+        text-align: center;
+        flex-direction: column !important;
+        justify-content: center;
+      }
+      .hero-container-split .hero-content {
+        align-items: center;
+        margin: 0 auto;
+      }
+      .hero-container-split .hero-buttons {
+        justify-content: center;
+      }
     }
   </style>
 </head>
@@ -594,14 +646,14 @@
       <!-- Desktop CTA & Toggles -->
       <div class="nav-actions">
         <!-- Theme Toggle -->
-        <button class="btn btn-outline btn-icon" id="theme-toggle-btn" aria-label="Toggle Theme Mode"
+        <button class="btn btn-outline btn-icon theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle Theme Mode"
           style="border-radius: var(--radius-full); width: 40px; height: 40px;">
           <svg class="icon-theme" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z" />
           </svg>
         </button>
         <!-- RTL Toggle -->
-        <button class="btn btn-outline btn-icon" id="rtl-toggle-btn" aria-label="Toggle RTL Mode"
+        <button class="btn btn-outline btn-icon rtl-toggle-btn" id="rtl-toggle-btn" aria-label="Toggle RTL Mode"
           style="border-radius: var(--radius-full); width: 40px; height: 40px;">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round"
@@ -644,13 +696,19 @@
     </ul>
     <div class="mobile-actions">
       <div style="display:flex; gap:12px; margin-bottom:16px;">
-        <button class="btn btn-outline btn-icon" id="theme-toggle-btn-mobile"
-          style="flex:1; height:44px; border-radius:var(--radius-md);" aria-label="Theme Toggle">
-          Theme Switch
+        <button class="btn btn-outline theme-toggle-btn" id="theme-toggle-btn-mobile"
+          style="flex:1; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; gap:8px;" aria-label="Theme Toggle">
+          <svg class="icon-theme" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z" />
+          </svg>
+          <span>Theme</span>
         </button>
-        <button class="btn btn-outline btn-icon" id="rtl-toggle-btn-mobile"
-          style="flex:1; height:44px; border-radius:var(--radius-md);" aria-label="RTL Toggle">
-          RTL Switch
+        <button class="btn btn-outline rtl-toggle-btn" id="rtl-toggle-btn-mobile"
+          style="flex:1; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; gap:8px;" aria-label="RTL Toggle">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+          <span>RTL</span>
         </button>
       </div>
       <a href="dashboard.html#/overview" class="btn btn-gold"
@@ -1018,7 +1076,7 @@
                 </div>
 
                 <!-- Children Row -->
-                <div style="display:flex; gap:64px; justify-content:center; width:100%; z-index: 10;">
+                <div id="node-child-row" style="display:flex; gap:64px; justify-content:center; width:100%; z-index: 10;">
                   <div class="tree-node-demo" id="node-child1" data-name="Elizabeth Pendelton"
                     data-info="Grandmother | 1923 - 2004">Elizabeth</div>
                   <div class="tree-node-demo" id="node-child2" data-name="John Pendelton"
@@ -1028,7 +1086,7 @@
               </div>
 
               <div id="tree-node-tooltip"
-                style="position:absolute; bottom:20px; text-align:center; font-size:0.8rem; background:rgba(0,0,0,0.8); padding:8px 16px; border-radius:4px; border:1px solid var(--border-glass); opacity:0; transition:var(--transition-fast); pointer-events:none; z-index: 20;">
+                style="position:absolute; bottom:20px; text-align:center; font-size:0.8rem; background:var(--bg-darker); color:var(--text-primary); padding:8px 16px; border-radius:4px; border:1px solid var(--border-glass-hover); opacity:0; transition:var(--transition-fast); pointer-events:none; z-index: 20;">
                 Hover over a node to read historical logs.
               </div>
             </div>
@@ -1232,7 +1290,7 @@
             <div class="card card-teal" style="padding:24px;">
               <img
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=200&h=200"
-                style="width:100%; height:200px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
+                style="width:100%; aspect-ratio:1/1; height:auto; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
                 alt="Dr. Aris Vance">
               <h3>Dr. Aris Vance</h3>
               <span class="badge badge-teal" style="margin-bottom:12px;">Chief Geneticist</span>
@@ -1242,7 +1300,7 @@
             <div class="card card-teal" style="padding:24px;">
               <img
                 src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&q=80&w=200&h=200"
-                style="width:100%; height:200px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
+                style="width:100%; aspect-ratio:1/1; height:auto; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
                 alt="Marcus Sterling">
               <h3>Marcus Sterling</h3>
               <span class="badge badge-teal" style="margin-bottom:12px;">Lead Archivist</span>
@@ -1252,7 +1310,7 @@
             <div class="card card-teal" style="padding:24px;">
               <img
                 src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=200&h=200"
-                style="width:100%; height:200px; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
+                style="width:100%; aspect-ratio:1/1; height:auto; object-fit:cover; border-radius:var(--radius-md); margin-bottom:20px;"
                 alt="Chloe Zhao">
               <h3>Chloe Zhao</h3>
               <span class="badge badge-teal" style="margin-bottom:12px;">Security Director</span>
@@ -1609,7 +1667,7 @@
               <a href="#/login?action=purchase&plan=essentials" class="btn btn-gold">Order Essentials Kit</a>
             </div>
             <div class="card card-gold" style="border-color: var(--accent-gold);">
-              <div class="badge badge-gold" style="position:absolute; top:20px; right:20px; z-index:20;">Best Value</div>
+              <div class="badge badge-gold" style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); z-index:20; background:var(--accent-gold); color:var(--bg-darkest); font-weight:700; box-shadow:var(--shadow-glow-gold);">Best Value</div>
               <img src="assets/price_family.png" class="card-img" alt="Family Bundle DNA Test Kits Set">
               <h3>Family Bundle</h3>
               <p
@@ -1706,6 +1764,33 @@
                 <p>Standard shipping takes 3-5 business days. Once we ship your sample kit, you will receive tracking
                   numbers by email. Returning the sample utilizes our pre-paid express envelope, taking 2-3 business
                   days to reach our laboratory facilities.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>Can I download my raw DNA data?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>Yes. You can export your raw autosomal DNA sequencing file (in standard TXT/CSV format compatible with third-party analysis sites) directly from your customer dashboard at any time, completely free of charge.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>How secure is my genetic data?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>We enforce strict, bank-grade encryption protocols (AES-256) on all user accounts. Your genetic data is paired only with a random digital hash, keeping it fully anonymous and separate from your name, email, or billing information in our secure servers.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <div class="faq-question">
+                <span>What is your refund policy?</span>
+                <span class="faq-icon">&#9662;</span>
+              </div>
+              <div class="faq-answer">
+                <p>We offer a full refund within 30 days of purchase (minus standard shipping fees) as long as the collection kit has not been registered or used. Once a sample reaches our laboratory and processing begins, we cannot issue a refund.</p>
               </div>
             </div>
           </div>
@@ -1936,6 +2021,20 @@
   <!-- 8. LOGIN VIEW -->
   <template id="page-login">
     <div class="auth-container">
+      <!-- Floating controls for Auth pages -->
+      <div style="position: absolute; top: 30px; right: 30px; display: flex; gap: 12px; z-index: 100;">
+        <button class="btn btn-outline btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+          <svg class="icon-theme" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z"/>
+          </svg>
+        </button>
+        <button class="btn btn-outline btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </button>
+      </div>
+
       <div class="card card-gold auth-card">
         <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <!-- Clickable Logo Inside Card -->
@@ -1958,13 +2057,18 @@
             <input type="email" class="form-control" id="login-email" required placeholder="john@example.com">
           </div>
           <div class="form-group">
-            <div class="flex-between">
-              <label class="form-label" for="login-password">Password</label>
-              <a href="#/forgot-password" style="font-size: 0.8rem; color: var(--accent-gold);">Forgot password?</a>
-            </div>
+            <label class="form-label" for="login-password">Password</label>
             <input type="password" class="form-control" id="login-password" required placeholder="••••••••">
           </div>
-          <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 16px;">Sign In</button>
+          <!-- Remember Me & Forgot Password Row -->
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; margin-bottom:20px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <input type="checkbox" id="remember-me" style="accent-color: var(--accent-gold); cursor:pointer;">
+              <label for="remember-me" style="font-size:0.85rem; color:var(--text-secondary); cursor:pointer; user-select:none;">Remember me</label>
+            </div>
+            <a href="#/forgot-password" class="auth-link" style="font-size: 0.85rem;">Forgot password?</a>
+          </div>
+          <button type="submit" class="btn btn-gold" style="width: 100%;">Sign In</button>
         </form>
 
         <div class="divider">or continue with</div>
@@ -1975,7 +2079,7 @@
         </div>
 
         <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">Don't have an
-          account? <a href="#/signup" style="color: var(--accent-gold);">Sign up now</a></p>
+          account? <a href="#/signup" class="auth-link">Sign up now</a></p>
       </div>
     </div>
   </template>
@@ -1983,6 +2087,20 @@
   <!-- 9. SIGN UP VIEW -->
   <template id="page-signup">
     <div class="auth-container">
+      <!-- Floating controls for Auth pages -->
+      <div style="position: absolute; top: 30px; right: 30px; display: flex; gap: 12px; z-index: 100;">
+        <button class="btn btn-outline btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+          <svg class="icon-theme" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z"/>
+          </svg>
+        </button>
+        <button class="btn btn-outline btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </button>
+      </div>
+
       <div class="card card-gold auth-card">
         <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <!-- Clickable Logo Inside Card -->
@@ -2012,17 +2130,28 @@
             <label class="form-label" for="signup-password">Password</label>
             <input type="password" class="form-control" id="signup-password" required placeholder="Min. 8 characters">
           </div>
+          <div class="form-group">
+            <label class="form-label" for="signup-confirm-password">Confirm Password</label>
+            <input type="password" class="form-control" id="signup-confirm-password" required placeholder="Re-enter password">
+          </div>
           <div style="display:flex; gap:10px; align-items:flex-start; margin: 16px 0;">
             <input type="checkbox" id="terms" required style="margin-top: 4px; accent-color: var(--accent-gold);">
             <label for="terms" style="font-size:0.8rem; color:var(--text-secondary); line-height:1.3;">I agree to the
-              Veritas Ancestry <a href="#" style="color: var(--accent-gold);">Terms of Service</a> and consent to
+              Veritas Ancestry <a href="#" class="auth-link">Terms of Service</a> and consent to
               dynamic genetic matching.</label>
           </div>
           <button type="submit" class="btn btn-gold" style="width: 100%; margin-top: 8px;">Create Account</button>
         </form>
 
+        <div class="divider">or continue with</div>
+
+        <div class="auth-social">
+          <button class="btn btn-outline" onclick="alert('Google Auth Mock');">Google</button>
+          <button class="btn btn-outline" onclick="alert('Apple Auth Mock');">Apple</button>
+        </div>
+
         <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">Already have an
-          account? <a href="#/login" style="color: var(--accent-gold);">Sign in here</a></p>
+          account? <a href="#/login" class="auth-link">Sign in here</a></p>
       </div>
     </div>
   </template>
@@ -2030,6 +2159,20 @@
   <!-- 10. FORGOT PASSWORD VIEW -->
   <template id="page-forgot">
     <div class="auth-container">
+      <!-- Floating controls for Auth pages -->
+      <div style="position: absolute; top: 30px; right: 30px; display: flex; gap: 12px; z-index: 100;">
+        <button class="btn btn-outline btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+          <svg class="icon-theme" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z"/>
+          </svg>
+        </button>
+        <button class="btn btn-outline btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+          </svg>
+        </button>
+      </div>
+
       <div class="card card-gold auth-card">
         <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <!-- Clickable Logo Inside Card -->
@@ -2056,7 +2199,7 @@
         </form>
 
         <p style="text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 24px;">Return to <a
-            href="#/login" style="color: var(--accent-gold);">Sign In</a></p>
+            href="#/login" class="auth-link">Sign In</a></p>
       </div>
     </div>
   </template>
@@ -2067,21 +2210,21 @@
       <!-- Science Split Hero Section -->
       <section class="hero-section"
         style="--hero-bg: url('assets/science_research.png'); background: radial-gradient(circle at 10% 20%, rgba(6,182,212,0.06), transparent 45%), var(--bg-darkest); display:flex; align-items:center; justify-content:center;">
-        <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center; gap:40px;">
-          <div class="hero-content animate-slide-up" style="margin: 0 auto; text-align: center; align-items: center; justify-content: center; max-width: 750px;">
+        <div class="container hero-container-split" style="display:flex; align-items:center; gap:40px; justify-content:space-between; flex-wrap:wrap;">
+          <div class="hero-content animate-slide-up" style="flex:1 1 500px; max-width: 650px;">
             <div class="badge badge-teal">Forensic Genetics</div>
-            <h1 class="hero-title" style="text-align:center;">The Science of You, Fully Unlocked.</h1>
-            <p class="lead" style="text-align:center; margin: 0 auto;">Dive deeper than geographical boundaries. Uncover prehistoric haplogroup settlements,
+            <h1 class="hero-title">The Science of You, Fully Unlocked.</h1>
+            <p class="lead">Dive deeper than geographical boundaries. Uncover prehistoric haplogroup settlements,
               calculate ancient Neanderthal percentages, and explore 40+ personalized metabolic, sensory, and physical
               traits.</p>
-            <div class="hero-buttons" style="justify-content: center; width: 100%;">
+            <div class="hero-buttons">
               <a href="#/pricing" class="btn btn-primary">Get Traits + DNA Kit</a>
               <a href="#/dna-testing" class="btn btn-outline">Explore Traits Catalog</a>
             </div>
           </div>
-          <div style="display:flex; justify-content:center; width:100%;">
+          <div style="flex:1 1 400px; display:flex; justify-content:center; max-width: 450px;">
             <div class="card card-teal"
-              style="width: 100%; max-width:420px; text-align: left; border-color: rgba(6,182,212,0.3); background: linear-gradient(135deg, rgba(11,17,38,0.85), rgba(5,8,20,0.95));">
+              style="width: 100%; border-color: var(--border-glow-teal); background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
               <div class="badge badge-teal" style="margin-bottom:16px;">Neanderthal Report</div>
               <h3
                 style="font-size:1.8rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary);">
@@ -2190,10 +2333,10 @@
                 <circle cx="100" cy="100" r="90" fill="none" stroke="var(--border-glass)" stroke-width="1" />
                 <circle cx="100" cy="100" r="90" fill="rgba(6, 182, 212, 0.02)" />
                 <!-- Grids -->
-                <path d="M 10 100 Q 100 50 190 100" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
-                <path d="M 10 100 Q 100 150 190 100" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
-                <path d="M 100 10 Q 50 100 100 190" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
-                <path d="M 100 10 Q 150 100 100 190" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1.5" />
+                <path d="M 10 100 Q 100 50 190 100" fill="none" stroke="var(--border-glass)" stroke-width="1.5" />
+                <path d="M 10 100 Q 100 150 190 100" fill="none" stroke="var(--border-glass)" stroke-width="1.5" />
+                <path d="M 100 10 Q 50 100 100 190" fill="none" stroke="var(--border-glass)" stroke-width="1.5" />
+                <path d="M 100 10 Q 150 100 100 190" fill="none" stroke="var(--border-glass)" stroke-width="1.5" />
 
                 <!-- Migration paths -->
                 <path class="map-connection" d="M 40 140 Q 80 110 100 100"
@@ -2241,6 +2384,14 @@
       </section>
     </div>
   </template>
+
+  <!-- Scroll to Top Button -->
+  <button id="scroll-top-btn" class="btn btn-outline btn-icon" aria-label="Scroll to top"
+    style="position: fixed; bottom: 30px; right: 30px; z-index: 99; border-radius: var(--radius-full); width: 44px; height: 44px; display: none; align-items: center; justify-content: center; background: var(--bg-card); backdrop-filter: var(--glass-backdrop); box-shadow: var(--shadow-premium);">
+    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" />
+    </svg>
+  </button>
 
   <!-- Router Script -->
   <script src="js/public.js"></script>

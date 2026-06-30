@@ -95,6 +95,8 @@ window.closeAdminModal = function() {
 // 1. CANVAS ANALYTICS CHARTS (No external dependencies)
 // ==============================================
 function renderAnalyticsCharts() {
+  const isLight = document.body.classList.contains('light-theme');
+
   // Sales Chart
   const salesCanvas = document.getElementById('chart-sales');
   if (salesCanvas) {
@@ -103,12 +105,14 @@ function renderAnalyticsCharts() {
     salesCanvas.width = salesCanvas.clientWidth;
     salesCanvas.height = 220;
     
+    const isMobile = salesCanvas.width < 450;
+    
     // Draw Sales Bar Graph
     const data = [45, 62, 55, 80, 95, 110];
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
-    const barWidth = 32;
-    const spacing = 44;
-    const startX = 40;
+    const barWidth = isMobile ? 18 : 32;
+    const spacing = isMobile ? 20 : 44;
+    const startX = isMobile ? 20 : 40;
     const maxVal = 120;
     
     ctx.clearRect(0, 0, salesCanvas.width, salesCanvas.height);
@@ -145,7 +149,7 @@ function renderAnalyticsCharts() {
       ctx.fillText(labels[index], x + barWidth / 2, salesCanvas.height - 20);
       
       // Values on top
-      ctx.fillStyle = '#f8fafc';
+      ctx.fillStyle = isLight ? '#0f172a' : '#f8fafc';
       ctx.fillText(val, x + barWidth / 2, y - 8);
     });
   }
@@ -157,9 +161,10 @@ function renderAnalyticsCharts() {
     distCanvas.width = distCanvas.clientWidth;
     distCanvas.height = 220;
     
-    const centerX = distCanvas.width / 2 - 50;
+    const isMobile = distCanvas.width < 450;
+    const centerX = isMobile ? 70 : (distCanvas.width / 2 - 50);
     const centerY = distCanvas.height / 2;
-    const radius = 64;
+    const radius = isMobile ? 48 : 64;
     
     // Regions: NWE (42%), East Asian (28%), Scandinavian (18%), Baltic (12%)
     const regions = [
@@ -177,7 +182,7 @@ function renderAnalyticsCharts() {
       ctx.beginPath();
       ctx.arc(centerX, centerY, radius, startAngle, startAngle + sliceAngle);
       ctx.strokeStyle = reg.color;
-      ctx.lineWidth = 18;
+      ctx.lineWidth = isMobile ? 14 : 18;
       ctx.stroke();
       
       startAngle += sliceAngle;
@@ -185,21 +190,21 @@ function renderAnalyticsCharts() {
 
     // Donut hole
     ctx.beginPath();
-    ctx.arc(centerX, centerY, radius - 10, 0, 2 * Math.PI);
-    ctx.fillStyle = '#050814';
+    ctx.arc(centerX, centerY, radius - (isMobile ? 8 : 10), 0, 2 * Math.PI);
+    ctx.fillStyle = isLight ? '#ffffff' : '#050814';
     ctx.fill();
 
     // Legends on the right
     regions.forEach((reg, index) => {
-      const x = distCanvas.width - 150;
-      const y = 50 + index * 32;
+      const x = isMobile ? (distCanvas.width - 130) : (distCanvas.width - 150);
+      const y = (isMobile ? 40 : 50) + index * (isMobile ? 28 : 32);
       
       // Legend color block
       ctx.fillStyle = reg.color;
       ctx.fillRect(x, y - 8, 12, 12);
       
       // Label text
-      ctx.fillStyle = '#cbd5e1';
+      ctx.fillStyle = isLight ? '#334155' : '#cbd5e1';
       ctx.font = '11px Inter';
       ctx.textAlign = 'left';
       ctx.fillText(`${reg.name} (${Math.round(reg.val * 100)}%)`, x + 20, y);
@@ -494,9 +499,27 @@ function initThemeAndRtl() {
     document.body.classList.remove('rtl');
   }
 
+  const updateThemeIcons = () => {
+    const isLight = document.body.classList.contains('light-theme');
+    const moonSVG = `<svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
+    const sunSVG = `<svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+
+    const desktopBtn = document.getElementById('theme-toggle-btn');
+    if (desktopBtn) {
+      desktopBtn.innerHTML = isLight ? moonSVG : sunSVG;
+    }
+  };
+
+  // Run initial setup
+  updateThemeIcons();
+
   const toggleTheme = () => {
     const isLight = document.body.classList.toggle('light-theme');
     localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    updateThemeIcons();
+    if (typeof renderAnalyticsCharts === 'function') {
+      renderAnalyticsCharts();
+    }
   };
 
   const toggleRtl = () => {
@@ -513,4 +536,19 @@ function initThemeAndRtl() {
 
   if (tBtn) tBtn.addEventListener('click', toggleTheme);
   if (rBtn) rBtn.addEventListener('click', toggleRtl);
+
+  // Scroll to Top Controller
+  const scrollTopBtn = document.getElementById('scroll-top-btn');
+  if (scrollTopBtn) {
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 400) {
+        scrollTopBtn.style.display = 'flex';
+      } else {
+        scrollTopBtn.style.display = 'none';
+      }
+    });
+    scrollTopBtn.addEventListener('click', () => {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+  }
 }
