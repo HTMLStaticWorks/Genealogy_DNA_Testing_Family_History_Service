@@ -398,9 +398,22 @@
     <!-- Left Sidebar -->
     <aside class="admin-sidebar">
       <a href="index.html#/" class="sidebar-brand" style="margin-bottom:40px; display:flex; align-items:center; gap:10px; text-decoration:none; color:inherit;">
-        <svg class="logo-symbol" style="width:28px; height:28px; stroke:var(--accent-gold);" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
-          <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+        <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px; height:28px; stroke:var(--accent-gold);">
+          <!-- Central Trunk -->
+          <path d="M12 2v20" stroke-width="2"/>
+          <!-- DNA Helix curving left and right -->
+          <path d="M12 6c4 2 6 5 6 8s-2 6-6 8" stroke="var(--accent-gold)" stroke-width="2"/>
+          <path d="M12 6c-4 2-6 5-6 8s2 6 6 8" stroke="var(--accent-teal)" stroke-width="2" opacity="0.8"/>
+          <!-- Branching Connection Nodes -->
+          <line x1="12" y1="9" x2="6" y2="9"/>
+          <line x1="12" y1="14" x2="18" y2="14"/>
+          <line x1="12" y1="18" x2="5" y2="18"/>
+          <line x1="12" y1="18" x2="19" y2="18"/>
+          <circle cx="6" cy="9" r="2" fill="currentColor"/>
+          <circle cx="18" cy="14" r="2" fill="currentColor"/>
+          <circle cx="5" cy="18" r="1.5" fill="currentColor"/>
+          <circle cx="19" cy="18" r="1.5" fill="currentColor"/>
+          <circle cx="12" cy="2" r="2.5" fill="currentColor"/>
         </svg>
         <span style="font-family:var(--font-heading); font-weight:700; font-size:1.15rem;">Admin<span class="logo-text-accent">Console</span></span>
       </a>

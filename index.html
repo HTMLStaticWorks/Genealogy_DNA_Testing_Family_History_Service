@@ -19,11 +19,12 @@
   <style>
     /* Public-specific layouts */
     .hero-section {
-      min-height: 100vh;
+      height: 100vh;
+      box-sizing: border-box;
       display: flex;
       align-items: center;
-      padding-top: 120px;
-      padding-bottom: 80px;
+      padding-top: 80px; /* Offset for fixed header */
+      padding-bottom: 0;
       background: radial-gradient(circle at 70% 30%, rgba(14, 165, 233, 0.08), transparent 50%),
         radial-gradient(circle at 10% 80%, rgba(197, 160, 89, 0.05), transparent 40%),
         var(--bg-darkest);
@@ -139,8 +140,10 @@
       .journey-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
       .hero-section {
         min-height: auto;
+        height: auto !important;
         padding-top: 100px;
         padding-bottom: 60px;
       }
@@ -150,14 +153,17 @@
       .journey-grid {
         grid-template-columns: 1fr;
       }
+
       .tree-node-demo {
         width: 100px !important;
         font-size: 0.75rem !important;
         padding: 8px 4px !important;
       }
+
       .tree-connector-horizontal {
         width: 130px !important;
       }
+
       #node-child-row {
         gap: 30px !important;
       }
@@ -464,9 +470,9 @@
     }
 
     .auth-social {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
+      display: flex;
+      justify-content: center;
+      gap: 16px;
       margin-bottom: 24px;
     }
 
@@ -591,19 +597,23 @@
     .hero-container-split {
       text-align: left;
     }
+
     .hero-container-split .hero-buttons {
       justify-content: flex-start;
     }
+
     @media (max-width: 991px) {
       .hero-container-split {
         text-align: center;
         flex-direction: column !important;
         justify-content: center;
       }
+
       .hero-container-split .hero-content {
         align-items: center;
         margin: 0 auto;
       }
+
       .hero-container-split .hero-buttons {
         justify-content: center;
       }
@@ -618,13 +628,23 @@
     <div class="container nav-container">
       <!-- Logo -->
       <a href="#/" class="logo">
-        <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path
-            d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
-          <path
-            d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
-          <path d="M10 16V22" stroke-linecap="round" />
-          <path d="M7 22H13" stroke-linecap="round" />
+        <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <!-- Central Trunk -->
+          <path d="M12 2v20" stroke-width="2" />
+          <!-- DNA Helix curving left and right -->
+          <path d="M12 6c4 2 6 5 6 8s-2 6-6 8" stroke="var(--accent-gold)" stroke-width="2" />
+          <path d="M12 6c-4 2-6 5-6 8s2 6 6 8" stroke="var(--accent-teal)" stroke-width="2" opacity="0.8" />
+          <!-- Branching Connection Nodes -->
+          <line x1="12" y1="9" x2="6" y2="9" />
+          <line x1="12" y1="14" x2="18" y2="14" />
+          <line x1="12" y1="18" x2="5" y2="18" />
+          <line x1="12" y1="18" x2="19" y2="18" />
+          <circle cx="6" cy="9" r="2" fill="currentColor" />
+          <circle cx="18" cy="14" r="2" fill="currentColor" />
+          <circle cx="5" cy="18" r="1.5" fill="currentColor" />
+          <circle cx="19" cy="18" r="1.5" fill="currentColor" />
+          <circle cx="12" cy="2" r="2.5" fill="currentColor" />
         </svg>
         <span>Veritas<span class="logo-text-accent">Ancestry</span></span>
       </a>
@@ -646,31 +666,50 @@
       <!-- Desktop CTA & Toggles -->
       <div class="nav-actions">
         <!-- Theme Toggle -->
-        <button class="btn btn-outline btn-icon theme-toggle-btn" id="theme-toggle-btn" aria-label="Toggle Theme Mode"
-          style="border-radius: var(--radius-full); width: 40px; height: 40px;">
-          <svg class="icon-theme" width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-            <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z" />
+        <button class="header-btn header-btn-icon theme-toggle-btn" id="theme-toggle-btn"
+          aria-label="Toggle Theme Mode">
+          <svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+            </path>
           </svg>
         </button>
         <!-- RTL Toggle -->
-        <button class="btn btn-outline btn-icon rtl-toggle-btn" id="rtl-toggle-btn" aria-label="Toggle RTL Mode"
-          style="border-radius: var(--radius-full); width: 40px; height: 40px;">
+        <button class="header-btn header-btn-icon rtl-toggle-btn" id="rtl-toggle-btn" aria-label="Toggle RTL Mode">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round"
               d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
           </svg>
         </button>
-        <!-- Dashboard Shortcut -->
-        <a href="dashboard.html#/overview" class="btn btn-outline btn-icon" aria-label="Open Dashboard"
-          style="border-radius: var(--radius-full); width: 40px; height: 40px;" title="Customer Dashboard">
-          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <rect x="3" y="3" width="7" height="9" rx="1" />
-            <rect x="14" y="3" width="7" height="5" rx="1" />
-            <rect x="14" y="12" width="7" height="9" rx="1" />
-            <rect x="3" y="16" width="7" height="5" rx="1" />
-          </svg>
-        </a>
-        <a href="#/login" class="btn btn-outline">Sign In</a>
+        <!-- Dashboard Dropdown Shortcut -->
+        <div class="dropdown-wrapper" style="position: relative; display: inline-block;">
+          <button class="header-btn header-btn-icon" id="dashboard-dropdown-btn" aria-label="Dashboards Menu" title="View Dashboards" style="cursor: pointer;" onclick="event.stopPropagation(); document.getElementById('dashboard-dropdown-menu').style.display = document.getElementById('dashboard-dropdown-menu').style.display === 'block' ? 'none' : 'block';">
+            <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <rect x="3" y="3" width="7" height="9" rx="1" />
+              <rect x="14" y="3" width="7" height="5" rx="1" />
+              <rect x="14" y="12" width="7" height="9" rx="1" />
+              <rect x="3" y="16" width="7" height="5" rx="1" />
+            </svg>
+          </button>
+          <div class="dropdown-menu" id="dashboard-dropdown-menu" style="display: none; position: absolute; top: 100%; right: 0; margin-top: 10px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop); border: 1px solid var(--border-glass); border-radius: var(--radius-md); box-shadow: var(--shadow-premium); min-width: 180px; z-index: 1000; overflow: hidden;">
+            <a href="dashboard.html#/overview" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--text-primary); font-size: 0.85rem; text-decoration: none; border-bottom: 1px solid var(--border-glass); transition: background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
+              <svg width="16" height="16" fill="none" stroke="var(--accent-teal)" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"/>
+              </svg>
+              Customer Space
+            </a>
+            <a href="admin.html" style="display: flex; align-items: center; gap: 10px; padding: 12px 16px; color: var(--accent-gold); font-size: 0.85rem; text-decoration: none; transition: background 0.2s;" onmouseover="this.style.background='rgba(197,160,89,0.08)'" onmouseout="this.style.background='transparent'">
+              <svg width="16" height="16" fill="none" stroke="var(--accent-gold)" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Admin Portal
+            </a>
+          </div>
+        </div>
+        <a href="#/login" class="header-btn header-btn-text">Sign In</a>
 
         <!-- Hamburger Button -->
         <button class="hamburger" id="menu-toggle" aria-label="Toggle navigation menu">
@@ -697,16 +736,19 @@
     <div class="mobile-actions">
       <div style="display:flex; gap:12px; margin-bottom:16px;">
         <button class="btn btn-outline theme-toggle-btn" id="theme-toggle-btn-mobile"
-          style="flex:1; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; gap:8px;" aria-label="Theme Toggle">
+          style="flex:1; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; gap:8px;"
+          aria-label="Theme Toggle">
           <svg class="icon-theme" width="16" height="16" fill="currentColor" viewBox="0 0 24 24">
             <path d="M12 3a9 9 0 109 9 9.75 9.75 0 00-.74-3.75 9 9 0 01-8.26-8.26A9.75 9.75 0 0012 3z" />
           </svg>
           <span>Theme</span>
         </button>
         <button class="btn btn-outline rtl-toggle-btn" id="rtl-toggle-btn-mobile"
-          style="flex:1; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; gap:8px;" aria-label="RTL Toggle">
+          style="flex:1; height:44px; border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; gap:8px;"
+          aria-label="RTL Toggle">
           <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
           </svg>
           <span>RTL</span>
         </button>
@@ -720,6 +762,14 @@
           <rect x="3" y="16" width="7" height="5" rx="1" />
         </svg>
         Customer Dashboard
+      </a>
+      <a href="admin.html" class="btn btn-outline"
+        style="width: 100%; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--accent-gold); border-color: rgba(197, 160, 89, 0.3);">
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+        Admin Portal
       </a>
       <a href="#/login" class="btn btn-outline" style="width: 100%;">Sign In</a>
 
@@ -735,13 +785,23 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <a href="#/" class="logo">
-            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path
-                d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
-              <path
-                d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
-              <path d="M10 16V22" stroke-linecap="round" />
-              <path d="M7 22H13" stroke-linecap="round" />
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <!-- Central Trunk -->
+              <path d="M12 2v20" stroke-width="2" />
+              <!-- DNA Helix curving left and right -->
+              <path d="M12 6c4 2 6 5 6 8s-2 6-6 8" stroke="var(--accent-gold)" stroke-width="2" />
+              <path d="M12 6c-4 2-6 5-6 8s2 6 6 8" stroke="var(--accent-teal)" stroke-width="2" opacity="0.8" />
+              <!-- Branching Connection Nodes -->
+              <line x1="12" y1="9" x2="6" y2="9" />
+              <line x1="12" y1="14" x2="18" y2="14" />
+              <line x1="12" y1="18" x2="5" y2="18" />
+              <line x1="12" y1="18" x2="19" y2="18" />
+              <circle cx="6" cy="9" r="2" fill="currentColor" />
+              <circle cx="18" cy="14" r="2" fill="currentColor" />
+              <circle cx="5" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="19" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="12" cy="2" r="2.5" fill="currentColor" />
             </svg>
             <span>Veritas<span class="logo-text-accent">Ancestry</span></span>
           </a>
@@ -826,16 +886,57 @@
   <template id="page-home">
     <div class="view-container">
       <!-- Premium Hero Section -->
-      <section class="hero-section" style="--hero-bg: url('assets/dna_hero_bg.png'); display:flex; align-items:center; justify-content:center;">
-        <div class="container" style="display:flex; justify-content:center; text-align:center;">
-          <div class="hero-content animate-slide-up" style="margin: 0 auto; text-align: center; align-items: center; justify-content: center;">
+      <section class="hero-section" style="--hero-bg: url('assets/dna_hero_bg.png'); display:flex; align-items:center;">
+        <div class="container hero-container-split"
+          style="display:flex; align-items:center; gap:40px; justify-content:space-between; flex-wrap:wrap;">
+          <div class="hero-content animate-slide-up" style="flex:1 1 500px; max-width: 650px;">
             <div class="badge badge-gold">The Science of Heritage</div>
-            <h1 class="hero-title" style="text-align:center;">Decode Your History. Map Your Legacy.</h1>
-            <p class="lead" style="text-align:center; margin: 0 auto;">Unlock the code that connects you to your ancestors. Build a beautiful, rich family history and explore precise geographic ethnicity profiles with the industry's most advanced DNA sequencing.</p>
-            <div class="hero-buttons" style="justify-content: center; width: 100%;">
+            <h1 class="hero-title">Decode Your History. Map Your Legacy.</h1>
+            <p class="lead">Unlock the code that connects you to your ancestors. Build a beautiful, rich family history
+              and explore precise geographic ethnicity profiles with the industry's most advanced DNA sequencing.</p>
+            <div class="hero-buttons">
               <a href="#/pricing" class="btn btn-gold">Order Testing Kit</a>
               <a href="#/family-reports" class="btn btn-outline">Explore Reports</a>
             </div>
+          </div>
+          <div style="flex: 1 1 400px; display: flex; justify-content: center; max-width: 450px; position: relative;">
+            <svg viewBox="0 0 200 400"
+              style="width: 100%; height: auto; filter: drop-shadow(0 0 15px rgba(14,165,233,0.3));"
+              id="glowing-dna-svg">
+              <!-- DNA Strands and Nodes -->
+              <!-- Left Strand -->
+              <path d="M 40 40 Q 160 120 40 200 T 160 360" fill="none" stroke="var(--accent-teal)" stroke-width="3"
+                stroke-linecap="round" />
+              <!-- Right Strand -->
+              <path d="M 160 40 Q 40 120 160 200 T 40 360" fill="none" stroke="var(--accent-gold)" stroke-width="3"
+                stroke-linecap="round" opacity="0.8" />
+
+              <!-- Connection Bars and Rungs -->
+              <line x1="48" y1="46" x2="152" y2="46" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+              <line x1="68" y1="80" x2="132" y2="80" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+              <line x1="100" y1="120" x2="100" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+              <line x1="132" y1="160" x2="68" y2="160" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+              <line x1="152" y1="194" x2="48" y2="194" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+              <line x1="132" y1="240" x2="68" y2="240" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+              <line x1="100" y1="280" x2="100" y2="280" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+              <line x1="68" y1="320" x2="132" y2="320" stroke="rgba(255,255,255,0.15)" stroke-width="2" />
+
+              <!-- Nodes -->
+              <circle cx="40" cy="40" r="5" fill="var(--accent-teal)" />
+              <circle cx="160" cy="40" r="5" fill="var(--accent-gold)" />
+              <circle cx="92" cy="74" r="5" fill="var(--accent-teal)" />
+              <circle cx="108" cy="86" r="5" fill="var(--accent-gold)" />
+              <circle cx="140" cy="110" r="5" fill="var(--accent-teal)" />
+              <circle cx="60" cy="130" r="5" fill="var(--accent-gold)" />
+              <circle cx="160" cy="200" r="5" fill="var(--accent-teal)" />
+              <circle cx="40" cy="200" r="5" fill="var(--accent-gold)" />
+              <circle cx="108" cy="234" r="5" fill="var(--accent-teal)" />
+              <circle cx="92" cy="246" r="5" fill="var(--accent-gold)" />
+              <circle cx="60" cy="270" r="5" fill="var(--accent-teal)" />
+              <circle cx="140" cy="290" r="5" fill="var(--accent-gold)" />
+              <circle cx="40" cy="360" r="5" fill="var(--accent-gold)" />
+              <circle cx="160" cy="360" r="5" fill="var(--accent-teal)" />
+            </svg>
           </div>
         </div>
       </section>
@@ -851,7 +952,8 @@
 
           <div class="journey-grid">
             <div class="journey-step card card-teal">
-              <img src="assets/journey_order.png" class="journey-img" alt="Order DNA Kit Online">
+              <img src="https://tse3.mm.bing.net/th/id/OIP.wEC05GDUXLxWWK8qU9zYswHaGY?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+                class="journey-img" alt="Order DNA Kit Online">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3>Online</h3>
                 <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">01</div>
@@ -859,7 +961,8 @@
               <p>Select your kit. We ship a premium, touchless saliva collection kit straight to your doorstep.</p>
             </div>
             <div class="journey-step card card-teal">
-              <img src="assets/journey_return.png" class="journey-img" alt="Return Saliva Sample">
+              <img src="https://seedups.com/wp-content/uploads/sites/53/2024/09/online-registration-form-770x470.jpg"
+                class="journey-img" alt="Return Saliva Sample">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3>Return</h3>
                 <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">02</div>
@@ -867,7 +970,8 @@
               <p>Register your kit online for full security, mail your sample using pre-paid express shipping.</p>
             </div>
             <div class="journey-step card card-teal">
-              <img src="assets/journey_lab.png" class="journey-img" alt="DNA Lab Microarray Analysis">
+              <img src="https://tse2.mm.bing.net/th/id/OIP.PxjoKRO2cr53alPiW_hHXAHaE8?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+                class="journey-img" alt="DNA Lab Microarray Analysis">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3>Lab Analysis</h3>
                 <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">03</div>
@@ -875,7 +979,9 @@
               <p>Our CLIA-certified labs extract DNA, reading 700,000+ genetic markers using modern microarrays.</p>
             </div>
             <div class="journey-step card card-teal">
-              <img src="assets/journey_insights.png" class="journey-img" alt="Get Genetic Insights & Ancestry Reports">
+              <img
+                src="https://res.cloudinary.com/upwork-cloud/image/upload/c_scale,w_1000/v1710665629/catalog/1769260326430416896/vh3j2bb7v2gjfgvjfsur.jpg"
+                class="journey-img" alt="Get Genetic Insights & Ancestry Reports">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
                 <h3>Get Insights</h3>
                 <div class="journey-num" style="position:static; font-size:1.5rem; line-height:1;">04</div>
@@ -897,7 +1003,9 @@
 
           <div class="grid grid-3">
             <div class="card card-gold">
-              <img src="assets/why_privacy.png" class="card-img" alt="Bank-Grade Privacy Security Shield">
+              <img
+                src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Bank-Grade Privacy Security Shield">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3>Bank-Grade Privacy</h3>
                 <span style="color:var(--accent-gold);">
@@ -912,7 +1020,8 @@
                 without your active consent.</p>
             </div>
             <div class="card card-gold">
-              <img src="assets/why_regions.png" class="card-img" alt="Deep Sub-Regional Details Map">
+              <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Deep Sub-Regional Details Map">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3>Deep Sub-Regions</h3>
                 <span style="color:var(--accent-gold);">
@@ -927,7 +1036,8 @@
                 micro-regions across 2,400 global locations.</p>
             </div>
             <div class="card card-gold">
-              <img src="assets/why_network.png" class="card-img" alt="Vast Relative Match Network">
+              <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Vast Relative Match Network">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3>Relative Network</h3>
                 <span style="color:var(--accent-gold);">
@@ -1076,7 +1186,8 @@
                 </div>
 
                 <!-- Children Row -->
-                <div id="node-child-row" style="display:flex; gap:64px; justify-content:center; width:100%; z-index: 10;">
+                <div id="node-child-row"
+                  style="display:flex; gap:64px; justify-content:center; width:100%; z-index: 10;">
                   <div class="tree-node-demo" id="node-child1" data-name="Elizabeth Pendelton"
                     data-info="Grandmother | 1923 - 2004">Elizabeth</div>
                   <div class="tree-node-demo" id="node-child2" data-name="John Pendelton"
@@ -1167,29 +1278,72 @@
   <template id="page-about">
     <div class="view-container">
       <section class="hero-section"
-        style="--hero-bg: url('assets/why_privacy.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        style="background: radial-gradient(circle at 80% 20%, rgba(197, 160, 89, 0.12), transparent 50%), radial-gradient(circle at 20% 80%, rgba(14, 165, 233, 0.05), transparent 50%), var(--bg-darkest); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px; position:relative; overflow:hidden;">
         <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <div class="badge badge-gold">About Veritas</div>
-          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Science-Backed Heritage Mapping</h1>
-          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Bridging advanced molecular genetics, secure cloud databases, and centuries of historical records to connect you with your past.</p>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Science-Backed
+            Heritage Mapping</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Bridging advanced molecular
+            genetics, secure cloud databases, and centuries of historical records to connect you with your past.</p>
+        </div>
+      </section>
+
+      <!-- Stats Counter Strip -->
+      <section
+        style="background: linear-gradient(90deg, rgba(11, 17, 38, 0.8), rgba(5, 8, 20, 0.8)); border-top: 1px solid var(--border-glass); border-bottom: 1px solid var(--border-glass); padding: 30px 0; backdrop-filter: var(--glass-backdrop); -webkit-backdrop-filter: var(--glass-backdrop);">
+        <div class="container"
+          style="display: flex; justify-content: space-around; flex-wrap: wrap; gap: 32px; text-align: center; align-items: center;">
+          <div style="flex: 1 1 200px;">
+            <div
+              style="font-size: 2.6rem; font-family: var(--font-heading); font-weight: 800; color: var(--accent-gold); line-height:1.1;">
+              5M+</div>
+            <div
+              style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px;">
+              Kits Processed</div>
+          </div>
+          <div style="flex: 1 1 200px;">
+            <div
+              style="font-size: 2.6rem; font-family: var(--font-heading); font-weight: 800; color: var(--accent-teal); line-height:1.1;">
+              2,400+</div>
+            <div
+              style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px;">
+              Geographic Regions</div>
+          </div>
+          <div style="flex: 1 1 200px;">
+            <div
+              style="font-size: 2.6rem; font-family: var(--font-heading); font-weight: 800; color: var(--accent-gold-light); line-height:1.1;">
+              99.9%</div>
+            <div
+              style="font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-top: 6px;">
+              Testing Precision</div>
+          </div>
         </div>
       </section>
 
       <!-- Company Story -->
-      <section class="section" style="background: var(--bg-darker);">
-        <div class="container grid grid-2" style="align-items:center;">
-          <div>
-            <h2 style="margin-bottom: 24px;">Our Mission & Vision</h2>
-            <p style="margin-bottom: 16px;">Founded in 2020 by geneticists, historians, and cybersecurity experts,
-              Veritas Ancestry was born out of a desire to create a privacy-first genealogy platform.</p>
-            <p>Our commitment is simple: to make deep-history genetic tracing secure, interactive, and comprehensive. By
-              using the latest Next-Gen Sequencing techniques, we reconstruct ancient migration pathways down to
-              micro-regions with extreme accuracy.</p>
-          </div>
-          <div>
-            <img src="assets/family_history.png"
-              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
-              alt="Lineage and Archives Collage">
+      <section class="section" style="background: var(--bg-darker); padding: 60px 0;">
+        <div class="container" style="max-width: 1000px;">
+          <div class="card card-teal"
+            style="display: flex; flex-direction: row; align-items: center; gap: 40px; padding: 40px; flex-wrap: wrap;">
+            <div style="flex: 2 1 500px;">
+              <h2 style="font-size: 1.8rem; margin-bottom: 20px;">Our Mission & Vision</h2>
+              <p style="margin-bottom: 16px; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                Founded in 2020 by geneticists, historians, and cybersecurity experts,
+                Veritas Ancestry was born out of a desire to create a privacy-first genealogy platform.
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                Our commitment is simple: to make deep-history genetic tracing secure, interactive, and comprehensive.
+                By
+                using the latest Next-Gen Sequencing techniques, we reconstruct ancient migration pathways down to
+                micro-regions with extreme accuracy.
+              </p>
+            </div>
+            <div style="flex: 1 1 280px; display: flex; justify-content: center;">
+              <img
+                src="https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?auto=format&fit=crop&q=80&w=400&h=300"
+                style="width: 100%; max-width: 280px; height: 210px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
+                alt="Lineage and Archives Collage">
+            </div>
           </div>
         </div>
       </section>
@@ -1203,24 +1357,53 @@
             <p class="section-subtitle">How we transform a saliva sample into a rich tapestry of ancestors.</p>
           </div>
 
-          <div class="grid grid-3">
-            <div class="card card-teal">
-              <span class="badge badge-teal" style="margin-bottom:20px;">Step 1: Extraction</span>
-              <h3>Genomic Isolation</h3>
-              <p>Saliva samples are processed in CLIA-certified and CAP-accredited laboratories. We isolate your DNA and
-                run it against modern arrays reading 700,000+ single nucleotide polymorphisms (SNPs).</p>
+          <!-- Vertical Interconnected Roadmap -->
+          <div
+            style="display: flex; flex-direction: column; gap: 40px; position: relative; max-width: 800px; margin: 0 auto;">
+            <!-- Connection Line -->
+            <div
+              style="position: absolute; top: 0; bottom: 0; left: 24px; width: 2px; background: linear-gradient(180deg, var(--accent-teal), var(--accent-gold)); z-index: 1;">
             </div>
-            <div class="card card-teal">
-              <span class="badge badge-teal" style="margin-bottom:20px;">Step 2: Analysis</span>
-              <h3>Biostatistical Modeling</h3>
-              <p>Our genetic algorithms cross-reference your sequencing file against reference populations globally,
-                analyzing ancestral alleles and resolving overlapping ethnic markers.</p>
+
+            <!-- Step 1 -->
+            <div style="display: flex; gap: 24px; position: relative; z-index: 2;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: var(--bg-darkest); border: 3px solid var(--accent-teal); display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: var(--font-heading); color: var(--accent-teal); flex-shrink: 0; box-shadow: var(--shadow-glow-teal);">
+                01</div>
+              <div class="card card-teal" style="margin: 0; flex-grow: 1;">
+                <span class="badge badge-teal" style="margin-bottom:12px;">Step 1: Extraction</span>
+                <h3>Genomic Isolation</h3>
+                <p style="font-size:0.9rem;">Saliva samples are processed in CLIA-certified and CAP-accredited
+                  laboratories. We isolate your DNA and run it against modern arrays reading 700,000+ single nucleotide
+                  polymorphisms (SNPs).</p>
+              </div>
             </div>
-            <div class="card card-teal">
-              <span class="badge badge-teal" style="margin-bottom:20px;">Step 3: Verification</span>
-              <h3>Archival Triangulation</h3>
-              <p>We link verified genetic matches with historical archives, automatically identifying ancestors by
-                cross-referencing census reports, military archives, and emigration logs.</p>
+
+            <!-- Step 2 -->
+            <div style="display: flex; gap: 24px; position: relative; z-index: 2;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: var(--bg-darkest); border: 3px solid var(--accent-gold); display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: var(--font-heading); color: var(--accent-gold); flex-shrink: 0; box-shadow: var(--shadow-glow-gold);">
+                02</div>
+              <div class="card card-gold" style="margin: 0; flex-grow: 1;">
+                <span class="badge badge-gold" style="margin-bottom:12px;">Step 2: Analysis</span>
+                <h3>Biostatistical Modeling</h3>
+                <p style="font-size:0.9rem;">Our genetic algorithms cross-reference your sequencing file against
+                  reference populations globally, analyzing ancestral alleles and resolving overlapping ethnic markers.
+                </p>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div style="display: flex; gap: 24px; position: relative; z-index: 2;">
+              <div
+                style="width: 50px; height: 50px; border-radius: 50%; background: var(--bg-darkest); border: 3px solid var(--accent-teal); display: flex; align-items: center; justify-content: center; font-weight: bold; font-family: var(--font-heading); color: var(--accent-teal); flex-shrink: 0; box-shadow: var(--shadow-glow-teal);">
+                03</div>
+              <div class="card card-teal" style="margin: 0; flex-grow: 1;">
+                <span class="badge badge-teal" style="margin-bottom:12px;">Step 3: Verification</span>
+                <h3>Archival Triangulation</h3>
+                <p style="font-size:0.9rem;">We link verified genetic matches with historical archives, automatically
+                  identifying ancestors by cross-referencing census reports, military archives, and emigration logs.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -1262,16 +1445,21 @@
           </div>
           <div style="flex: 1 1 400px; display:flex; justify-content:center;">
             <div class="card card-gold" style="max-width: 380px; border-color: rgba(197, 160, 89, 0.3);">
-              <img src="assets/why_sovereignty.png" class="card-img" alt="Data Sovereignty Security Shield">
+              <img
+                src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Data Sovereignty Security Shield">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3>Data Sovereignty</h3>
                 <span style="color:var(--accent-gold);">
                   <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                    <path d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" stroke-linecap="round" stroke-linejoin="round" />
+                    <path
+                      d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
+                      stroke-linecap="round" stroke-linejoin="round" />
                   </svg>
                 </span>
               </div>
-              <p>All genetic profiles are stripped of identifiers before laboratory parsing, ensuring your personal details and DNA are never stored in the same database.</p>
+              <p>All genetic profiles are stripped of identifiers before laboratory parsing, ensuring your personal
+                details and DNA are never stored in the same database.</p>
             </div>
           </div>
         </div>
@@ -1377,11 +1565,14 @@
   <template id="page-dna-testing">
     <div class="view-container">
       <section class="hero-section"
-        style="--hero-bg: url('assets/why_regions.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        style="background: radial-gradient(circle at 75% 25%, rgba(6, 182, 212, 0.12), transparent 60%), radial-gradient(circle at 25% 75%, rgba(14, 165, 233, 0.06), transparent 50%), var(--bg-darkest); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px; position:relative; overflow:hidden;">
         <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <div class="badge badge-teal">The Testing Suite</div>
-          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Explore the Code That Defines You</h1>
-          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Unlock detailed regional lineages, maternal and paternal migration steps, and optional wellness indicators using next-gen microarrays.</p>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Explore the Code That
+            Defines You</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Unlock detailed regional
+            lineages, maternal and paternal migration steps, and optional wellness indicators using next-gen
+            microarrays.</p>
         </div>
       </section>
 
@@ -1444,25 +1635,90 @@
         </div>
       </section>
 
-      <!-- Testing Science Explanations -->
+      <!-- Interactive Showcase of mtDNA vs Y-DNA -->
       <section class="section">
-        <div class="container grid grid-2" style="align-items:center; gap:60px;">
-          <div>
+        <div class="container">
+          <div class="section-header">
             <div class="badge badge-teal">Lineage Mapping</div>
-            <h2 style="margin-top:16px; margin-bottom:24px;">Tracing Your Deep Lineage</h2>
-            <p style="margin-bottom:16px;">Autosomal DNA reveals recent ancestry spanning the last 5-8 generations. To
-              unlock deep history, we analyze your sex-linked DNA.</p>
-            <p style="margin-bottom:16px;"><strong>Maternal Lineage (mtDNA):</strong> Traces mitochondrial DNA, passed
-              down unchanged from mother to child. Unlocks the ancient migration paths of your maternal ancestors dating
-              back over 100,000 years.</p>
-            <p><strong>Paternal Lineage (Y-DNA):</strong> For male participants, Y-chromosome sequencing traces your
-              direct paternal line, mapping the path of your ancestors and discovering your specific paternal
-              Haplogroup.</p>
+            <h2>Tracing Maternal & Paternal Lineages</h2>
+            <p class="section-subtitle">Discover the difference between sex-linked DNA inheritance pathways.</p>
           </div>
-          <div>
-            <img src="assets/science_research.png"
-              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
-              alt="Scientists in high-tech laboratory processing DNA sequences">
+
+          <div class="grid grid-4" style="gap:24px; align-items: stretch;">
+            <!-- Maternal Card -->
+            <div class="card card-teal" style="display:flex; flex-direction:column; gap:8px; padding:0; overflow:hidden;">
+              <img src="https://images.unsplash.com/photo-1544396821-4dd40b938ad3?auto=format&fit=crop&q=80&w=400&h=200" 
+                style="width:100%; height:110px; object-fit:cover; border-bottom:1px solid var(--border-glass);" 
+                alt="Maternal lineage tracing heritage">
+              <div style="padding:16px; display:flex; flex-direction:column; gap:8px; flex-grow:1;">
+                <span class="badge badge-teal" style="max-width:max-content;">mtDNA (Maternal)</span>
+                <h3>Maternal Haplogroup Tracing</h3>
+                <p style="font-size:0.85rem; line-height:1.5; color:var(--text-secondary);">Mitochondrial DNA (mtDNA) is
+                  inherited exclusively from your mother. Since mtDNA mutates extremely slowly, it acts as a molecular
+                  fossil, mapping maternal ancestors back 150,000 years to our common African origins.</p>
+                <div
+                  style="margin-top:auto; font-size:0.8rem; color:var(--accent-teal); border-top: 1px solid var(--border-glass); padding-top: 12px;">
+                  <strong>Insights:</strong> Ancient maternal migration path, maternal haplogroup designation, global
+                  match contacts.
+                </div>
+              </div>
+            </div>
+
+            <!-- Paternal Card -->
+            <div class="card card-gold" style="display:flex; flex-direction:column; gap:8px; padding:0; overflow:hidden;">
+              <img src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&q=80&w=400&h=200" 
+                style="width:100%; height:110px; object-fit:cover; border-bottom:1px solid var(--border-glass);" 
+                alt="Paternal lineage tracing heritage">
+              <div style="padding:16px; display:flex; flex-direction:column; gap:8px; flex-grow:1;">
+                <span class="badge badge-gold" style="max-width:max-content;">Y-DNA (Paternal)</span>
+                <h3>Paternal Haplogroup Tracing</h3>
+                <p style="font-size:0.85rem; line-height:1.5; color:var(--text-secondary);">Passed down exclusively from
+                  fathers to sons, the Y-chromosome (Y-DNA) remains largely unchanged. By sequencing key markers, we trace
+                  your direct paternal lineage and determine your specific haplogroup branch.</p>
+                <div
+                  style="margin-top:auto; font-size:0.8rem; color:var(--accent-gold); border-top: 1px solid var(--border-glass); padding-top: 12px;">
+                  <strong>Insights:</strong> Direct paternal migration timeline, direct paternal haplogroup code, global
+                  Y-DNA relative search.
+                </div>
+              </div>
+            </div>
+
+            <!-- Autosomal Card -->
+            <div class="card card-gold" style="display:flex; flex-direction:column; gap:8px; padding:0; overflow:hidden;">
+              <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=400&h=200" 
+                style="width:100%; height:110px; object-fit:cover; border-bottom:1px solid var(--border-glass);" 
+                alt="Autosomal DNA Matching heritage">
+              <div style="padding:16px; display:flex; flex-direction:column; gap:8px; flex-grow:1;">
+                <span class="badge badge-gold" style="max-width:max-content;">Autosomal (Recent)</span>
+                <h3>Autosomal DNA Matching</h3>
+                <p style="font-size:0.85rem; line-height:1.5; color:var(--text-secondary);">Inherited from both parents
+                  (approx. 50% from each). This is the key test for finding DNA cousins, matching close relative
+                  connections, and building your immediate family tree lineages.</p>
+                <div
+                  style="margin-top:auto; font-size:0.8rem; color:var(--accent-gold); border-top: 1px solid var(--border-glass); padding-top: 12px;">
+                  <strong>Insights:</strong> DNA relative connection finder, recent ethnicity percentage composition,
+                  automated family tree linkages.
+                </div>
+              </div>
+            </div>
+
+            <!-- Lab Sequencing Card -->
+            <div class="card card-teal"
+              style="display:flex; flex-direction:column; gap:8px; padding:0; overflow:hidden;">
+              <img
+                src="https://images.unsplash.com/photo-1582719508461-905c673771fd?auto=format&fit=crop&q=80&w=400&h=200"
+                style="width:100%; height:110px; object-fit:cover; border-bottom:1px solid var(--border-glass);"
+                alt="Scientists in high-tech laboratory processing DNA sequences">
+              <div style="padding:16px; display:flex; flex-direction:column; gap:8px; flex-grow:1;">
+                <span class="badge badge-teal" style="max-width:max-content;">Laboratory Pipeline</span>
+                <h3>How we sequence your sample</h3>
+                <p style="font-size:0.8rem; line-height:1.4; color:var(--text-secondary); margin:0;">Using custom
+                  microarray genotyping, your DNA is loaded onto a chemical chip to bind with targeted variant probes.
+                </p>
+                <p style="font-size:0.8rem; line-height:1.4; color:var(--text-secondary); margin:0; margin-top:auto;">
+                  This high-throughput extraction method isolates raw sequence data with 99.9% call rate accuracy.</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -1541,30 +1797,41 @@
   <template id="page-family-reports">
     <div class="view-container">
       <section class="hero-section"
-        style="--hero-bg: url('assets/ethnicity_map.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        style="background: radial-gradient(circle at 30% 20%, rgba(147, 51, 234, 0.1), transparent 55%), radial-gradient(circle at 70% 80%, rgba(14, 165, 233, 0.08), transparent 50%), var(--bg-darkest); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px; position:relative; overflow:hidden;">
         <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <div class="badge badge-gold">Interactive Reports</div>
-          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Map Your Lineage Through Time</h1>
-          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Explore beautiful, high-fidelity interactive maps, migration timelines, and historical archives linked with your DNA.</p>
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Map Your Lineage
+            Through Time</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Explore beautiful, high-fidelity
+            interactive maps, migration timelines, and historical archives linked with your DNA.</p>
         </div>
       </section>
 
       <!-- Migration Map Preview -->
-      <section class="section" style="background: var(--bg-darker);">
-        <div class="container grid grid-2" style="align-items:center; gap:60px;">
-          <div>
-            <div class="badge badge-gold">Interactive Mapping</div>
-            <h2 style="margin-top:16px; margin-bottom:24px;">Holographic Migration Mapping</h2>
-            <p style="margin-bottom:16px;">Watch your ancestors' journeys animate across the map. Our timeline mapping
-              tracks where your haplogroup settled over thousands of years, tracing the migration out of East Africa to
-              the Americas and Asia.</p>
-            <p>Our dashboard integrates census records, mapping original addresses and tracking migrations within the
-              last 150 years as well.</p>
-          </div>
-          <div>
-            <img src="assets/ethnicity_map.png"
-              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
-              alt="Holographic Migration World Map Screen Mockup">
+      <section class="section" style="background: var(--bg-darker); padding: 60px 0;">
+        <div class="container" style="max-width: 1000px;">
+          <div class="card card-teal"
+            style="display: flex; flex-direction: row; align-items: center; gap: 40px; padding: 40px; flex-wrap: wrap;">
+            <div style="flex: 2 1 500px;">
+              <div class="badge badge-gold" style="margin-bottom: 12px;">Interactive Mapping</div>
+              <h2 style="font-size: 1.8rem; margin-bottom: 16px;">Holographic Migration Mapping</h2>
+              <p style="margin-bottom: 16px; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                Watch your ancestors' journeys animate across the map. Our timeline mapping
+                tracks where your haplogroup settled over thousands of years, tracing the migration out of East Africa
+                to
+                the Americas and Asia.
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                Our dashboard integrates census records, mapping original addresses and tracking migrations within the
+                last 150 years as well.
+              </p>
+            </div>
+            <div style="flex: 1 1 280px; display: flex; justify-content: center;">
+              <img
+                src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400&h=300"
+                style="width: 100%; max-width: 280px; height: 210px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
+                alt="Holographic Migration World Map Screen Mockup">
+            </div>
           </div>
         </div>
       </section>
@@ -1578,21 +1845,53 @@
             <p class="section-subtitle">Search, link, and document your lineage with historical accuracy.</p>
           </div>
 
-          <div class="grid grid-3">
-            <div class="card card-teal">
-              <img src="assets/report_census.png" class="card-img" alt="Census Collections Archives">
-              <h3>Census Collections</h3>
-              <p>Explore full national census archives from 1850 to 1950. Confirm occupations, household sizes, and exact property locations of ancestors.</p>
+          <!-- Asymmetric List Index Layout for Archives -->
+          <div style="display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto;">
+            <!-- Database Row 1 -->
+            <div class="card card-teal"
+              style="display: flex; flex-direction: row; gap: 24px; align-items: center; padding: 24px; flex-wrap: wrap;">
+              <img
+                src="https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&q=80&w=300&h=200"
+                style="width: 150px; height: 100px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-glass-hover);"
+                alt="Census Collections Archives">
+              <div style="flex: 1 1 300px;">
+                <span class="badge badge-teal" style="margin-bottom: 6px;">1850 - 1950 Records</span>
+                <h3>Census Archives & Household Logs</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px;">Confirm property addresses,
+                  parentage, occupations, and relative ages. Our database automatically matches spelling variations of
+                  historical names.</p>
+              </div>
             </div>
-            <div class="card card-teal">
-              <img src="assets/report_ship.png" class="card-img" alt="Passenger Manifests Sailing Ship">
-              <h3>Passenger Manifests</h3>
-              <p>Locate ship records, arrival dates, and travel conditions of relatives who migrated through historic ports of entry.</p>
+
+            <!-- Database Row 2 -->
+            <div class="card card-teal"
+              style="display: flex; flex-direction: row; gap: 24px; align-items: center; padding: 24px; flex-wrap: wrap;">
+              <img src="https://images.unsplash.com/photo-1559136555-9303baea8ebd?auto=format&fit=crop&q=80&w=300&h=200"
+                style="width: 150px; height: 100px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-glass-hover);"
+                alt="Passenger Manifests Sailing Ship">
+              <div style="flex: 1 1 300px;">
+                <span class="badge badge-teal" style="margin-bottom: 6px;">Passenger Records</span>
+                <h3>Maritime Manifests & Port of Entries</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px;">Find ancestral travel
+                  dates, sailing ship configurations, and departure records. Discover exact coordinates of origin
+                  communities.</p>
+              </div>
             </div>
-            <div class="card card-teal">
-              <img src="assets/report_military.png" class="card-img" alt="Military Registries Badges">
-              <h3>Military Registries</h3>
-              <p>Access recruitment slips, medal logs, and division histories from World War I, World War II, and historical campaigns.</p>
+
+            <!-- Database Row 3 -->
+            <div class="card card-teal"
+              style="display: flex; flex-direction: row; gap: 24px; align-items: center; padding: 24px; flex-wrap: wrap;">
+              <img
+                src="https://images.unsplash.com/photo-1508189860359-777d945909ef?auto=format&fit=crop&q=80&w=300&h=200"
+                style="width: 150px; height: 100px; border-radius: var(--radius-sm); object-fit: cover; border: 1px solid var(--border-glass-hover);"
+                alt="Military Registries Badges">
+              <div style="flex: 1 1 300px;">
+                <span class="badge badge-teal" style="margin-bottom: 6px;">Enlistment Records</span>
+                <h3>Military Muster Rolls & Badges</h3>
+                <p style="font-size: 0.9rem; color: var(--text-secondary); margin-top: 4px;">Search deployment
+                  histories, registration slips, and honor badges from past enlistments. Connect service records
+                  directly to tree branches.</p>
+              </div>
             </div>
           </div>
         </div>
@@ -1604,27 +1903,34 @@
           <div class="section-header">
             <div class="badge badge-gold">Relative Finder</div>
             <h2>DNA Circles & Connections</h2>
-            <p class="section-subtitle">Discover genetic cousins in our secure worldwide registry of 4.5M+ active users.</p>
+            <p class="section-subtitle">Discover genetic cousins in our secure worldwide registry of 4.5M+ active users.
+            </p>
           </div>
 
           <div class="grid grid-3">
             <div class="card card-gold">
               <span class="badge badge-gold" style="margin-bottom:12px; max-width: max-content;">2nd Cousin Match</span>
               <h3>Marcus Vance</h3>
-              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 2.1% DNA (156 cM across 9 segments). Common ancestors traced: Vance/Pendelton line in Scotland.</p>
-              <a href="#/login" class="btn btn-outline" style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
+              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 2.1% DNA (156 cM
+                across 9 segments). Common ancestors traced: Vance/Pendelton line in Scotland.</p>
+              <a href="#/login" class="btn btn-outline"
+                style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
             </div>
             <div class="card card-gold">
               <span class="badge badge-gold" style="margin-bottom:12px; max-width: max-content;">3rd Cousin Match</span>
               <h3>Sophia Lin</h3>
-              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 0.95% DNA (71 cM across 4 segments). Common ancestors traced: Chen/Lin line in Zhejiang.</p>
-              <a href="#/login" class="btn btn-outline" style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
+              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 0.95% DNA (71 cM
+                across 4 segments). Common ancestors traced: Chen/Lin line in Zhejiang.</p>
+              <a href="#/login" class="btn btn-outline"
+                style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
             </div>
             <div class="card card-gold">
               <span class="badge badge-gold" style="margin-bottom:12px; max-width: max-content;">3rd Cousin Match</span>
               <h3>Elena Rostova</h3>
-              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 0.88% DNA (65 cM across 3 segments). Common ancestors traced: Rostov/Petrov line in St. Petersburg.</p>
-              <a href="#/login" class="btn btn-outline" style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
+              <p style="font-size:0.9rem; margin-bottom:16px; color:var(--text-secondary);">Shares 0.88% DNA (65 cM
+                across 3 segments). Common ancestors traced: Rostov/Petrov line in St. Petersburg.</p>
+              <a href="#/login" class="btn btn-outline"
+                style="padding: 6px 12px; font-size:0.75rem; width: max-content;">Send Message</a>
             </div>
           </div>
         </div>
@@ -1636,11 +1942,13 @@
   <template id="page-pricing">
     <div class="view-container">
       <section class="hero-section"
-        style="--hero-bg: url('assets/price_essentials.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        style="background: radial-gradient(circle at 50% 30%, rgba(197, 160, 89, 0.12), transparent 55%), radial-gradient(circle at 90% 90%, rgba(14, 165, 233, 0.04), transparent 40%), var(--bg-darkest); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px; position:relative; overflow:hidden;">
         <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <div class="badge badge-gold">Pricing</div>
-          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Start Your Journey of Discovery</h1>
-          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Simple, transparent pricing. Buy a test kit or subscribe to unlock
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Start Your Journey of
+            Discovery</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Simple, transparent pricing. Buy
+            a test kit or subscribe to unlock
             millions of historical records.</p>
         </div>
       </section>
@@ -1650,7 +1958,8 @@
         <div class="container">
           <div class="grid grid-3">
             <div class="card card-gold">
-              <img src="assets/price_essentials.png" class="card-img" alt="Individual Essentials DNA Kit Box">
+              <img src="https://tse1.mm.bing.net/th/id/OIP.2VwLCZ-XSuvGU9UQ_M_pbgHaFk?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+                class="card-img" alt="Individual Essentials DNA Kit Box">
               <h3>Individual Essentials</h3>
               <p
                 style="font-size:2.2rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin:16px 0;">
@@ -1667,8 +1976,12 @@
               <a href="#/login?action=purchase&plan=essentials" class="btn btn-gold">Order Essentials Kit</a>
             </div>
             <div class="card card-gold" style="border-color: var(--accent-gold);">
-              <div class="badge badge-gold" style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); z-index:20; background:var(--accent-gold); color:var(--bg-darkest); font-weight:700; box-shadow:var(--shadow-glow-gold);">Best Value</div>
-              <img src="assets/price_family.png" class="card-img" alt="Family Bundle DNA Test Kits Set">
+              <div class="badge badge-gold"
+                style="position:absolute; top:-12px; left:50%; transform:translateX(-50%); z-index:20; background:var(--accent-gold); color:var(--bg-darkest); font-weight:700; box-shadow:var(--shadow-glow-gold);">
+                Best Value</div>
+              <img
+                src="https://images.unsplash.com/photo-1576086213369-97a306d36557?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Family Bundle DNA Test Kits Set">
               <h3>Family Bundle</h3>
               <p
                 style="font-size:2.2rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin:16px 0;">
@@ -1685,7 +1998,8 @@
               <a href="#/login?action=purchase&plan=family" class="btn btn-gold">Order Family Bundle</a>
             </div>
             <div class="card card-gold">
-              <img src="assets/price_heritage.png" class="card-img" alt="Heritage Pro Membership Digital Portal">
+              <img src="https://tse1.mm.bing.net/th/id/OIP.lDq5_O0uVwc8EbRUqdF9AQHaEK?r=0&rs=1&pid=ImgDetMain&o=7&rm=3"
+                class="card-img" alt="Heritage Pro Membership Digital Portal">
               <h3>Heritage Pro Membership</h3>
               <p
                 style="font-size:2.2rem; font-family:var(--font-heading); font-weight:700; color:var(--text-primary); margin:16px 0;">
@@ -1711,24 +2025,34 @@
           <div class="section-header">
             <div class="badge badge-teal">Science & Accreditations</div>
             <h2>Our Gold Standard Processing</h2>
-            <p class="section-subtitle">How our CLIA-certified and CAP-accredited facilities sequence raw saliva samples.</p>
+            <p class="section-subtitle">How our CLIA-certified and CAP-accredited facilities sequence raw saliva
+              samples.</p>
           </div>
 
           <div class="grid grid-3">
             <div class="card card-teal">
-              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">01 / Security</span>
+              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">01 /
+                Security</span>
               <h3>Sample Hashing</h3>
-              <p style="font-size:0.9rem; color:var(--text-secondary);">Upon arrival at our lab, your collection tube is immediately scanned and assigned a cryptographically random digital hash, stripping all personal details.</p>
+              <p style="font-size:0.9rem; color:var(--text-secondary);">Upon arrival at our lab, your collection tube is
+                immediately scanned and assigned a cryptographically random digital hash, stripping all personal
+                details.</p>
             </div>
             <div class="card card-teal">
-              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">02 / Extraction</span>
+              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">02 /
+                Extraction</span>
               <h3>Microarray Assays</h3>
-              <p style="font-size:0.9rem; color:var(--text-secondary);">Using high-throughput Illumina sequencing arrays, our geneticists scan 700,000+ distinct single nucleotide polymorphisms (SNPs) from your isolated DNA.</p>
+              <p style="font-size:0.9rem; color:var(--text-secondary);">Using high-throughput Illumina sequencing
+                arrays, our geneticists scan 700,000+ distinct single nucleotide polymorphisms (SNPs) from your isolated
+                DNA.</p>
             </div>
             <div class="card card-teal">
-              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">03 / Verification</span>
+              <span style="font-size: 1.5rem; margin-bottom: 12px; color: var(--accent-teal); display: block;">03 /
+                Verification</span>
               <h3>Dual-Pass Call Rate</h3>
-              <p style="font-size:0.9rem; color:var(--text-secondary);">Every sequenced dataset passes two independent quality checks. We enforce a strict call rate minimum of 99.9% to ensure maximum scientific reliability.</p>
+              <p style="font-size:0.9rem; color:var(--text-secondary);">Every sequenced dataset passes two independent
+                quality checks. We enforce a strict call rate minimum of 99.9% to ensure maximum scientific reliability.
+              </p>
             </div>
           </div>
         </div>
@@ -1772,7 +2096,9 @@
                 <span class="faq-icon">&#9662;</span>
               </div>
               <div class="faq-answer">
-                <p>Yes. You can export your raw autosomal DNA sequencing file (in standard TXT/CSV format compatible with third-party analysis sites) directly from your customer dashboard at any time, completely free of charge.</p>
+                <p>Yes. You can export your raw autosomal DNA sequencing file (in standard TXT/CSV format compatible
+                  with third-party analysis sites) directly from your customer dashboard at any time, completely free of
+                  charge.</p>
               </div>
             </div>
             <div class="faq-item">
@@ -1781,7 +2107,9 @@
                 <span class="faq-icon">&#9662;</span>
               </div>
               <div class="faq-answer">
-                <p>We enforce strict, bank-grade encryption protocols (AES-256) on all user accounts. Your genetic data is paired only with a random digital hash, keeping it fully anonymous and separate from your name, email, or billing information in our secure servers.</p>
+                <p>We enforce strict, bank-grade encryption protocols (AES-256) on all user accounts. Your genetic data
+                  is paired only with a random digital hash, keeping it fully anonymous and separate from your name,
+                  email, or billing information in our secure servers.</p>
               </div>
             </div>
             <div class="faq-item">
@@ -1790,7 +2118,9 @@
                 <span class="faq-icon">&#9662;</span>
               </div>
               <div class="faq-answer">
-                <p>We offer a full refund within 30 days of purchase (minus standard shipping fees) as long as the collection kit has not been registered or used. Once a sample reaches our laboratory and processing begins, we cannot issue a refund.</p>
+                <p>We offer a full refund within 30 days of purchase (minus standard shipping fees) as long as the
+                  collection kit has not been registered or used. Once a sample reaches our laboratory and processing
+                  begins, we cannot issue a refund.</p>
               </div>
             </div>
           </div>
@@ -1803,11 +2133,13 @@
   <template id="page-contact">
     <div class="view-container">
       <section class="hero-section"
-        style="--hero-bg: url('assets/why_network.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        style="background: radial-gradient(circle at 20% 30%, rgba(244, 63, 94, 0.06), transparent 50%), radial-gradient(circle at 80% 70%, rgba(99, 102, 241, 0.08), transparent 50%), var(--bg-darkest); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px; position:relative; overflow:hidden;">
         <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <div class="badge badge-teal">Contact Us</div>
-          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">We're Here to Help You Discover</h1>
-          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Reach out to our customer service desk, scientific labs, or request
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">We're Here to Help
+            You Discover</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Reach out to our customer service
+            desk, scientific labs, or request
             press/academic access.</p>
         </div>
       </section>
@@ -1885,11 +2217,13 @@
   <template id="page-resources">
     <div class="view-container">
       <section class="hero-section"
-        style="--hero-bg: url('assets/family_history.png'); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px;">
+        style="background: radial-gradient(circle at 85% 15%, rgba(16, 185, 129, 0.08), transparent 50%), radial-gradient(circle at 15% 85%, rgba(6, 182, 212, 0.06), transparent 50%), var(--bg-darkest); min-height: 50vh; display:flex; align-items:center; justify-content:center; padding-top: 140px; padding-bottom: 60px; position:relative; overflow:hidden;">
         <div class="container" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <div class="badge badge-gold">Resources</div>
-          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Veritas Learning Center</h1>
-          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Browse DNA guides, genetic science definitions, historical research
+          <h1 class="hero-title" style="font-size: clamp(2.5rem, 5vw, 3.5rem); text-align:center;">Veritas Learning
+            Center</h1>
+          <p class="lead" style="max-width: 700px; text-align:center; margin: 0 auto;">Browse DNA guides, genetic
+            science definitions, historical research
             articles, and advice on locating records.</p>
         </div>
       </section>
@@ -1907,26 +2241,34 @@
 
           <div class="grid grid-3" id="articles-grid">
             <div class="card card-teal" data-cat="guides">
-              <img src="assets/science_research.png" class="card-img" alt="DNA Sequencing Research">
+              <img
+                src="https://images.unsplash.com/photo-1530210124550-912dc1381cb8?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="DNA Sequencing Research">
               <span class="badge badge-teal" style="margin-bottom:12px;">DNA Guides</span>
               <h3>Understanding SNP Sequencing</h3>
-              <p style="margin-bottom: 24px; font-size:0.9rem;">What is a Single Nucleotide Polymorphism and how does it determine ancestry percentages? Learn the molecular biology behind genetic genealogy.</p>
+              <p style="margin-bottom: 24px; font-size:0.9rem;">What is a Single Nucleotide Polymorphism and how does it
+                determine ancestry percentages? Learn the molecular biology behind genetic genealogy.</p>
               <a href="#" onclick="event.preventDefault(); alert('Reading article: Understanding SNP Sequencing...');"
                 style="margin-top:auto; font-weight:var(--weight-bold); font-size:0.875rem;">Read Guide &rarr;</a>
             </div>
             <div class="card card-teal" data-cat="history">
-              <img src="assets/family_history.png" class="card-img" alt="Archival Family Records">
+              <img
+                src="https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Archival Family Records">
               <span class="badge badge-teal" style="margin-bottom:12px;">Family History</span>
               <h3>Traces in the Archives</h3>
-              <p style="margin-bottom: 24px; font-size:0.9rem;">How to locate missing branches of your tree in early immigrant passenger lists, maritime logs, and industrial census books.</p>
+              <p style="margin-bottom: 24px; font-size:0.9rem;">How to locate missing branches of your tree in early
+                immigrant passenger lists, maritime logs, and industrial census books.</p>
               <a href="#" onclick="event.preventDefault(); alert('Reading article: Traces in the Archives...');"
                 style="margin-top:auto; font-weight:var(--weight-bold); font-size:0.875rem;">Read Guide &rarr;</a>
             </div>
             <div class="card card-teal" data-cat="tips">
-              <img src="assets/dna_hero_bg.png" class="card-img" alt="Relative Connections Network">
+              <img src="https://images.unsplash.com/photo-1544396821-4dd40b938ad3?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Relative Connections Network">
               <span class="badge badge-teal" style="margin-bottom:12px;">Research Tips</span>
               <h3>Finding Direct Cousins</h3>
-              <p style="margin-bottom: 24px; font-size:0.9rem;">Tips for initiating contact with close DNA matches in a helpful, respectful, and safe manner. Best templates and questions.</p>
+              <p style="margin-bottom: 24px; font-size:0.9rem;">Tips for initiating contact with close DNA matches in a
+                helpful, respectful, and safe manner. Best templates and questions.</p>
               <a href="#" onclick="event.preventDefault(); alert('Reading article: Finding Direct Cousins...');"
                 style="margin-top:auto; font-weight:var(--weight-bold); font-size:0.875rem;">Read Guide &rarr;</a>
             </div>
@@ -1940,24 +2282,31 @@
           <div class="section-header">
             <div class="badge badge-teal">Quick Terminology</div>
             <h2>Glossary of Genomic Terms</h2>
-            <p class="section-subtitle">Understand the fundamental concepts of genetic genealogy and molecular heritage.</p>
+            <p class="section-subtitle">Understand the fundamental concepts of genetic genealogy and molecular heritage.
+            </p>
           </div>
 
           <div class="grid grid-3">
             <div class="card card-teal">
               <span class="badge badge-teal" style="margin-bottom:12px; max-width: max-content;">Autosomal DNA</span>
               <h3>Chromosomes 1-22</h3>
-              <p style="font-size:0.875rem; color:var(--text-secondary);">Chromosomes inherited from both parents. Autosomal sequencing provides the basis for ethnicity percentages and recent cousin matching (within 5-6 generations).</p>
+              <p style="font-size:0.875rem; color:var(--text-secondary);">Chromosomes inherited from both parents.
+                Autosomal sequencing provides the basis for ethnicity percentages and recent cousin matching (within 5-6
+                generations).</p>
             </div>
             <div class="card card-teal">
               <span class="badge badge-teal" style="margin-bottom:12px; max-width: max-content;">Haplogroups</span>
               <h3>Deep Ancestral Branches</h3>
-              <p style="font-size:0.875rem; color:var(--text-secondary);">Genetic markers on the Y-chromosome (paternal lineage) or mitochondrial DNA (maternal lineage) tracking ancestral migrations over tens of thousands of years.</p>
+              <p style="font-size:0.875rem; color:var(--text-secondary);">Genetic markers on the Y-chromosome (paternal
+                lineage) or mitochondrial DNA (maternal lineage) tracking ancestral migrations over tens of thousands of
+                years.</p>
             </div>
             <div class="card card-teal">
               <span class="badge badge-teal" style="margin-bottom:12px; max-width: max-content;">SNP Markers</span>
               <h3>Single Nucleotide Polymorphisms</h3>
-              <p style="font-size:0.875rem; color:var(--text-secondary);">Individual variations in a single DNA base letter. Comparing these points of variation across profiles identifies shared ethnicity blocks and matches.</p>
+              <p style="font-size:0.875rem; color:var(--text-secondary);">Individual variations in a single DNA base
+                letter. Comparing these points of variation across profiles identifies shared ethnicity blocks and
+                matches.</p>
             </div>
           </div>
         </div>
@@ -1969,48 +2318,70 @@
           <div class="section-header">
             <div class="badge badge-gold">Video Tutorials</div>
             <h2>Master Your History</h2>
-            <p class="section-subtitle">Short video guides demonstrating how to analyze reports and parse Raw DNA files.</p>
+            <p class="section-subtitle">Short video guides demonstrating how to analyze reports and parse Raw DNA files.
+            </p>
           </div>
 
           <div class="grid grid-3">
             <div class="card card-gold">
-              <div style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
-                <div style="width:100%; height:120px; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center;">
-                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
+              <div
+                style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
+                <div
+                  style="width:100%; height:120px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&q=80&w=400&h=200') center/cover no-repeat; display:flex; align-items:center; justify-content:center;">
+                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24"
+                    style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">
+                    <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
               </div>
-              <span style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">5 Minute Guide</span>
+              <span
+                style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">5
+                Minute Guide</span>
               <h3 style="margin-top:8px;">Importing Raw DNA files</h3>
-              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">Step-by-step instructions on transferring genomic files from other providers to your Veritas portal.</p>
-              <a href="#" onclick="event.preventDefault(); alert('Playing video: Importing Raw DNA...');" style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
+              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">Step-by-step instructions
+                on genomic files from other providers to your Veritas portal.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Playing video: Importing Raw DNA...');"
+                style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
             </div>
             <div class="card card-gold">
-              <div style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
-                <div style="width:100%; height:120px; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center;">
-                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
+              <div
+                style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
+                <div
+                  style="width:100%; height:120px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400&h=200') center/cover no-repeat; display:flex; align-items:center; justify-content:center;">
+                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24"
+                    style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">
+                    <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
               </div>
-              <span style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">8 Minute Guide</span>
-              <h3 style="margin-top:8px;">Reading Chromosome Painters</h3>
-              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">How to interpret visual representations of individual alleles and localize ethnic markers.</p>
-              <a href="#" onclick="event.preventDefault(); alert('Playing video: Reading Chromosome Painters...');" style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
+              <span
+                style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">8
+                Minute Guide</span>
+              <h3 style="margin-top:8px;">Reading Chromosome </h3>
+              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">How to interpret visual
+                representations of individual alleles and localize ethnic markers.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Playing video: Reading Chromosome Painters...');"
+                style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
             </div>
             <div class="card card-gold">
-              <div style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
-                <div style="width:100%; height:120px; background:rgba(255,255,255,0.03); display:flex; align-items:center; justify-content:center;">
-                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z"/>
+              <div
+                style="position:relative; margin-bottom:16px; border-radius:var(--radius-md); overflow:hidden; border:1px solid var(--border-glass);">
+                <div
+                  style="width:100%; height:120px; background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url('https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=400&h=200') center/cover no-repeat; display:flex; align-items:center; justify-content:center;">
+                  <svg width="40" height="40" fill="var(--accent-gold)" viewBox="0 0 24 24"
+                    style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.5));">
+                    <path d="M8 5v14l11-7z" />
                   </svg>
                 </div>
               </div>
-              <span style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">12 Minute Guide</span>
+              <span
+                style="font-size:0.75rem; color:var(--accent-gold); text-transform:uppercase; letter-spacing:0.05em; font-weight:var(--weight-bold); display: block;">12
+                Minute Guide</span>
               <h3 style="margin-top:8px;">Resolving Tree Brick Walls</h3>
-              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">Advanced genealogical strategies for overcoming missing lineages and matching distant cousins.</p>
-              <a href="#" onclick="event.preventDefault(); alert('Playing video: Resolving Tree Brick Walls...');" style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
+              <p style="font-size:0.875rem; color:var(--text-secondary); margin-bottom:16px;">Advanced genealogical
+                strategies for lineages and matching distant cousins.</p>
+              <a href="#" onclick="event.preventDefault(); alert('Playing video: Resolving Tree Brick Walls...');"
+                style="font-weight:var(--weight-bold); font-size:0.85rem;">Watch Video &rarr;</a>
             </div>
           </div>
         </div>
@@ -2023,14 +2394,19 @@
     <div class="auth-container">
       <!-- Floating controls for Auth pages -->
       <div style="position: absolute; top: 30px; right: 30px; display: flex; gap: 12px; z-index: 100;">
-        <button class="btn btn-outline btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
-          <svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        <button class="header-btn header-btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode">
+          <svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+            </path>
           </svg>
         </button>
-        <button class="btn btn-outline btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+        <button class="header-btn header-btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
           </svg>
         </button>
       </div>
@@ -2038,14 +2414,28 @@
       <div class="card card-gold auth-card">
         <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <!-- Clickable Logo Inside Card -->
-          <a href="index.html#/" class="logo" style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
-            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;">
-              <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
-              <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
-              <path d="M10 16V22" stroke-linecap="round" />
-              <path d="M7 22H13" stroke-linecap="round" />
+          <a href="index.html#/" class="logo"
+            style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="width:32px; height:32px;">
+              <!-- Central Trunk -->
+              <path d="M12 2v20" stroke-width="2" />
+              <!-- DNA Helix curving left and right -->
+              <path d="M12 6c4 2 6 5 6 8s-2 6-6 8" stroke="var(--accent-gold)" stroke-width="2" />
+              <path d="M12 6c-4 2-6 5-6 8s2 6 6 8" stroke="var(--accent-teal)" stroke-width="2" opacity="0.8" />
+              <!-- Branching Connection Nodes -->
+              <line x1="12" y1="9" x2="6" y2="9" />
+              <line x1="12" y1="14" x2="18" y2="14" />
+              <line x1="12" y1="18" x2="5" y2="18" />
+              <line x1="12" y1="18" x2="19" y2="18" />
+              <circle cx="6" cy="9" r="2" fill="currentColor" />
+              <circle cx="18" cy="14" r="2" fill="currentColor" />
+              <circle cx="5" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="19" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="12" cy="2" r="2.5" fill="currentColor" />
             </svg>
-            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span class="logo-text-accent">Ancestry</span></span>
+            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span
+                class="logo-text-accent">Ancestry</span></span>
           </a>
           <h2>Welcome Back</h2>
           <p style="font-size:0.9rem; color:var(--text-muted);">Sign in to access your DNA profiles and family tree.</p>
@@ -2061,10 +2451,13 @@
             <input type="password" class="form-control" id="login-password" required placeholder="••••••••">
           </div>
           <!-- Remember Me & Forgot Password Row -->
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; margin-bottom:20px;">
+          <div
+            style="display:flex; justify-content:space-between; align-items:center; margin-top:12px; margin-bottom:20px;">
             <div style="display:flex; align-items:center; gap:8px;">
               <input type="checkbox" id="remember-me" style="accent-color: var(--accent-gold); cursor:pointer;">
-              <label for="remember-me" style="font-size:0.85rem; color:var(--text-secondary); cursor:pointer; user-select:none;">Remember me</label>
+              <label for="remember-me"
+                style="font-size:0.85rem; color:var(--text-secondary); cursor:pointer; user-select:none;">Remember
+                me</label>
             </div>
             <a href="#/forgot-password" class="auth-link" style="font-size: 0.85rem;">Forgot password?</a>
           </div>
@@ -2074,20 +2467,29 @@
         <div class="divider">or continue with</div>
 
         <div class="auth-social">
-          <button class="btn btn-outline" style="display:inline-flex; align-items:center; justify-content:center;" onclick="alert('Google Auth Mock');">
-            <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 8px;">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+          <button class="header-btn header-btn-icon" onclick="alert('Google Auth Mock');"
+            aria-label="Sign in with Google">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
             </svg>
-            Google
           </button>
-          <button class="btn btn-outline" style="display:inline-flex; align-items:center; justify-content:center;" onclick="alert('Apple Auth Mock');">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.12.09 2.25-.56 2.94-1.39z"/>
+          <button class="header-btn header-btn-icon" onclick="alert('Apple Auth Mock');"
+            aria-label="Sign in with Apple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.12.09 2.25-.56 2.94-1.39z" />
             </svg>
-            Apple
           </button>
         </div>
 
@@ -2102,14 +2504,19 @@
     <div class="auth-container">
       <!-- Floating controls for Auth pages -->
       <div style="position: absolute; top: 30px; right: 30px; display: flex; gap: 12px; z-index: 100;">
-        <button class="btn btn-outline btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
-          <svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        <button class="header-btn header-btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode">
+          <svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+            </path>
           </svg>
         </button>
-        <button class="btn btn-outline btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+        <button class="header-btn header-btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
           </svg>
         </button>
       </div>
@@ -2117,14 +2524,28 @@
       <div class="card card-gold auth-card">
         <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <!-- Clickable Logo Inside Card -->
-          <a href="index.html#/" class="logo" style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
-            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;">
-              <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
-              <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
-              <path d="M10 16V22" stroke-linecap="round" />
-              <path d="M7 22H13" stroke-linecap="round" />
+          <a href="index.html#/" class="logo"
+            style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="width:32px; height:32px;">
+              <!-- Central Trunk -->
+              <path d="M12 2v20" stroke-width="2" />
+              <!-- DNA Helix curving left and right -->
+              <path d="M12 6c4 2 6 5 6 8s-2 6-6 8" stroke="var(--accent-gold)" stroke-width="2" />
+              <path d="M12 6c-4 2-6 5-6 8s2 6 6 8" stroke="var(--accent-teal)" stroke-width="2" opacity="0.8" />
+              <!-- Branching Connection Nodes -->
+              <line x1="12" y1="9" x2="6" y2="9" />
+              <line x1="12" y1="14" x2="18" y2="14" />
+              <line x1="12" y1="18" x2="5" y2="18" />
+              <line x1="12" y1="18" x2="19" y2="18" />
+              <circle cx="6" cy="9" r="2" fill="currentColor" />
+              <circle cx="18" cy="14" r="2" fill="currentColor" />
+              <circle cx="5" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="19" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="12" cy="2" r="2.5" fill="currentColor" />
             </svg>
-            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span class="logo-text-accent">Ancestry</span></span>
+            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span
+                class="logo-text-accent">Ancestry</span></span>
           </a>
           <h2>Begin Your Legacy</h2>
           <p style="font-size:0.9rem; color:var(--text-muted);">Register your profile to activate your testing kits.</p>
@@ -2145,7 +2566,8 @@
           </div>
           <div class="form-group">
             <label class="form-label" for="signup-confirm-password">Confirm Password</label>
-            <input type="password" class="form-control" id="signup-confirm-password" required placeholder="Re-enter password">
+            <input type="password" class="form-control" id="signup-confirm-password" required
+              placeholder="Re-enter password">
           </div>
           <div style="display:flex; gap:10px; align-items:flex-start; margin: 16px 0;">
             <input type="checkbox" id="terms" required style="margin-top: 4px; accent-color: var(--accent-gold);">
@@ -2159,20 +2581,29 @@
         <div class="divider">or continue with</div>
 
         <div class="auth-social">
-          <button class="btn btn-outline" style="display:inline-flex; align-items:center; justify-content:center;" onclick="alert('Google Auth Mock');">
-            <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 8px;">
-              <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-              <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-              <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
-              <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+          <button class="header-btn header-btn-icon" onclick="alert('Google Auth Mock');"
+            aria-label="Sign in with Google">
+            <svg width="20" height="20" viewBox="0 0 24 24">
+              <path
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                fill="#4285F4" />
+              <path
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                fill="#34A853" />
+              <path
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                fill="#FBBC05" />
+              <path
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+                fill="#EA4335" />
             </svg>
-            Google
           </button>
-          <button class="btn btn-outline" style="display:inline-flex; align-items:center; justify-content:center;" onclick="alert('Apple Auth Mock');">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="margin-right: 8px;">
-              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.12.09 2.25-.56 2.94-1.39z"/>
+          <button class="header-btn header-btn-icon" onclick="alert('Apple Auth Mock');"
+            aria-label="Sign in with Apple">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+              <path
+                d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 4.17c.66-.81 1.11-1.93.99-3.06-1 .04-2.2.67-2.92 1.49-.62.71-1.16 1.85-1.01 2.96 1.12.09 2.25-.56 2.94-1.39z" />
             </svg>
-            Apple
           </button>
         </div>
 
@@ -2187,14 +2618,19 @@
     <div class="auth-container">
       <!-- Floating controls for Auth pages -->
       <div style="position: absolute; top: 30px; right: 30px; display: flex; gap: 12px; z-index: 100;">
-        <button class="btn btn-outline btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
-          <svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
-            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+        <button class="header-btn header-btn-icon theme-toggle-btn" aria-label="Toggle Theme Mode">
+          <svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41">
+            </path>
           </svg>
         </button>
-        <button class="btn btn-outline btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode" style="border-radius: var(--radius-full); width: 40px; height: 40px; background: var(--bg-card); backdrop-filter: var(--glass-backdrop);">
+        <button class="header-btn header-btn-icon rtl-toggle-btn" aria-label="Toggle RTL Mode">
           <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7h12m0 0l-4-4m4 4l-4 4m-4 6H4m0 0l4 4m-4-4l4-4" />
           </svg>
         </button>
       </div>
@@ -2202,17 +2638,32 @@
       <div class="card card-gold auth-card">
         <div class="auth-header" style="display:flex; flex-direction:column; align-items:center; text-align:center;">
           <!-- Clickable Logo Inside Card -->
-          <a href="index.html#/" class="logo" style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
-            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:32px; height:32px;">
-              <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
-              <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
-              <path d="M10 16V22" stroke-linecap="round" />
-              <path d="M7 22H13" stroke-linecap="round" />
+          <a href="index.html#/" class="logo"
+            style="display:flex; align-items:center; gap:10px; font-size:1.5rem; text-decoration:none; margin-bottom:16px;">
+            <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round" style="width:32px; height:32px;">
+              <!-- Central Trunk -->
+              <path d="M12 2v20" stroke-width="2" />
+              <!-- DNA Helix curving left and right -->
+              <path d="M12 6c4 2 6 5 6 8s-2 6-6 8" stroke="var(--accent-gold)" stroke-width="2" />
+              <path d="M12 6c-4 2-6 5-6 8s2 6 6 8" stroke="var(--accent-teal)" stroke-width="2" opacity="0.8" />
+              <!-- Branching Connection Nodes -->
+              <line x1="12" y1="9" x2="6" y2="9" />
+              <line x1="12" y1="14" x2="18" y2="14" />
+              <line x1="12" y1="18" x2="5" y2="18" />
+              <line x1="12" y1="18" x2="19" y2="18" />
+              <circle cx="6" cy="9" r="2" fill="currentColor" />
+              <circle cx="18" cy="14" r="2" fill="currentColor" />
+              <circle cx="5" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="19" cy="18" r="1.5" fill="currentColor" />
+              <circle cx="12" cy="2" r="2.5" fill="currentColor" />
             </svg>
-            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span class="logo-text-accent">Ancestry</span></span>
+            <span style="color:var(--text-primary); font-family:var(--font-heading); font-weight:700;">Veritas<span
+                class="logo-text-accent">Ancestry</span></span>
           </a>
           <h2>Reset Your Password</h2>
-          <p style="font-size:0.9rem; color:var(--text-muted);">Enter your email address and we'll send a password recovery link.</p>
+          <p style="font-size:0.9rem; color:var(--text-muted);">Enter your email address and we'll send a password
+            recovery link.</p>
         </div>
 
         <form id="forgot-form"
@@ -2235,8 +2686,9 @@
     <div class="view-container">
       <!-- Science Split Hero Section -->
       <section class="hero-section"
-        style="--hero-bg: url('assets/science_research.png'); background: radial-gradient(circle at 10% 20%, rgba(6,182,212,0.06), transparent 45%), var(--bg-darkest); display:flex; align-items:center; justify-content:center;">
-        <div class="container hero-container-split" style="display:flex; align-items:center; gap:40px; justify-content:space-between; flex-wrap:wrap;">
+        style="background: radial-gradient(circle at 10% 20%, rgba(6,182,212,0.12), transparent 45%), var(--bg-darkest); display:flex; align-items:center; justify-content:center;">
+        <div class="container hero-container-split"
+          style="display:flex; align-items:center; gap:40px; justify-content:space-between; flex-wrap:wrap;">
           <div class="hero-content animate-slide-up" style="flex:1 1 500px; max-width: 650px;">
             <div class="badge badge-teal">Forensic Genetics</div>
             <h1 class="hero-title">The Science of You, Fully Unlocked.</h1>
@@ -2280,40 +2732,51 @@
 
           <div class="grid grid-3" id="home2-traits-grid">
             <div class="card card-gold trait-card" data-trait="caffeine" style="cursor:pointer;">
-              <img src="assets/trait_caffeine.png" class="card-img" alt="Caffeine Metabolism Biotech Card">
+              <img
+                src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Caffeine Metabolism Biotech Card">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3>Caffeine Metabolism</h3>
                 <span style="color:var(--accent-gold);">
                   <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
                 </span>
               </div>
-              <p style="font-size:0.875rem;">Fast Metabolist. CYP1A2 gene genotype suggests caffeine is processed rapidly, minimizing sleep disturbances.</p>
+              <p style="font-size:0.875rem;">Fast Metabolist. CYP1A2 gene genotype suggests caffeine is processed
+                rapidly, minimizing sleep disturbances.</p>
             </div>
             <div class="card card-gold trait-card" data-trait="muscle" style="cursor:pointer;">
-              <img src="assets/trait_muscle.png" class="card-img" alt="Muscle Composition Biotech Card">
+              <img
+                src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?auto=format&fit=crop&q=80&w=600&h=400"
+                class="card-img" alt="Muscle Composition Biotech Card">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3>Muscle Composition</h3>
                 <span style="color:var(--accent-gold);">
                   <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
                   </svg>
                 </span>
               </div>
-              <p style="font-size:0.875rem;">Sprint Profile. ACTN3 variant isolated: your genomic sequence favors explosive muscle performance.</p>
+              <p style="font-size:0.875rem;">Sprint Profile. ACTN3 variant isolated: your genomic sequence favors
+                explosive muscle performance.</p>
             </div>
             <div class="card card-gold trait-card" data-trait="sleep" style="cursor:pointer;">
-              <img src="assets/trait_sleep.png" class="card-img" alt="Sleep Latency Biotech Card">
+              <img src="https://fitnesshacks.org/wp-content/uploads/2023/02/stages-of-sleep-768x558.jpg"
+                class="card-img" alt="Sleep Latency Biotech Card">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
                 <h3>Sleep Latency</h3>
                 <span style="color:var(--accent-gold);">
                   <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                      d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z" />
                   </svg>
                 </span>
               </div>
-              <p style="font-size:0.875rem;">Average Latency. Specific genetic markers predict standard sleep architectures and typical REM transition periods.</p>
+              <p style="font-size:0.875rem;">Average Latency. Specific genetic markers predict standard sleep
+                architectures and typical REM transition periods.</p>
             </div>
           </div>
 
@@ -2390,21 +2853,29 @@
       </section>
 
       <!-- Advanced Forensics & Matching -->
-      <section class="section" style="background: var(--bg-darker);">
-        <div class="container grid grid-2" style="align-items: center; gap: 48px;">
-          <div>
-            <img src="assets/family_history.png"
-              style="width:100%; border-radius:var(--radius-lg); border:1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
-              alt="Archival analysis documents and historical magnifying glass">
-          </div>
-          <div>
-            <div class="badge badge-gold">Tree Matching</div>
-            <h2>Forensic Database Triangulation</h2>
-            <p style="margin-bottom:16px;">Resolve missing lines using our historical census lookup. Veritas Ancestry
-              automatically queries over 80 million indexing lines (emigration records, military manifests, and civic
-              registries) to construct complete tree lineages.</p>
-            <p>Our algorithms scan genetic markers, identify common parent links, and automatically prompt you with
-              validated document matching files to solidify your tree.</p>
+      <section class="section" style="background: var(--bg-darker); padding: 60px 0;">
+        <div class="container" style="max-width: 1000px;">
+          <div class="card card-teal"
+            style="display: flex; flex-direction: row; align-items: center; gap: 40px; padding: 40px; flex-wrap: wrap;">
+            <div style="flex: 2 1 500px;">
+              <div class="badge badge-gold" style="margin-bottom: 12px;">Tree Matching</div>
+              <h2 style="font-size: 1.8rem; margin-bottom: 16px;">Forensic Database Triangulation</h2>
+              <p style="margin-bottom: 16px; font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                Resolve missing lines using our historical census lookup. Veritas Ancestry
+                automatically queries over 80 million indexing lines (emigration records, military manifests, and civic
+                registries) to construct complete tree lineages.
+              </p>
+              <p style="font-size: 0.95rem; line-height: 1.6; color: var(--text-secondary);">
+                Our algorithms scan genetic markers, identify common parent links, and automatically prompt you with
+                validated document matching files to solidify your tree.
+              </p>
+            </div>
+            <div style="flex: 1 1 280px; display: flex; justify-content: center;">
+              <img
+                src="https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&q=80&w=400&h=300"
+                style="width: 100%; max-width: 280px; height: 210px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--border-glass-hover); box-shadow: var(--shadow-premium);"
+                alt="Archival analysis documents and historical magnifying glass">
+            </div>
           </div>
         </div>
       </section>

@@ -328,7 +328,7 @@ function initHome2Logic() {
     },
     sleep: {
       title: 'Sleep Latency',
-      desc: 'Specific variants within your CLOCK and ADA alleles indicate typical sleep onset rates and natural night-owl tendencies (circadian phase delay).',
+      desc: 'Average Latency. Specific genetic markers predict standard sleep architectures and typical REM transition periods.',
       genotype: 'G/A (Intermediate)',
       freq: '51.2% of reference profiles'
     }
@@ -376,8 +376,8 @@ function initThemeAndRtl() {
 
   const updateThemeIcons = () => {
     const isLight = document.body.classList.contains('light-theme');
-    const moonSVG = `<svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>`;
-    const sunSVG = `<svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>`;
+    const moonSVG = `<svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path></svg>`;
+    const sunSVG = `<svg class="icon-theme" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"></circle><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"></path></svg>`;
 
     const currentThemeButtons = document.querySelectorAll('.theme-toggle-btn');
     currentThemeButtons.forEach(btn => {
@@ -426,6 +426,12 @@ function initThemeAndRtl() {
     }
     if (rtlBtn) {
       toggleRtl();
+    }
+
+    // Close dashboard dropdown if clicked outside
+    const dropdownMenu = document.getElementById('dashboard-dropdown-menu');
+    if (dropdownMenu && !e.target.closest('.dropdown-wrapper')) {
+      dropdownMenu.style.display = 'none';
     }
   });
 

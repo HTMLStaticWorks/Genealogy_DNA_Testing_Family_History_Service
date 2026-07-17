@@ -580,6 +580,50 @@
         border-top: 1px solid var(--border-glass);
       }
     }
+
+    /* Customer Dashboard Mobile Responsiveness Overrides */
+    @media (max-width: 480px) {
+      .view-container {
+        padding: 16px !important;
+      }
+      .topbar {
+        padding: 12px 16px !important;
+        margin-bottom: 20px !important;
+      }
+      .topbar h2 {
+        font-size: 1.1rem !important;
+      }
+      .topbar-actions {
+        gap: 8px !important;
+      }
+      .topbar-actions .header-btn {
+        width: 36px !important;
+        height: 36px !important;
+      }
+      .dna-tracker {
+        flex-direction: column !important;
+        align-items: stretch !important;
+        gap: 24px !important;
+        padding: 10px 0 !important;
+      }
+      .dna-tracker::before {
+        display: none !important;
+      }
+      .tracker-step {
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        text-align: left !important;
+        gap: 16px !important;
+        width: 100% !important;
+      }
+      .step-node {
+        margin: 0 !important;
+      }
+      .step-content {
+        margin: 0 !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -592,9 +636,22 @@
     <aside class="sidebar">
       <div style="display:flex; flex-direction:column; gap:40px; width:100%;">
         <a href="index.html#/" class="sidebar-brand" style="text-decoration:none; color:inherit;">
-          <svg class="logo-symbol" style="width:28px; height:28px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4.5 10.5C4.5 7.46243 6.96243 5 10 5C13.0376 5 15.5 7.46243 15.5 10.5C15.5 12.3551 14.5824 14.0042 13.1818 15.0064C12.2858 15.6475 11.2057 16 10 16C6.96243 16 4.5 13.5376 4.5 10.5Z" />
-            <path d="M19.5 13.5C19.5 11.3934 18.2325 9.58242 16.4252 8.79093C15.8646 9.30939 15.5 10.0381 15.5 10.8462C15.5 12.3001 16.4172 13.5413 17.7029 14.0322C18.7758 14.4428 19.5 15.4851 19.5 16.7143C19.5 18.529 18.029 20 16.2143 20C14.7896 20 13.5758 19.0945 13.1311 17.8227C12.7876 17.9372 12.4173 18 12.0303 18C10.7483 18 9.61057 17.3197 8.98379 16.3056" />
+          <svg class="logo-symbol" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:28px; height:28px;">
+            <!-- Central Trunk -->
+            <path d="M12 2v20" stroke-width="2"/>
+            <!-- DNA Helix curving left and right -->
+            <path d="M12 6c4 2 6 5 6 8s-2 6-6 8" stroke="var(--accent-gold)" stroke-width="2"/>
+            <path d="M12 6c-4 2-6 5-6 8s2 6 6 8" stroke="var(--accent-teal)" stroke-width="2" opacity="0.8"/>
+            <!-- Branching Connection Nodes -->
+            <line x1="12" y1="9" x2="6" y2="9"/>
+            <line x1="12" y1="14" x2="18" y2="14"/>
+            <line x1="12" y1="18" x2="5" y2="18"/>
+            <line x1="12" y1="18" x2="19" y2="18"/>
+            <circle cx="6" cy="9" r="2" fill="currentColor"/>
+            <circle cx="18" cy="14" r="2" fill="currentColor"/>
+            <circle cx="5" cy="18" r="1.5" fill="currentColor"/>
+            <circle cx="19" cy="18" r="1.5" fill="currentColor"/>
+            <circle cx="12" cy="2" r="2.5" fill="currentColor"/>
           </svg>
           <span style="font-family:var(--font-heading); font-weight:700; font-size:1.15rem;">Veritas<span class="logo-text-accent">Ancestry</span></span>
         </a>
@@ -619,19 +676,19 @@
               <span>DNA & Family</span>
             </a>
           </li>
-          <li>
-            <a href="admin.html" class="sidebar-link" style="color:var(--accent-gold); border-color: rgba(197, 160, 89, 0.15);">
-              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              </svg>
-              <span>Admin Portal</span>
-            </a>
-          </li>
         </ul>
       </div>
 
       <div style="display:flex; flex-direction:column; gap:16px;">
+        <!-- Standalone Admin Portal Option -->
+        <a href="admin.html" class="sidebar-link" style="color:var(--accent-gold); border: 1px solid rgba(197, 160, 89, 0.3); background: rgba(197, 160, 89, 0.05); border-radius: var(--radius-md); padding: 12px 16px; margin-bottom: 8px;">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+          </svg>
+          <span>Admin Portal</span>
+        </a>
+
         <div class="user-profile-card">
           <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100&h=100" class="user-avatar" alt="Alex Mercer">
           <div class="user-info">
